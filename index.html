@@ -20,10 +20,10 @@ nav_group: home
     <span class="section-divider-line"></span>
   </div>
   <div class="taxonomy-pills">
-    <a class="taxonomy-pill group-skills" href="{{ site.baseurl }}reading">Reading</a>
-    <a class="taxonomy-pill group-skills" href="{{ site.baseurl }}listening">Listening</a>
-    <a class="taxonomy-pill group-skills" href="{{ site.baseurl }}speaking">Speaking</a>
-    <a class="taxonomy-pill group-skills" href="{{ site.baseurl }}writing">Writing</a>
+    <a class="taxonomy-pill group-skills" href="{{ site.baseurl }}/reading">Reading</a>
+    <a class="taxonomy-pill group-skills" href="{{ site.baseurl }}/listening">Listening</a>
+    <a class="taxonomy-pill group-skills" href="{{ site.baseurl }}/speaking">Speaking</a>
+    <a class="taxonomy-pill group-skills" href="{{ site.baseurl }}/writing">Writing</a>
   </div>
 </div>
 
@@ -33,8 +33,8 @@ nav_group: home
     <span class="section-divider-line"></span>
   </div>
   <div class="taxonomy-pills">
-    <a class="taxonomy-pill group-language-systems" href="{{ site.baseurl }}vocabulary">Vocabulary</a>
-    <a class="taxonomy-pill group-language-systems" href="{{ site.baseurl }}grammar">Grammar</a>
+    <a class="taxonomy-pill group-language-systems" href="{{ site.baseurl }}/vocabulary">Vocabulary</a>
+    <a class="taxonomy-pill group-language-systems" href="{{ site.baseurl }}/grammar">Grammar</a>
   </div>
 </div>
 
@@ -44,12 +44,12 @@ nav_group: home
     <span class="section-divider-line"></span>
   </div>
   <div class="taxonomy-pills">
-    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}literature">Literature</a>
-    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}novels">Novels</a>
-    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}short-stories">Short Stories</a>
-    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}poetry">Poetry</a>
-    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}literary-devices">Literary Devices</a>
-    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}author-studies">Author Studies</a>
+    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}/literature">Literature</a>
+    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}/novels">Novels</a>
+    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}/short-stories">Short Stories</a>
+    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}/poetry">Poetry</a>
+    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}/literary-devices">Literary Devices</a>
+    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}/author-studies">Author Studies</a>
   </div>
 </div>
 
@@ -59,20 +59,20 @@ nav_group: home
     <span class="section-divider-line"></span>
   </div>
   <div class="taxonomy-pills">
-    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}library">Library</a>
-    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}themed-series">Themed Series</a>
-    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}book-series">Book Series</a>
-    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}culture">Culture</a>
-    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}cross-curricular">Cross-Curricular</a>
-    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}tools">Tools</a>
-    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}digital-tools">Digital Tools</a>
+    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}/library">Library</a>
+    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}/themed-series">Themed Series</a>
+    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}/book-series">Book Series</a>
+    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}/culture">Culture</a>
+    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}/cross-curricular">Cross-Curricular</a>
+    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}/tools">Tools</a>
+    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}/digital-tools">Digital Tools</a>
   </div>
 </div>
 
 <script>
   document.getElementById('home-search').addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && this.value.trim()) {
-      window.location.href = '{{ site.baseurl }}library?q=' + encodeURIComponent(this.value.trim());
+      window.location.href = '{{ site.baseurl }}/library?q=' + encodeURIComponent(this.value.trim());
     }
   });
 </script>
