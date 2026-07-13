@@ -9,8 +9,8 @@ permalink:        pretty
 title:            ExplEnglish
 tagline:          "The English teacher's library"
 description:      'ExplEnglish is a library of English lessons, drills, and reference material for teachers and learners.'
-url:              https://explenglish.com
-baseurl:          ""
+url:              https://ripurii.github.io
+baseurl:          /ExplEnglish
 
 author:
   name:           'ExplEnglish'
