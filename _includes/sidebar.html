@@ -13,10 +13,10 @@
       <details class="sidebar-nav-group"{% if page.nav_group == "skills" %} open{% endif %}>
         <summary class="sidebar-nav-item{% if page.nav_group == "skills" %} active{% endif %}">Skills</summary>
         <div class="sidebar-submenu">
-          <a class="sidebar-nav-item{% if page.nav_item == "reading" %} active{% endif %}" href="{{ site.baseurl }}skills">Reading</a>
-          <a class="sidebar-nav-item{% if page.nav_item == "listening" %} active{% endif %}" href="{{ site.baseurl }}skills">Listening</a>
-          <a class="sidebar-nav-item{% if page.nav_item == "speaking" %} active{% endif %}" href="{{ site.baseurl }}skills">Speaking</a>
-          <a class="sidebar-nav-item{% if page.nav_item == "writing" %} active{% endif %}" href="{{ site.baseurl }}skills">Writing</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "reading" %} active{% endif %}" href="{{ site.baseurl }}reading">Reading</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "listening" %} active{% endif %}" href="{{ site.baseurl }}listening">Listening</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "speaking" %} active{% endif %}" href="{{ site.baseurl }}speaking">Speaking</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "writing" %} active{% endif %}" href="{{ site.baseurl }}writing">Writing</a>
         </div>
       </details>
 
@@ -32,32 +32,31 @@
         <summary class="sidebar-nav-item{% if page.nav_group == "literature" %} active{% endif %}">Literature</summary>
         <div class="sidebar-submenu">
           <a class="sidebar-nav-item{% if page.nav_item == "literature" %} active{% endif %}" href="{{ site.baseurl }}literature">Literature</a>
-          <a class="sidebar-nav-item{% if page.nav_item == "novels" %} active{% endif %}" href="{{ site.baseurl }}literature">Novels</a>
-          <a class="sidebar-nav-item{% if page.nav_item == "short-stories" %} active{% endif %}" href="{{ site.baseurl }}literature">Short Stories</a>
-          <a class="sidebar-nav-item{% if page.nav_item == "poetry" %} active{% endif %}" href="{{ site.baseurl }}literature">Poetry</a>
-          <a class="sidebar-nav-item{% if page.nav_item == "literary-devices" %} active{% endif %}" href="{{ site.baseurl }}literature">Literary Devices</a>
-          <a class="sidebar-nav-item{% if page.nav_item == "author-studies" %} active{% endif %}" href="{{ site.baseurl }}literature">Author Studies</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "novels" %} active{% endif %}" href="{{ site.baseurl }}novels">Novels</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "short-stories" %} active{% endif %}" href="{{ site.baseurl }}short-stories">Short Stories</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "poetry" %} active{% endif %}" href="{{ site.baseurl }}poetry">Poetry</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "literary-devices" %} active{% endif %}" href="{{ site.baseurl }}literary-devices">Literary Devices</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "author-studies" %} active{% endif %}" href="{{ site.baseurl }}author-studies">Author Studies</a>
         </div>
       </details>
 
       <details class="sidebar-nav-group"{% if page.nav_group == "more" %} open{% endif %}>
         <summary class="sidebar-nav-item{% if page.nav_group == "more" %} active{% endif %}">More</summary>
         <div class="sidebar-submenu">
-          <a class="sidebar-nav-item{% if page.nav_item == "themed-series" %} active{% endif %}" href="{{ site.baseurl }}more">Themed Series</a>
-          <a class="sidebar-nav-item{% if page.nav_item == "book-series" %} active{% endif %}" href="{{ site.baseurl }}more">Book Series</a>
-          <a class="sidebar-nav-item{% if page.nav_item == "culture" %} active{% endif %}" href="{{ site.baseurl }}more">Culture</a>
-          <a class="sidebar-nav-item{% if page.nav_item == "cross-curricular" %} active{% endif %}" href="{{ site.baseurl }}more">Cross-Curricular</a>
-          <a class="sidebar-nav-item{% if page.nav_item == "tools" %} active{% endif %}" href="{{ site.baseurl }}more">Tools</a>
-          <a class="sidebar-nav-item{% if page.nav_item == "digital-tools" %} active{% endif %}" href="{{ site.baseurl }}more">Digital Tools</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "themed-series" %} active{% endif %}" href="{{ site.baseurl }}themed-series">Themed Series</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "book-series" %} active{% endif %}" href="{{ site.baseurl }}book-series">Book Series</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "culture" %} active{% endif %}" href="{{ site.baseurl }}culture">Culture</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "cross-curricular" %} active{% endif %}" href="{{ site.baseurl }}cross-curricular">Cross-Curricular</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "tools" %} active{% endif %}" href="{{ site.baseurl }}tools">Tools</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "digital-tools" %} active{% endif %}" href="{{ site.baseurl }}digital-tools">Digital Tools</a>
         </div>
       </details>
-
-      <a class="sidebar-nav-item{% if page.nav_group == "latest" %} active{% endif %}" href="{{ site.baseurl }}latest">Latest</a>
     </nav>
 
     <hr class="sidebar-divider">
 
     <nav class="sidebar-nav sidebar-nav-secondary">
+      <a class="sidebar-nav-item{% if page.nav_group == "latest" %} active{% endif %}" href="{{ site.baseurl }}latest">Latest</a>
       <a class="sidebar-nav-item{% if page.nav_group == "library" %} active{% endif %}" href="{{ site.baseurl }}library">Library</a>
     </nav>
 

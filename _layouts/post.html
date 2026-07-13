@@ -2,17 +2,91 @@
 layout: default
 ---
 
+{% assign primary_tag = page.tags | first %}
+{% case primary_tag %}
+  {% when 'reading', 'listening', 'speaking', 'writing' %}
+    {% assign banner_class = 'banner-green' %}
+  {% when 'grammar', 'vocabulary' %}
+    {% assign banner_class = 'banner-rust' %}
+  {% when 'literature', 'novels', 'short-stories', 'poetry', 'literary-devices', 'author-studies' %}
+    {% assign banner_class = 'banner-blue' %}
+  {% else %}
+    {% assign banner_class = 'banner-amber' %}
+{% endcase %}
+
+<div class="lesson-banner {{ banner_class }}">
+  <h1 class="lesson-banner-title">{{ page.title }}</h1>
+</div>
+
 <div class="breadcrumb"><a href="{{ site.baseurl }}">Home</a> / <a href="{{ site.baseurl }}library">Library</a> / {{ page.title }}</div>
 
-<div class="post">
-  <div class="lesson-row-title-line" style="margin-bottom: .5rem;">
-    <h1 class="post-title" style="margin: 0;">{{ page.title }}</h1>
-    {% if page.level %}<span class="badge badge-level">{{ page.level }}</span>{% endif %}
-    {% for tag in page.tags %}<span class="badge badge-tag tag-{{ tag | slugify }}">{{ tag | capitalize }}</span>{% endfor %}
-  </div>
-  <span class="post-date">{{ page.duration }}{% if page.duration and page.posted %} &middot; {% endif %}{{ page.posted }}</span>
-  {{ content }}
+<div class="lesson-meta-line">
+  {% if page.level %}<span class="badge badge-level">{{ page.level }}</span>{% endif %}
+  {% for tag in page.tags %}<span class="badge badge-tag tag-{{ tag | slugify }}">{{ tag | capitalize }}</span>{% endfor %}
+  <span class="lesson-meta-text">{{ page.duration }}{% if page.duration and page.posted %} &middot; {% endif %}{{ page.posted }}</span>
 </div>
+
+{% if page.lesson_number or page.tagline %}
+<div class="section-divider">
+  <span class="section-divider-line"></span>
+</div>
+<h2 class="lesson-heading">{% if page.lesson_number %}<span class="lesson-heading-number">Lesson {{ page.lesson_number }}.</span> {% endif %}{% if page.tagline %}<em>{{ page.tagline }}</em>{% endif %}</h2>
+{% endif %}
+
+<div class="lesson-intro{% if page.image %} has-image{% endif %}">
+  <div class="lesson-intro-text">
+    {% if page.intro %}<p>{{ page.intro }}</p>{% else %}{{ content }}{% endif %}
+
+    {% if page.learning_goals %}
+    <p class="lesson-goals-label">Learning goals:</p>
+    <ul class="lesson-goals-list">
+      {% for goal in page.learning_goals %}<li>{{ goal }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+  {% if page.image %}
+  <div class="lesson-intro-image">
+    <img src="{{ page.image }}" alt="{{ page.title }}">
+  </div>
+  {% endif %}
+</div>
+
+{% if page.exercises %}
+<div class="section-divider">
+  <span class="section-divider-line"></span>
+</div>
+{% for exercise in page.exercises %}
+<div class="lesson-exercise">
+  <h3 class="lesson-heading"><span class="lesson-heading-number">Exercise {{ forloop.index }}.</span> <em>{{ exercise.title }}</em></h3>
+  <div class="lesson-exercise-body">
+    {% if exercise.video_url %}
+    <div class="lesson-video">
+      <iframe src="{{ exercise.video_url }}" title="{{ exercise.title }}" allowfullscreen></iframe>
+    </div>
+    {% endif %}
+    <div class="lesson-answer">
+      <label for="answer-{{ forloop.index }}">Answer:</label>
+      <input type="text" id="answer-{{ forloop.index }}" disabled placeholder="Answer input">
+      <button type="button" class="lesson-answer-submit" disabled>Submit</button>
+      <div class="lesson-answer-log">Your answers will appear here.</div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if page.episodes %}
+<div class="section-divider">
+  <span class="section-divider-line"></span>
+</div>
+<div class="lesson-episodes">
+  <h2 class="lesson-heading">Episodes. <em>Pick an episode.</em></h2>
+  {% if page.episodes_subtitle %}<p class="content-subtitle">{{ page.episodes_subtitle }}</p>{% endif %}
+  <div class="lesson-episode-grid">
+    {% for episode in page.episodes %}<span class="lesson-episode-button">{{ episode }}</span>{% endfor %}
+  </div>
+</div>
+{% endif %}
 
 <div class="related">
   <h2>Related Posts</h2>
