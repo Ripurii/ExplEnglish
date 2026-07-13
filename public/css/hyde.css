@@ -54,8 +54,10 @@
 
 html {
   font-family: var(--font-sans);
+  font-size: 16px;
 }
-@media (min-width: 48em) {
+@media (min-width: 38em) {
+  /* overrides poole.css's 20px bump at this breakpoint so sizing stays monotonic */
   html {
     font-size: 16px;
   }
@@ -729,4 +731,36 @@ a.lesson-row:hover {
   font-weight: bold;
   text-align: center;
   font-size: .9rem;
+}
+
+
+/*
+ * Small-screen tweaks
+ *
+ * Everything above already reflows via flex-wrap/grid; these just rein in
+ * a few fixed sizes that read as too large on narrow phones.
+ */
+
+@media (max-width: 30em) {
+  .sidebar {
+    padding: 1.5rem 1rem;
+  }
+  .content-title {
+    font-size: 1.9rem;
+  }
+  .lesson-banner {
+    margin: -3rem -1rem 2rem;
+    padding: 2rem 1.25rem 3rem;
+  }
+  .lesson-banner-title {
+    font-size: 1.9rem;
+  }
+  .taxonomy-pill,
+  .filter-pill {
+    font-size: .85rem;
+    padding: .45rem .9rem;
+  }
+  .lesson-episode-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
