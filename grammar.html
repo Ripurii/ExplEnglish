@@ -1,0 +1,109 @@
+---
+layout: default
+title: Grammar
+nav_group: language-systems
+nav_item: grammar
+permalink: /grammar
+---
+
+<div class="breadcrumb"><a href="{{ site.baseurl }}">Home</a> / Grammar</div>
+
+<div class="content-header">
+  <h1 class="content-title">Grammar</h1>
+  <p class="content-subtitle">Every grammar point, drilled and explained.</p>
+</div>
+
+{% assign grammar_lessons = site.posts | where_exp: 'lesson', 'lesson.tags contains "grammar"' %}
+
+{% if grammar_lessons.size > 0 %}
+<div class="search-bar">
+  <span class="search-bar-icon">&#128269;</span>
+  <input type="text" id="grammar-search" placeholder="Search grammar lessons...">
+</div>
+
+<div class="filter-pills" id="grammar-filters">
+  <button type="button" class="filter-pill active" data-level="all">All</button>
+  <button type="button" class="filter-pill" data-level="A1">A1</button>
+  <button type="button" class="filter-pill" data-level="A2">A2</button>
+  <button type="button" class="filter-pill" data-level="B1">B1</button>
+  <button type="button" class="filter-pill" data-level="B2">B2</button>
+</div>
+
+<div id="grammar-groups">
+  {% for level in "A1,A2,B1,B2" | split: "," %}
+    {% assign level_lessons = grammar_lessons | where_exp: 'lesson', 'lesson.level == level' %}
+    {% if level_lessons.size > 0 %}
+    <div class="letter-group" data-letter="{{ level }}">
+      <div class="section-divider">
+        <span class="section-divider-label">Level {{ level }}</span>
+        <span class="section-divider-line"></span>
+      </div>
+      <div class="lesson-grid">
+        {% for lesson in level_lessons %}
+        <a class="lesson-row" href="{{ lesson.url }}" data-level="{{ lesson.level }}" data-search="{{ lesson.title | downcase }}">
+          <div class="lesson-row-main">
+            <div class="lesson-row-title-line">
+              <span class="lesson-row-title">{{ lesson.title }}</span>
+              {% if lesson.level %}<span class="badge badge-level">{{ lesson.level }}</span>{% endif %}
+              {% for tag in lesson.tags %}<span class="badge badge-tag tag-{{ tag | slugify }}">{{ tag | capitalize }}</span>{% endfor %}
+            </div>
+            <div class="lesson-row-meta">{{ lesson.duration }}{% if lesson.duration and lesson.posted %} &middot; {% endif %}{{ lesson.posted }}</div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<p id="grammar-empty" class="stub-message" style="display: none;">No lessons match your search.</p>
+
+<script>
+(function () {
+  var searchInput = document.getElementById('grammar-search');
+  var filterButtons = document.querySelectorAll('#grammar-filters .filter-pill');
+  var groups = document.querySelectorAll('#grammar-groups .letter-group');
+  var emptyMessage = document.getElementById('grammar-empty');
+  var activeLevel = 'all';
+
+  function applyFilters() {
+    var query = searchInput.value.trim().toLowerCase();
+    var anyVisible = false;
+
+    groups.forEach(function (group) {
+      var rows = group.querySelectorAll('.lesson-row');
+      var groupHasVisible = false;
+
+      rows.forEach(function (row) {
+        var matchesLevel = activeLevel === 'all' || row.getAttribute('data-level') === activeLevel;
+        var matchesQuery = !query || row.getAttribute('data-search').indexOf(query) !== -1;
+        var visible = matchesLevel && matchesQuery;
+        row.style.display = visible ? '' : 'none';
+        if (visible) groupHasVisible = true;
+      });
+
+      group.style.display = groupHasVisible ? '' : 'none';
+      if (groupHasVisible) anyVisible = true;
+    });
+
+    emptyMessage.style.display = anyVisible ? 'none' : '';
+  }
+
+  searchInput.addEventListener('input', applyFilters);
+
+  filterButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      filterButtons.forEach(function (b) { b.classList.remove('active'); });
+      button.classList.add('active');
+      activeLevel = button.getAttribute('data-level');
+      applyFilters();
+    });
+  });
+
+  applyFilters();
+})();
+</script>
+{% else %}
+<p class="stub-message">No grammar lessons published yet. Check back soon.</p>
+{% endif %}

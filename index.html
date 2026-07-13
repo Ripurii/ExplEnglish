@@ -1,37 +1,78 @@
 ---
 layout: default
 title: Home
+nav_group: home
 ---
 
-<div class="posts">
-  {% for post in paginator.posts %}
-  <div class="post">
-    <h1 class="post-title">
-      <a href="{{ post.url }}">
-        {{ post.title }}
-      </a>
-    </h1>
+<div class="content-header">
+  <h1 class="content-title">{{ site.title }}</h1>
+  <p class="content-subtitle">{{ site.tagline }}</p>
+</div>
 
-    <span class="post-date">{{ post.date | date_to_string }}</span>
+<div class="search-bar">
+  <span class="search-bar-icon">&#128269;</span>
+  <input type="text" id="home-search" placeholder="Search units, poems, grammar points...">
+</div>
 
-    {{ post.content }}
+<div class="taxonomy-section">
+  <div class="section-divider">
+    <span class="section-divider-label">Skills</span>
+    <span class="section-divider-line"></span>
   </div>
-  {% endfor %}
+  <div class="taxonomy-pills">
+    <a class="taxonomy-pill group-skills" href="{{ site.baseurl }}skills">Reading</a>
+    <a class="taxonomy-pill group-skills" href="{{ site.baseurl }}skills">Listening</a>
+    <a class="taxonomy-pill group-skills" href="{{ site.baseurl }}skills">Speaking</a>
+    <a class="taxonomy-pill group-skills" href="{{ site.baseurl }}skills">Writing</a>
+  </div>
 </div>
 
-<div class="pagination">
-  {% if paginator.next_page %}
-    <a class="pagination-item older" href="{{ site.baseurl }}page{{paginator.next_page}}">Older</a>
-  {% else %}
-    <span class="pagination-item older">Older</span>
-  {% endif %}
-  {% if paginator.previous_page %}
-    {% if paginator.page == 2 %}
-      <a class="pagination-item newer" href="{{ site.baseurl }}">Newer</a>
-    {% else %}
-      <a class="pagination-item newer" href="{{ site.baseurl }}page{{paginator.previous_page}}">Newer</a>
-    {% endif %}
-  {% else %}
-    <span class="pagination-item newer">Newer</span>
-  {% endif %}
+<div class="taxonomy-section">
+  <div class="section-divider">
+    <span class="section-divider-label">Language Systems</span>
+    <span class="section-divider-line"></span>
+  </div>
+  <div class="taxonomy-pills">
+    <a class="taxonomy-pill group-language-systems" href="{{ site.baseurl }}vocabulary">Vocabulary</a>
+    <a class="taxonomy-pill group-language-systems" href="{{ site.baseurl }}grammar">Grammar</a>
+  </div>
 </div>
+
+<div class="taxonomy-section">
+  <div class="section-divider">
+    <span class="section-divider-label">Literature</span>
+    <span class="section-divider-line"></span>
+  </div>
+  <div class="taxonomy-pills">
+    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}literature">Literature</a>
+    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}literature">Novels</a>
+    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}literature">Short Stories</a>
+    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}literature">Poetry</a>
+    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}literature">Literary Devices</a>
+    <a class="taxonomy-pill group-literature" href="{{ site.baseurl }}literature">Author Studies</a>
+  </div>
+</div>
+
+<div class="taxonomy-section">
+  <div class="section-divider">
+    <span class="section-divider-label">More</span>
+    <span class="section-divider-line"></span>
+  </div>
+  <div class="taxonomy-pills">
+    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}library">Library</a>
+    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}more">Themed Series</a>
+    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}more">Book Series</a>
+    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}more">Culture</a>
+    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}more">Cross-Curricular</a>
+    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}more">Tools</a>
+    <a class="taxonomy-pill group-more" href="{{ site.baseurl }}more">Digital Tools</a>
+  </div>
+</div>
+
+<script>
+  document.getElementById('home-search').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && this.value.trim()) {
+      window.location.href = '{{ site.baseurl }}library?q=' + encodeURIComponent(this.value.trim());
+    }
+  });
+</script>

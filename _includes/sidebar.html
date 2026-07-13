@@ -1,36 +1,66 @@
 <div class="sidebar">
   <div class="container sidebar-sticky">
     <div class="sidebar-about">
-      <h1>
-        <a href="{{ site.baseurl }}">
-          {{ site.title }}
-        </a>
-      </h1>
-      <p class="lead">{{ site.description }}</p>
+      <a class="sidebar-logo" href="{{ site.baseurl }}">
+        <span class="sidebar-logo-mark"></span>
+        <span class="sidebar-logo-text">{{ site.title }}</span>
+      </a>
     </div>
 
     <nav class="sidebar-nav">
-      <a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="{{ site.baseurl }}">Home</a>
+      <a class="sidebar-nav-item{% if page.nav_group == "home" %} active{% endif %}" href="{{ site.baseurl }}">Home</a>
 
-      {% comment %}
-        The code below dynamically generates a sidebar nav of pages with
-        `layout: page` in the front-matter. See readme for usage.
-      {% endcomment %}
+      <details class="sidebar-nav-group"{% if page.nav_group == "skills" %} open{% endif %}>
+        <summary class="sidebar-nav-item{% if page.nav_group == "skills" %} active{% endif %}">Skills</summary>
+        <div class="sidebar-submenu">
+          <a class="sidebar-nav-item{% if page.nav_item == "reading" %} active{% endif %}" href="{{ site.baseurl }}skills">Reading</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "listening" %} active{% endif %}" href="{{ site.baseurl }}skills">Listening</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "speaking" %} active{% endif %}" href="{{ site.baseurl }}skills">Speaking</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "writing" %} active{% endif %}" href="{{ site.baseurl }}skills">Writing</a>
+        </div>
+      </details>
 
-      {% assign pages_list = site.pages %}
-      {% for node in pages_list %}
-        {% if node.title != null %}
-          {% if node.layout == "page" %}
-            <a class="sidebar-nav-item{% if page.url == node.url %} active{% endif %}" href="{{ node.url }}">{{ node.title }}</a>
-          {% endif %}
-        {% endif %}
-      {% endfor %}
+      <details class="sidebar-nav-group"{% if page.nav_group == "language-systems" %} open{% endif %}>
+        <summary class="sidebar-nav-item{% if page.nav_group == "language-systems" %} active{% endif %}">Language Systems</summary>
+        <div class="sidebar-submenu">
+          <a class="sidebar-nav-item{% if page.nav_item == "vocabulary" %} active{% endif %}" href="{{ site.baseurl }}vocabulary">Vocabulary</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "grammar" %} active{% endif %}" href="{{ site.baseurl }}grammar">Grammar</a>
+        </div>
+      </details>
 
-      <a class="sidebar-nav-item" href="{{ site.github.repo }}/archive/v{{ site.version }}.zip">Download</a>
-      <a class="sidebar-nav-item" href="{{ site.github.repo }}">GitHub project</a>
-      <span class="sidebar-nav-item">Currently v{{ site.version }}</span>
+      <details class="sidebar-nav-group"{% if page.nav_group == "literature" %} open{% endif %}>
+        <summary class="sidebar-nav-item{% if page.nav_group == "literature" %} active{% endif %}">Literature</summary>
+        <div class="sidebar-submenu">
+          <a class="sidebar-nav-item{% if page.nav_item == "literature" %} active{% endif %}" href="{{ site.baseurl }}literature">Literature</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "novels" %} active{% endif %}" href="{{ site.baseurl }}literature">Novels</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "short-stories" %} active{% endif %}" href="{{ site.baseurl }}literature">Short Stories</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "poetry" %} active{% endif %}" href="{{ site.baseurl }}literature">Poetry</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "literary-devices" %} active{% endif %}" href="{{ site.baseurl }}literature">Literary Devices</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "author-studies" %} active{% endif %}" href="{{ site.baseurl }}literature">Author Studies</a>
+        </div>
+      </details>
+
+      <details class="sidebar-nav-group"{% if page.nav_group == "more" %} open{% endif %}>
+        <summary class="sidebar-nav-item{% if page.nav_group == "more" %} active{% endif %}">More</summary>
+        <div class="sidebar-submenu">
+          <a class="sidebar-nav-item{% if page.nav_item == "themed-series" %} active{% endif %}" href="{{ site.baseurl }}more">Themed Series</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "book-series" %} active{% endif %}" href="{{ site.baseurl }}more">Book Series</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "culture" %} active{% endif %}" href="{{ site.baseurl }}more">Culture</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "cross-curricular" %} active{% endif %}" href="{{ site.baseurl }}more">Cross-Curricular</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "tools" %} active{% endif %}" href="{{ site.baseurl }}more">Tools</a>
+          <a class="sidebar-nav-item{% if page.nav_item == "digital-tools" %} active{% endif %}" href="{{ site.baseurl }}more">Digital Tools</a>
+        </div>
+      </details>
+
+      <a class="sidebar-nav-item{% if page.nav_group == "latest" %} active{% endif %}" href="{{ site.baseurl }}latest">Latest</a>
     </nav>
 
-    <p>&copy; {{ site.time | date: '%Y' }}. All rights reserved.</p>
+    <hr class="sidebar-divider">
+
+    <nav class="sidebar-nav sidebar-nav-secondary">
+      <a class="sidebar-nav-item{% if page.nav_group == "library" %} active{% endif %}" href="{{ site.baseurl }}library">Library</a>
+    </nav>
+
+    <p class="sidebar-footer">&copy; {{ site.time | date: '%Y' }} {{ site.title }}. All rights reserved.</p>
   </div>
 </div>

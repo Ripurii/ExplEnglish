@@ -1,38 +1,59 @@
 /*
- *  __                  __
- * /\ \                /\ \
- * \ \ \___   __  __   \_\ \     __
- *  \ \  _ `\/\ \/\ \  /'_` \  /'__`\
- *   \ \ \ \ \ \ \_\ \/\ \_\ \/\  __/
- *    \ \_\ \_\/`____ \ \___,_\ \____\
- *     \/_/\/_/`/___/> \/__,_ /\/____/
- *                /\___/
- *                \/__/
- *
- * Designed, built, and released under MIT license by @mdo. Learn more at
- * https://github.com/poole/hyde.
+ * ExplEnglish theme
+ * Built on top of Poole's base resets (poole.css).
  */
 
 
 /*
  * Contents
  *
+ * Variables
  * Global resets
  * Sidebar
  * Container
- * Reverse layout
- * Themes
+ * Search bar
+ * Filter pills
+ * Badges
+ * Section dividers
+ * Lesson rows
+ * Taxonomy sections (home page)
+ * Breadcrumb
+ * Stub page
  */
 
 
 /*
+ * Variables
+ */
+
+:root {
+  --color-sidebar-bg:   #241c17;
+  --color-content-bg:   #f4ecda;
+  --color-card-bg:      #e7dcbf;
+  --color-card-bg-hover: #ddd0ac;
+  --color-border:       #d8cba3;
+
+  --color-rust:         #ad4a2f;
+  --color-rust-dark:     #8f3c26;
+  --color-green:        #7c8f5f;
+  --color-blue:         #5c6e82;
+  --color-amber:        #bd7f35;
+
+  --color-text:         #2c2117;
+  --color-text-muted:   #8a7f6a;
+  --color-text-faint:   #b6ab8f;
+
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "PT Sans", Helvetica, Arial, sans-serif;
+}
+
+
+/*
  * Global resets
- *
- * Update the foundational and global aspects of the page.
  */
 
 html {
-  font-family: "PT Sans", Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans);
 }
 @media (min-width: 48em) {
   html {
@@ -41,23 +62,34 @@ html {
 }
 @media (min-width: 58em) {
   html {
-    font-size: 20px;
+    font-size: 17px;
   }
+}
+
+body {
+  background-color: var(--color-content-bg);
+  color: var(--color-text);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  color: var(--color-text);
+}
+
+a {
+  color: var(--color-rust);
 }
 
 
 /*
  * Sidebar
- *
- * Flexible banner for housing site name, intro, and "footer" content. Starts
- * out above content in mobile and later moves to the side with wider viewports.
  */
 
 .sidebar {
-  text-align: center;
-  padding: 2rem 1rem;
-  color: rgba(255,255,255,.5);
-  background-color: #202020;
+  text-align: left;
+  padding: 2rem 1.5rem;
+  color: rgba(255,255,255,.6);
+  background-color: var(--color-sidebar-bg);
 }
 @media (min-width: 48em) {
   .sidebar {
@@ -65,8 +97,7 @@ html {
     top: 0;
     left: 0;
     bottom: 0;
-    width: 18rem;
-    text-align: left;
+    width: 17rem;
   }
 }
 
@@ -75,12 +106,28 @@ html {
   color: #fff;
 }
 
-/* About section */
-.sidebar-about h1 {
+/* Logo / about section */
+.sidebar-about {
+  margin-bottom: 2rem;
+}
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  text-decoration: none !important;
+}
+.sidebar-logo-mark {
+  flex: none;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: .4rem;
+  background-color: var(--color-rust);
+}
+.sidebar-logo-text {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.35rem;
   color: #fff;
-  margin-top: 0;
-  font-family: "Abril Fatface", serif;
-  font-size: 3.25rem;
 }
 
 /* Sidebar nav */
@@ -89,162 +136,409 @@ html {
 }
 .sidebar-nav-item {
   display: block;
-  line-height: 1.75;
+  padding: .55rem .75rem;
+  margin-bottom: .15rem;
+  border-radius: .5rem;
+  line-height: 1.4;
+  font-size: .95rem;
+  text-decoration: none !important;
 }
 a.sidebar-nav-item:hover,
 a.sidebar-nav-item:focus {
-  text-decoration: underline;
+  background-color: rgba(255,255,255,.08);
 }
 .sidebar-nav-item.active {
+  background-color: var(--color-rust);
   font-weight: bold;
+  color: #fff;
 }
 
-/* Sticky sidebar
- *
- * Add the `sidebar-sticky` class to the sidebar's container to affix it the
- * contents to the bottom of the sidebar in tablets and up.
- */
+/* Nav groups (collapsible submenus) */
+.sidebar-nav-group {
+  margin-bottom: .15rem;
+}
+.sidebar-nav-group summary.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  margin-bottom: 0;
+  list-style: none;
+}
+.sidebar-nav-group summary.sidebar-nav-item::-webkit-details-marker {
+  display: none;
+}
+.sidebar-nav-group summary.sidebar-nav-item::marker {
+  content: "";
+}
+.sidebar-nav-group summary.sidebar-nav-item::after {
+  content: "\276F";
+  font-size: .7rem;
+  opacity: .6;
+  transition: transform .15s ease;
+}
+.sidebar-nav-group[open] > summary.sidebar-nav-item::after {
+  transform: rotate(90deg);
+}
 
-@media (min-width: 48em) {
-  .sidebar-sticky {
-    position: absolute;
-    right:  1rem;
-    bottom: 1rem;
-    left:   1rem;
-  }
+.sidebar-submenu {
+  display: flex;
+  flex-direction: column;
+  margin: .15rem 0 .4rem .75rem;
+  padding-left: .75rem;
+  border-left: 1px solid rgba(255,255,255,.15);
+}
+.sidebar-submenu .sidebar-nav-item {
+  font-size: .88rem;
+  padding: .4rem .6rem;
+  opacity: .8;
+}
+.sidebar-submenu .sidebar-nav-item:hover {
+  opacity: 1;
+}
+.sidebar-submenu .sidebar-nav-item.active {
+  background-color: rgba(255,255,255,.1);
+  font-weight: bold;
+  opacity: 1;
+}
+
+.sidebar-divider {
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,.15);
+  margin: 1rem 0;
+}
+
+.sidebar-nav-secondary {
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-footer {
+  font-size: .8rem;
+  color: rgba(255,255,255,.35);
 }
 
 
-/* Container
- *
- * Align the contents of the site above the proper threshold with some margin-fu
- * with a 25%-wide `.sidebar`.
+/*
+ * Container
  */
 
 .content {
-  padding-top:    4rem;
+  padding-top:    3rem;
   padding-bottom: 4rem;
 }
 
 @media (min-width: 48em) {
   .content {
-    max-width: 38rem;
-    margin-left: 20rem;
+    max-width: 46rem;
+    margin-left: 19rem;
     margin-right: 2rem;
   }
 }
 
 @media (min-width: 64em) {
   .content {
-    margin-left: 22rem;
+    margin-left: 21rem;
     margin-right: 4rem;
   }
 }
 
-
-/*
- * Reverse layout
- *
- * Flip the orientation of the page by placing the `.sidebar` on the right.
- */
-
-@media (min-width: 48em) {
-  .layout-reverse .sidebar {
-    left: auto;
-    right: 0;
-  }
-  .layout-reverse .content {
-    margin-left: 2rem;
-    margin-right: 20rem;
-  }
+.content-header {
+  margin-bottom: 1.75rem;
 }
-
-@media (min-width: 64em) {
-  .layout-reverse .content {
-    margin-left: 4rem;
-    margin-right: 22rem;
-  }
+.content-title {
+  font-size: 2.5rem;
+  margin-bottom: .35rem;
 }
-
+.content-subtitle {
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+  margin-bottom: 0;
+}
 
 
 /*
- * Themes
- *
- * As of v1.1, Hyde includes optional themes to color the sidebar and links
- * within blog posts. To use, add the class of your choosing to the `body`.
+ * Breadcrumb
  */
 
-/* Base16 (http://chriskempson.github.io/base16/#default) */
-
-/* Red */
-.theme-base-08 .sidebar {
-  background-color: #ac4142;
+.breadcrumb {
+  font-size: .85rem;
+  color: var(--color-text-muted);
+  margin-bottom: .75rem;
 }
-.theme-base-08 .content a,
-.theme-base-08 .related-posts li a:hover {
-  color: #ac4142;
+.breadcrumb a {
+  color: var(--color-text-muted);
 }
-
-/* Orange */
-.theme-base-09 .sidebar {
-  background-color: #d28445;
-}
-.theme-base-09 .content a,
-.theme-base-09 .related-posts li a:hover {
-  color: #d28445;
+.breadcrumb a:hover {
+  color: var(--color-rust);
 }
 
-/* Yellow */
-.theme-base-0a .sidebar {
-  background-color: #f4bf75;
+
+/*
+ * Search bar
+ */
+
+.search-bar {
+  position: relative;
+  margin-bottom: 1.5rem;
 }
-.theme-base-0a .content a,
-.theme-base-0a .related-posts li a:hover {
-  color: #f4bf75;
+.search-bar-icon {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-rust);
+  font-size: 1rem;
+  pointer-events: none;
+}
+.search-bar input[type="text"],
+.search-bar input[type="search"] {
+  width: 100%;
+  padding: .6rem .5rem .6rem 1.85rem;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--color-text);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--color-text);
+  outline: none;
+}
+.search-bar input[type="text"]::placeholder,
+.search-bar input[type="search"]::placeholder {
+  color: var(--color-text-faint);
 }
 
-/* Green */
-.theme-base-0b .sidebar {
-  background-color: #90a959;
+
+/*
+ * Filter pills
+ */
+
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: 2rem;
 }
-.theme-base-0b .content a,
-.theme-base-0b .related-posts li a:hover {
-  color: #90a959;
+.filter-pill {
+  display: inline-block;
+  padding: .4rem 1.1rem;
+  border-radius: 999px;
+  font-size: .85rem;
+  font-weight: bold;
+  background-color: var(--color-card-bg);
+  color: var(--color-text);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  text-decoration: none !important;
+}
+.filter-pill:hover {
+  background-color: var(--color-card-bg-hover);
+}
+.filter-pill.active {
+  background-color: var(--color-rust);
+  color: #fff;
 }
 
-/* Cyan */
-.theme-base-0c .sidebar {
-  background-color: #75b5aa;
-}
-.theme-base-0c .content a,
-.theme-base-0c .related-posts li a:hover {
-  color: #75b5aa;
+
+/*
+ * Badges
+ */
+
+.badge {
+  display: inline-block;
+  padding: .1rem .55rem;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: bold;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
-/* Blue */
-.theme-base-0d .sidebar {
-  background-color: #6a9fb5;
-}
-.theme-base-0d .content a,
-.theme-base-0d .related-posts li a:hover {
-  color: #6a9fb5;
+.badge-level {
+  background-color: var(--color-content-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-text);
 }
 
-/* Magenta */
-.theme-base-0e .sidebar {
-  background-color: #aa759f;
+.badge-tag {
+  color: #fff;
 }
-.theme-base-0e .content a,
-.theme-base-0e .related-posts li a:hover {
-  color: #aa759f;
+.badge-tag.tag-grammar,
+.badge-tag.tag-vocabulary {
+  background-color: var(--color-rust);
+}
+.badge-tag.tag-speaking,
+.badge-tag.tag-writing,
+.badge-tag.tag-reading,
+.badge-tag.tag-listening {
+  background-color: var(--color-green);
+}
+.badge-tag.tag-literature,
+.badge-tag.tag-novels,
+.badge-tag.tag-short-stories,
+.badge-tag.tag-poetry,
+.badge-tag.tag-literary-devices,
+.badge-tag.tag-author-studies {
+  background-color: var(--color-blue);
+}
+.badge-tag.tag-library,
+.badge-tag.tag-themed-series,
+.badge-tag.tag-book-series,
+.badge-tag.tag-culture,
+.badge-tag.tag-cross-curricular,
+.badge-tag.tag-tools,
+.badge-tag.tag-digital-tools {
+  background-color: var(--color-amber);
 }
 
-/* Brown */
-.theme-base-0f .sidebar {
-  background-color: #8f5536;
+
+/*
+ * Section dividers
+ */
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin: 1.75rem 0 .75rem;
 }
-.theme-base-0f .content a,
-.theme-base-0f .related-posts li a:hover {
-  color: #8f5536;
+.section-divider:first-child {
+  margin-top: 0;
+}
+.section-divider-label {
+  flex: none;
+  font-size: .8rem;
+  font-weight: bold;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.section-divider-line {
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border);
+}
+
+
+/*
+ * Lesson rows
+ */
+
+.lesson-list {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  margin-bottom: 0;
+  list-style: none;
+  padding-left: 0;
+}
+
+.lesson-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: .6rem;
+  background-color: var(--color-card-bg);
+  text-decoration: none;
+}
+a.lesson-row:hover {
+  background-color: var(--color-card-bg-hover);
+  text-decoration: none;
+}
+
+.lesson-row-main {
+  min-width: 0;
+}
+.lesson-row-title-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.lesson-row-title {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--color-text);
+}
+.lesson-row-meta {
+  margin-top: .25rem;
+  font-size: .8rem;
+  color: var(--color-text-muted);
+}
+
+.lesson-row-time {
+  flex: none;
+  font-size: .85rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* Grid layout used on taxonomy pages for grouped-by-level lessons */
+.lesson-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .6rem;
+  margin-bottom: 0;
+}
+@media (min-width: 40em) {
+  .lesson-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.lesson-grid .lesson-row {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+
+/*
+ * Taxonomy sections (home page)
+ */
+
+.taxonomy-section {
+  margin-bottom: 1.5rem;
+}
+.taxonomy-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+}
+.taxonomy-pill {
+  display: inline-block;
+  padding: .55rem 1.25rem;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: .95rem;
+  color: #fff;
+  text-decoration: none !important;
+}
+.taxonomy-pill.group-skills {
+  background-color: var(--color-green);
+}
+.taxonomy-pill.group-language-systems {
+  background-color: var(--color-rust);
+}
+.taxonomy-pill.group-literature {
+  background-color: var(--color-blue);
+}
+.taxonomy-pill.group-more {
+  background-color: var(--color-amber);
+}
+.taxonomy-pill:hover {
+  opacity: .85;
+  color: #fff;
+}
+
+
+/*
+ * Stub page
+ */
+
+.stub-message {
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
 }
