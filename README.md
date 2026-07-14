@@ -1,118 +1,115 @@
-# Hyde
+# ExplEnglish
 
-Hyde is a brazen two-column [Jekyll](http://jekyllrb.com) theme that pairs a prominent sidebar with uncomplicated content. It's based on [Poole](http://getpoole.com), the Jekyll butler.
+The source for [explenglish.com](https://explenglish.com) (currently live at [ripurii.github.io/ExplEnglish](https://ripurii.github.io/ExplEnglish/)) — a Jekyll site hosted on GitHub Pages. Push to `master` and it deploys automatically in 1-2 minutes.
 
-![Hyde screenshot](https://f.cloud.github.com/assets/98681/1831228/42af6c6a-7384-11e3-98fb-e0b923ee0468.png)
+## Adding a new lesson
 
+Create a file in `_posts/` named `YYYY-MM-DD-your-slug.md` (the date can be today, or whenever the lesson was actually written — it drives sorting on the Latest page and the default relative-time display).
 
-## Contents
-
-- [Usage](#usage)
-- [Options](#options)
-  - [Sidebar menu](#sidebar-menu)
-  - [Sticky sidebar content](#sticky-sidebar-content)
-  - [Themes](#themes)
-  - [Reverse layout](#reverse-layout)
-- [Development](#development)
-- [Author](#author)
-- [License](#license)
-
-
-## Usage
-
-Hyde is a theme built on top of [Poole](https://github.com/poole/poole), which provides a fully furnished Jekyll setup—just download and start the Jekyll server. See [the Poole usage guidelines](https://github.com/poole/poole#usage) for how to install and use Jekyll.
-
-
-## Options
-
-Hyde includes some customizable options, typically applied via classes on the `<body>` element.
-
-
-### Sidebar menu
-
-Create a list of nav links in the sidebar by assigning each Jekyll page the correct layout in the page's [front-matter](http://jekyllrb.com/docs/frontmatter/).
-
-```
+```yaml
 ---
-layout: page
-title: About
+layout: post
+title: "Adjective Order Practice"
+level: A2                     # A1, A2, B1, B2, C1, or C2 — required for the filter pills
+tags: [grammar]                # see "Tags" below — controls badge color + which page(s) it appears on
+duration: 20 min
+posted: "5 days ago"           # freeform display text, not calculated automatically
+date: 2026-08-01
+---
+
+Regular Markdown content goes here. This becomes the lesson body if you
+don't set an `intro` field below.
+```
+
+That's the minimum. It'll immediately show up on `/library` (alphabetical) and on whichever tag pages match (e.g. `/grammar`), grouped under the right level header.
+
+### Tags
+
+Each tag both colors the badge and decides which page(s) the lesson appears on. Use one of these exact values: `reading`, `listening`, `speaking`, `writing`, `vocabulary`, `grammar`, `literature`, `novels`, `short-stories`, `poetry`, `literary-devices`, `author-studies`, `themed-series`, `book-series`, `culture`, `cross-curricular`, `tools`, `digital-tools`. A lesson can have more than one tag (e.g. `[grammar, writing]`), and it'll show up on every matching page. `tools` and `digital-tools` are the two A-Z (not level-based) pages — everything else groups by level.
+
+### Richer lesson pages (optional)
+
+The lesson layout supports extra front matter for a fuller page — banner image color (auto-picked from your first tag), learning objectives, a side image, video exercises, and an episode picker for multi-part series:
+
+```yaml
+---
+layout: post
+title: "Our Planet: Episode 1"
+level: B1
+tags: [listening]
+duration: 45 min
+posted: "2 days ago"
+date: 2026-08-01
+lesson_number: 1
+tagline: "What will I learn?"
+intro: "This lesson series uses clips from the documentary Our Planet..."
+image: /assets/lessons/our-planet/lesson-1.jpg
+learning_goals:
+  - You recognize and understand spoken English in different accents and speeds.
+  - You expand your vocabulary around nature, climate, and biodiversity.
+exercises:
+  - title: "Who is David Attenborough?"
+    video_url: https://www.youtube.com/embed/VIDEO_ID
+episodes:
+  - label: "Episode 1"
+    url: /our-planet-episode-1
+  - label: "Episode 2"
+    url: /our-planet-episode-2
 ---
 ```
 
-**Why require a specific layout?** Jekyll will return *all* pages, including the `atom.xml`, and with an alphabetical sort order. To ensure the first link is *Home*, we exclude the `index.html` page from this list by specifying the `page` layout.
+Every field above is optional — leave any of them out and that section just doesn't render. `episodes` entries can also be plain strings (`- "Episode 1"`) if you don't want them clickable yet.
 
+Answer inputs on the exercise boxes are currently just styled placeholders (no submit logic wired up yet — see "Student answer submission" below).
 
-### Sticky sidebar content
+## Lesson series (multiple episodes/parts)
 
-By default Hyde ships with a sidebar that affixes it's content to the bottom of the sidebar. You can optionally disable this by removing the `.sidebar-sticky` class from the sidebar's `.container`. Sidebar content will then normally flow from top to bottom.
+There's no special "series" machinery — each episode is just its own post in `_posts/`. To link them together:
+1. Give each one the same `tags` (so they group together) and its own `lesson_number`.
+2. Use the `episodes` field (see above) with real `url`s pointing at each episode's page so readers can jump between them.
+3. Put shared materials in one folder — see below.
 
-```html
-<!-- Default sidebar -->
-<div class="sidebar">
-  <div class="container sidebar-sticky">
-    ...
-  </div>
-</div>
+## Downloadable materials (worksheets, PDFs, images, posters)
 
-<!-- Modified sidebar -->
-<div class="sidebar">
-  <div class="container">
-    ...
-  </div>
-</div>
+Yes — put these directly in this repo, under `assets/lessons/<slug>/`, one folder per lesson or per series. Example:
+
+```
+assets/lessons/our-planet/
+  lesson-1.jpg
+  episode-1-worksheet.pdf
+  episode-2-worksheet.pdf
 ```
 
+Then reference them with a site-root-relative path in your post: `/assets/lessons/our-planet/episode-1-worksheet.pdf`. Any file type works (PDF, images, docx, etc.) — Jekyll just copies them through untouched. Keep individual files well under GitHub's 100MB hard limit (in practice, worksheets/posters/images are tiny — this only matters for video, see below).
 
-### Themes
+There's a placeholder example folder at `assets/lessons/example-lesson-slug/` — delete it once you've added your first real one.
 
-Hyde ships with eight optional themes based on the [base16 color scheme](https://github.com/chriskempson/base16). Apply a theme to change the color scheme (mostly applies to sidebar and links).
+## Video
 
-![Hyde in red](https://f.cloud.github.com/assets/98681/1831229/42b0b354-7384-11e3-8462-31b8df193fe5.png)
+**Don't put video files in this repo.** Git handles large binaries badly (every version ever committed stays in the repo's history forever, even after deleting the file, so it only ever grows), and GitHub hard-blocks anything over 100MB anyway.
 
-There are eight themes available at this time.
+Instead: upload the video to **YouTube** (set it to "Unlisted" if you don't want it publicly searchable — it'll still be viewable/embeddable by anyone with the link) or Vimeo, then just give me the video's URL and I'll wire it into the lesson's `exercises[].video_url` field. That matches how your Webnode lessons already worked (embedded YouTube trailer).
 
-![Hyde theme classes](https://f.cloud.github.com/assets/98681/1817044/e5b0ec06-6f68-11e3-83d7-acd1942797a1.png)
+If you already have YouTube/Vimeo links for existing material, just paste them in chat and I'll add them.
 
-To use a theme, add anyone of the available theme classes to the `<body>` element in the `default.html` layout, like so:
+## Student answer submission (not built yet)
 
-```html
-<body class="theme-base-08">
-  ...
-</body>
-```
+You mentioned wanting students to save answers and have them emailed to you or the student. You're right that this doesn't need a custom backend — GitHub Pages only serves static files, so the usual approach is a form that posts to a third-party form-to-email service instead of your own server:
 
-To create your own theme, look to the Themes section of [included CSS file](https://github.com/poole/hyde/blob/master/public/css/hyde.css). Copy any existing theme (they're only a few lines of CSS), rename it, and change the provided colors.
+- **[Formspree](https://formspree.io)** — simplest option. Point a plain HTML `<form>` at it, it emails the submission to you. Free tier is 50 submissions/month.
+- **[EmailJS](https://www.emailjs.com)** — sends email straight from the browser via JS, no page reload needed. More setup, but more control (e.g. templating, sending a copy to the student too).
 
-### Reverse layout
+Emailing a copy back to the *student* (not just to you) usually needs either EmailJS's templating or a paid Formspree plan, since the free tier only emails the form owner by default. Happy to wire this up whenever you're ready — just let me know which pages need it.
 
-![Hyde with reverse layout](https://f.cloud.github.com/assets/98681/1831230/42b0d3ac-7384-11e3-8d54-2065afd03f9e.png)
+## Local preview
 
-Hyde's page orientation can be reversed with a single class.
+Local `jekyll serve` isn't fully set up in this environment yet (Ruby's installed, but the native build toolchain for gem compilation wasn't finished). In the meantime, changes are verified by pushing and checking the live GitHub Pages build, or via a temporary local static preview during development sessions.
 
-```html
-<body class="layout-reverse">
-  ...
-</body>
-```
+## Site structure (for reference)
 
-
-## Development
-
-Hyde has two branches, but only one is used for active development.
-
-- `master` for development.  **All pull requests should be submitted against `master`.**
-- `gh-pages` for our hosted site, which includes our analytics tracking code. **Please avoid using this branch.**
-
-
-## Author
-
-**Mark Otto**
-- <https://github.com/mdo>
-- <https://twitter.com/mdo>
-
-
-## License
-
-Open sourced under the [MIT license](LICENSE.md).
-
-<3
+- `_posts/` — every lesson, one file each
+- `_layouts/post.html` — the lesson detail page template
+- `_includes/level-listing.html` / `abc-listing.html` — shared templates behind Grammar/Vocabulary/Library/Tools/etc.
+- `assets/lessons/` — downloadable materials and images, one folder per lesson/series
+- `public/css/hyde.css` — all site styling (colors, fonts, layout)
+- Root `.html` files (`grammar.html`, `library.html`, `reading.html`, etc.) — one per nav page, each just front matter + an include call

@@ -734,6 +734,13 @@ a.lesson-row:hover {
   font-weight: bold;
   text-align: center;
   font-size: .9rem;
+  text-decoration: none !important;
+}
+a.lesson-episode-button:hover {
+  background-color: var(--color-rust-dark);
+}
+a.lesson-episode-button.current {
+  background-color: var(--color-rust);
 }
 
 
