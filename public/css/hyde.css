@@ -232,7 +232,7 @@ a.sidebar-nav-item:focus {
 
 @media (min-width: 48em) {
   .content {
-    max-width: 46rem;
+    max-width: 90rem;
     margin-left: 19rem;
     margin-right: 2rem;
   }
@@ -608,6 +608,9 @@ a.lesson-row:hover {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+.lesson-intro-text {
+  max-width: 42rem;
 }
 .lesson-intro.has-image {
   flex-direction: column;
