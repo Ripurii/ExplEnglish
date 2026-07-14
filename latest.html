@@ -9,6 +9,82 @@ permalink: /latest
 
 <div class="content-header">
   <h1 class="content-title">Latest</h1>
+  <p class="content-subtitle">The newest lessons, freshly published.</p>
 </div>
 
-<p class="stub-message">Coming soon.</p>
+{% assign latest_lessons = site.posts | sort: 'date' | reverse %}
+
+{% if latest_lessons.size > 0 %}
+<div class="search-bar">
+  <span class="search-bar-icon">&#128269;</span>
+  <input type="text" id="latest-search" placeholder="Search the latest lessons...">
+</div>
+
+<div class="filter-pills" id="latest-filters">
+  <button type="button" class="filter-pill active" data-level="all">All</button>
+  <button type="button" class="filter-pill" data-level="A1">A1</button>
+  <button type="button" class="filter-pill" data-level="A2">A2</button>
+  <button type="button" class="filter-pill" data-level="B1">B1</button>
+  <button type="button" class="filter-pill" data-level="B2">B2</button>
+</div>
+
+<ul class="lesson-list" id="latest-list">
+  {% for lesson in latest_lessons limit:20 %}
+  <li>
+    <a class="lesson-row" href="{{ lesson.url }}" data-level="{{ lesson.level }}" data-search="{{ lesson.title | downcase }}">
+      <div class="lesson-row-main">
+        <div class="lesson-row-title-line">
+          <span class="lesson-row-title">{{ lesson.title }}</span>
+          {% if lesson.level %}<span class="badge badge-level">{{ lesson.level }}</span>{% endif %}
+          {% for tag in lesson.tags %}<span class="badge badge-tag tag-{{ tag | slugify }}">{{ tag | capitalize }}</span>{% endfor %}
+        </div>
+        <div class="lesson-row-meta">{{ lesson.posted }}</div>
+      </div>
+      <span class="lesson-row-time">{{ lesson.duration }}</span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+
+<p id="latest-empty" class="stub-message" style="display: none;">No lessons match your search.</p>
+
+<script>
+(function () {
+  var searchInput = document.getElementById('latest-search');
+  var filterButtons = document.querySelectorAll('#latest-filters .filter-pill');
+  var rows = document.querySelectorAll('#latest-list .lesson-row');
+  var emptyMessage = document.getElementById('latest-empty');
+  var activeLevel = 'all';
+
+  function applyFilters() {
+    var query = searchInput.value.trim().toLowerCase();
+    var anyVisible = false;
+
+    rows.forEach(function (row) {
+      var matchesLevel = activeLevel === 'all' || row.getAttribute('data-level') === activeLevel;
+      var matchesQuery = !query || row.getAttribute('data-search').indexOf(query) !== -1;
+      var visible = matchesLevel && matchesQuery;
+      row.parentElement.style.display = visible ? '' : 'none';
+      if (visible) anyVisible = true;
+    });
+
+    emptyMessage.style.display = anyVisible ? 'none' : '';
+  }
+
+  searchInput.addEventListener('input', applyFilters);
+
+  filterButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      filterButtons.forEach(function (b) { b.classList.remove('active'); });
+      button.classList.add('active');
+      activeLevel = button.getAttribute('data-level');
+      applyFilters();
+    });
+  });
+
+  applyFilters();
+})();
+</script>
+{% else %}
+<p class="stub-message">No lessons published yet. Check back soon.</p>
+{% endif %}

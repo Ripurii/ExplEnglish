@@ -69,6 +69,35 @@ nav_group: home
   </div>
 </div>
 
+<div class="taxonomy-section">
+  <div class="section-divider">
+    <span class="section-divider-label">Latest</span>
+    <span class="section-divider-line"></span>
+  </div>
+  {% assign latest_lessons = site.posts | sort: 'date' | reverse %}
+  {% if latest_lessons.size > 0 %}
+  <ul class="lesson-list">
+    {% for lesson in latest_lessons limit:5 %}
+    <li>
+      <a class="lesson-row" href="{{ lesson.url }}">
+        <div class="lesson-row-main">
+          <div class="lesson-row-title-line">
+            <span class="lesson-row-title">{{ lesson.title }}</span>
+            {% if lesson.level %}<span class="badge badge-level">{{ lesson.level }}</span>{% endif %}
+            {% for tag in lesson.tags %}<span class="badge badge-tag tag-{{ tag | slugify }}">{{ tag | capitalize }}</span>{% endfor %}
+          </div>
+          <div class="lesson-row-meta">{{ lesson.posted }}</div>
+        </div>
+        <span class="lesson-row-time">{{ lesson.duration }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="stub-message">No lessons published yet. Check back soon.</p>
+  {% endif %}
+</div>
+
 <script>
   document.getElementById('home-search').addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && this.value.trim()) {
