@@ -12,14 +12,6 @@
   <input type="text" id="{{ include.slug }}-search" placeholder="{{ include.search_placeholder }}">
 </div>
 
-{% if include.tag %}
-  {% assign tag_lessons = site.posts | where_exp: 'lesson', 'lesson.tags contains include.tag' %}
-{% else %}
-  {% assign tag_lessons = site.posts %}
-{% endif %}
-{% assign tag_lessons = tag_lessons | sort: 'title' %}
-
-{% if tag_lessons.size > 0 %}
 {% if include.show_level_filter %}
 <div class="filter-pills" id="{{ include.slug }}-filters">
   <button type="button" class="filter-pill active" data-level="all">All</button>
@@ -30,43 +22,50 @@
 </div>
 {% endif %}
 
+{% if include.tag %}
+  {% assign tag_lessons = site.posts | where_exp: 'lesson', 'lesson.tags contains include.tag' %}
+{% else %}
+  {% assign tag_lessons = site.posts %}
+{% endif %}
+{% assign tag_lessons = tag_lessons | sort: 'title' %}
 {% assign grouped = tag_lessons | group_by_exp: 'lesson', 'lesson.title | slice: 0 | upcase' %}
 
 <div id="{{ include.slug }}-groups">
-  {% for group in grouped %}
-  <div class="letter-group" data-letter="{{ group.name }}">
+  {% for letter in "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z" | split: "," %}
+  <div class="letter-group" data-letter="{{ letter }}">
     <div class="section-divider">
-      <span class="section-divider-label">{{ group.name }}</span>
+      <span class="section-divider-label">{{ letter }}</span>
       <span class="section-divider-line"></span>
     </div>
-    <ul class="lesson-list">
-      {% for lesson in group.items %}
-      <li>
-        <a class="lesson-row" href="{{ lesson.url }}" data-level="{{ lesson.level }}" data-search="{{ lesson.title | downcase }}">
-          <div class="lesson-row-main">
-            <div class="lesson-row-title-line">
-              <span class="lesson-row-title">{{ lesson.title }}</span>
-              {% if lesson.level %}<span class="badge badge-level">{{ lesson.level }}</span>{% endif %}
-              {% for tag in lesson.tags %}<span class="badge badge-tag tag-{{ tag | slugify }}">{{ tag | capitalize }}</span>{% endfor %}
+    {% for group in grouped %}
+      {% if group.name == letter %}
+      <ul class="lesson-list">
+        {% for lesson in group.items %}
+        <li>
+          <a class="lesson-row" href="{{ lesson.url }}" data-level="{{ lesson.level }}" data-search="{{ lesson.title | downcase }}">
+            <div class="lesson-row-main">
+              <div class="lesson-row-title-line">
+                <span class="lesson-row-title">{{ lesson.title }}</span>
+                {% if lesson.level %}<span class="badge badge-level">{{ lesson.level }}</span>{% endif %}
+                {% for tag in lesson.tags %}<span class="badge badge-tag tag-{{ tag | slugify }}">{{ tag | capitalize }}</span>{% endfor %}
+              </div>
             </div>
-          </div>
-          <span class="lesson-row-time">{{ lesson.duration }}</span>
-        </a>
-      </li>
-      {% endfor %}
-    </ul>
+            <span class="lesson-row-time">{{ lesson.duration }}</span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    {% endfor %}
   </div>
   {% endfor %}
 </div>
-
-<p id="{{ include.slug }}-empty" class="stub-message" style="display: none;">No {{ include.title | downcase }} match your search.</p>
 
 <script>
 (function () {
   var searchInput = document.getElementById('{{ include.slug }}-search');
   var filterButtons = document.querySelectorAll('#{{ include.slug }}-filters .filter-pill');
   var groups = document.querySelectorAll('#{{ include.slug }}-groups .letter-group');
-  var emptyMessage = document.getElementById('{{ include.slug }}-empty');
   var activeLevel = 'all';
 
   var params = new URLSearchParams(window.location.search);
@@ -76,25 +75,14 @@
 
   function applyFilters() {
     var query = searchInput.value.trim().toLowerCase();
-    var anyVisible = false;
 
     groups.forEach(function (group) {
-      var rows = group.querySelectorAll('.lesson-row');
-      var groupHasVisible = false;
-
-      rows.forEach(function (row) {
+      group.querySelectorAll('.lesson-row').forEach(function (row) {
         var matchesLevel = activeLevel === 'all' || row.getAttribute('data-level') === activeLevel;
         var matchesQuery = !query || row.getAttribute('data-search').indexOf(query) !== -1;
-        var visible = matchesLevel && matchesQuery;
-        row.parentElement.style.display = visible ? '' : 'none';
-        if (visible) groupHasVisible = true;
+        row.parentElement.style.display = (matchesLevel && matchesQuery) ? '' : 'none';
       });
-
-      group.style.display = groupHasVisible ? '' : 'none';
-      if (groupHasVisible) anyVisible = true;
     });
-
-    emptyMessage.style.display = anyVisible ? 'none' : '';
   }
 
   searchInput.addEventListener('input', applyFilters);
@@ -111,6 +99,3 @@
   applyFilters();
 })();
 </script>
-{% else %}
-<p class="stub-message">No {{ include.title | downcase }} published yet. Check back soon.</p>
-{% endif %}
