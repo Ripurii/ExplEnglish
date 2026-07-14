@@ -21,9 +21,10 @@
 </div>
 
 {% assign tag_lessons = site.posts | where_exp: 'lesson', 'lesson.tags contains include.tag' %}
+{% assign cefr_levels = "A1,A2,B1,B2,C1,C2" | split: "," %}
 
 <div id="{{ include.slug }}-groups">
-  {% for level in "A1,A2,B1,B2,C1,C2" | split: "," %}
+  {% for level in cefr_levels %}
     {% assign level_lessons = tag_lessons | where_exp: 'lesson', 'lesson.level == level' %}
     <div class="letter-group" data-letter="{{ level }}">
       <div class="section-divider">

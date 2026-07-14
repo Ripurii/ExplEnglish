@@ -31,9 +31,10 @@
 {% endif %}
 {% assign tag_lessons = tag_lessons | sort: 'title' %}
 {% assign grouped = tag_lessons | group_by_exp: 'lesson', 'lesson.title | slice: 0 | upcase' %}
+{% assign az_letters = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z" | split: "," %}
 
 <div id="{{ include.slug }}-groups">
-  {% for letter in "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z" | split: "," %}
+  {% for letter in az_letters %}
   <div class="letter-group" data-letter="{{ letter }}">
     <div class="section-divider">
       <span class="section-divider-label">{{ letter }}</span>
