@@ -16,16 +16,18 @@
   <button type="button" class="filter-pill" data-level="A2">A2</button>
   <button type="button" class="filter-pill" data-level="B1">B1</button>
   <button type="button" class="filter-pill" data-level="B2">B2</button>
+  <button type="button" class="filter-pill" data-level="C1">C1</button>
+  <button type="button" class="filter-pill" data-level="C2">C2</button>
 </div>
 
 {% assign tag_lessons = site.posts | where_exp: 'lesson', 'lesson.tags contains include.tag' %}
 
 <div id="{{ include.slug }}-groups">
-  {% for level in "A1,A2,B1,B2" | split: "," %}
+  {% for level in "A1,A2,B1,B2,C1,C2" | split: "," %}
     {% assign level_lessons = tag_lessons | where_exp: 'lesson', 'lesson.level == level' %}
     <div class="letter-group" data-letter="{{ level }}">
       <div class="section-divider">
-        <span class="section-divider-label">Level {{ level }}</span>
+        <span class="section-divider-label">{{ level }}</span>
         <span class="section-divider-line"></span>
       </div>
       {% if level_lessons.size > 0 %}
