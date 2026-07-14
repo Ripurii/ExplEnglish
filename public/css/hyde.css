@@ -43,8 +43,8 @@
   --color-text-muted:   #8a7f6a;
   --color-text-faint:   #b6ab8f;
 
-  --font-serif: "Playfair Display", Georgia, serif;
-  --font-sans: "PT Sans", Helvetica, Arial, sans-serif;
+  --font-serif: "Poppins", Helvetica, Arial, sans-serif;
+  --font-sans: "Poppins", Helvetica, Arial, sans-serif;
 }
 
 
@@ -427,9 +427,11 @@ a.sidebar-nav-item:focus {
  * Lesson rows
  */
 
-.lesson-list {
-  display: flex;
-  flex-direction: column;
+.lesson-list,
+.lesson-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 16rem);
+  justify-content: start;
   gap: .6rem;
   margin-bottom: 0;
   list-style: none;
@@ -438,13 +440,14 @@ a.sidebar-nav-item:focus {
 
 .lesson-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
   padding: 1rem 1.25rem;
   border-radius: .6rem;
   background-color: var(--color-card-bg);
   text-decoration: none;
+  width: 100%;
 }
 a.lesson-row:hover {
   background-color: var(--color-card-bg-hover);
@@ -474,25 +477,11 @@ a.lesson-row:hover {
 
 .lesson-row-time {
   flex: none;
+  margin-top: .25rem;
   font-size: .85rem;
   color: var(--color-text-muted);
   white-space: nowrap;
 }
-
-/* Grid layout used on taxonomy pages for grouped-by-level lessons */
-.lesson-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 16rem);
-  justify-content: start;
-  gap: .6rem;
-  margin-bottom: 0;
-}
-.lesson-grid .lesson-row {
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
 
 /*
  * Taxonomy sections (home page)
@@ -553,6 +542,7 @@ a.lesson-row:hover {
   margin: -3rem -1rem 2.5rem;
   padding: 2.75rem 2rem 3.5rem;
   color: #fff;
+  background-color: var(--color-sidebar-bg);
 }
 .lesson-banner-title {
   position: relative;
@@ -571,10 +561,6 @@ a.lesson-row:hover {
   background: var(--color-content-bg);
   border-radius: 50%;
 }
-.lesson-banner.banner-green  { background-color: var(--color-green); }
-.lesson-banner.banner-rust   { background-color: var(--color-rust); }
-.lesson-banner.banner-blue   { background-color: var(--color-blue); }
-.lesson-banner.banner-amber  { background-color: var(--color-amber); }
 
 .lesson-meta-line {
   display: flex;

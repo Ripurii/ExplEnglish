@@ -8,18 +8,26 @@
     </div>
 
     {% assign series_home = site.posts | where: 'lesson_series', page.lesson_series | where: 'series_home', true | first %}
-    {% assign series_pages = site.pages | where: 'lesson_series', page.lesson_series | sort: 'lesson_number' %}
+    {% assign episode_pages = site.pages | where: 'lesson_series', page.lesson_series | where: 'is_episode', true | sort: 'episode_number' %}
+    {% assign all_series_pages = site.pages | where: 'lesson_series', page.lesson_series %}
 
     <nav class="sidebar-nav">
       <a class="sidebar-nav-item" href="{{ site.baseurl }}">Home</a>
       <a class="sidebar-nav-item{% if page.url == series_home.url %} active{% endif %}" href="{{ site.baseurl }}{{ series_home.url }}">{{ series_home.title }}</a>
-      {% if series_pages.size > 0 %}
-      <div class="sidebar-submenu">
-        {% for sub in series_pages %}
-        <a class="sidebar-nav-item{% if page.url == sub.url %} active{% endif %}" href="{{ site.baseurl }}{{ sub.url }}">{{ sub.title }}</a>
-        {% endfor %}
-      </div>
-      {% endif %}
+
+      {% for ep in episode_pages %}
+      {% assign ep_lessons = all_series_pages | where: 'episode_number', ep.episode_number | where_exp: 'p', 'p.is_episode != true' | sort: 'lesson_number' %}
+      <details class="sidebar-nav-group"{% if page.episode_number == ep.episode_number %} open{% endif %}>
+        <summary class="sidebar-nav-item{% if page.url == ep.url %} active{% endif %}">{{ ep.title }}</summary>
+        {% if ep_lessons.size > 0 %}
+        <div class="sidebar-submenu">
+          {% for l in ep_lessons %}
+          <a class="sidebar-nav-item{% if page.url == l.url %} active{% endif %}" href="{{ site.baseurl }}{{ l.url }}">{{ l.title }}</a>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </details>
+      {% endfor %}
     </nav>
 
     <p class="sidebar-footer">&copy; {{ site.time | date: '%Y' }} {{ site.title }}. All rights reserved.</p>
