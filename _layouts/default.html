@@ -5,7 +5,11 @@
 
   <body>
 
-    {% include sidebar.html %}
+    {% if page.lesson_series %}
+      {% include lesson-sidebar.html %}
+    {% else %}
+      {% include sidebar.html %}
+    {% endif %}
 
     <div class="content container">
       {{ content }}
