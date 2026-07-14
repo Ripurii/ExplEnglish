@@ -85,7 +85,7 @@ layout: default
   <div class="lesson-episode-grid">
     {% for episode in page.episodes %}
       {% if episode.url %}
-        <a class="lesson-episode-button{% if episode.url == page.url %} current{% endif %}" href="{{ episode.url }}">{{ episode.label }}</a>
+        <a class="lesson-episode-button{% if episode.url == page.url %} current{% endif %}" href="{{ site.baseurl }}{{ episode.url }}">{{ episode.label }}</a>
       {% else %}
         <span class="lesson-episode-button">{{ episode.label | default: episode }}</span>
       {% endif %}
@@ -100,7 +100,7 @@ layout: default
     {% for post in site.related_posts limit:3 %}
       <li>
         <h3>
-          <a href="{{ post.url }}">
+          <a href="{{ site.baseurl }}{{ post.url }}">
             {{ post.title }}
             <small>{{ post.date | date_to_string }}</small>
           </a>

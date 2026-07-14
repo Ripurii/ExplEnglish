@@ -33,7 +33,7 @@ permalink: /latest
 <ul class="lesson-list" id="latest-list">
   {% for lesson in latest_lessons limit:20 %}
   <li>
-    <a class="lesson-row" href="{{ lesson.url }}" data-level="{{ lesson.level }}" data-search="{{ lesson.title | downcase }}">
+    <a class="lesson-row" href="{{ site.baseurl }}{{ lesson.url }}" data-level="{{ lesson.level }}" data-search="{{ lesson.title | downcase }}">
       <div class="lesson-row-main">
         <div class="lesson-row-title-line">
           <span class="lesson-row-title">{{ lesson.title }}</span>

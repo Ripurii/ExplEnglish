@@ -34,7 +34,7 @@
       {% if level_lessons.size > 0 %}
       <div class="lesson-grid">
         {% for lesson in level_lessons %}
-        <a class="lesson-row" href="{{ lesson.url }}" data-level="{{ lesson.level }}" data-search="{{ lesson.title | downcase }}">
+        <a class="lesson-row" href="{{ site.baseurl }}{{ lesson.url }}" data-level="{{ lesson.level }}" data-search="{{ lesson.title | downcase }}">
           <div class="lesson-row-main">
             <div class="lesson-row-title-line">
               <span class="lesson-row-title">{{ lesson.title }}</span>

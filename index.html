@@ -79,7 +79,7 @@ nav_group: home
   <ul class="lesson-list">
     {% for lesson in latest_lessons limit:5 %}
     <li>
-      <a class="lesson-row" href="{{ lesson.url }}">
+      <a class="lesson-row" href="{{ site.baseurl }}{{ lesson.url }}">
         <div class="lesson-row-main">
           <div class="lesson-row-title-line">
             <span class="lesson-row-title">{{ lesson.title }}</span>

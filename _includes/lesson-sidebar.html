@@ -12,11 +12,11 @@
 
     <nav class="sidebar-nav">
       <a class="sidebar-nav-item" href="{{ site.baseurl }}">Home</a>
-      <a class="sidebar-nav-item{% if page.url == series_home.url %} active{% endif %}" href="{{ series_home.url }}">{{ series_home.title }}</a>
+      <a class="sidebar-nav-item{% if page.url == series_home.url %} active{% endif %}" href="{{ site.baseurl }}{{ series_home.url }}">{{ series_home.title }}</a>
       {% if series_pages.size > 0 %}
       <div class="sidebar-submenu">
         {% for sub in series_pages %}
-        <a class="sidebar-nav-item{% if page.url == sub.url %} active{% endif %}" href="{{ sub.url }}">{{ sub.title }}</a>
+        <a class="sidebar-nav-item{% if page.url == sub.url %} active{% endif %}" href="{{ site.baseurl }}{{ sub.url }}">{{ sub.title }}</a>
         {% endfor %}
       </div>
       {% endif %}

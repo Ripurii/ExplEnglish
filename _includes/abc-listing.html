@@ -45,7 +45,7 @@
       <ul class="lesson-list">
         {% for lesson in group.items %}
         <li>
-          <a class="lesson-row" href="{{ lesson.url }}" data-level="{{ lesson.level }}" data-search="{{ lesson.title | downcase }}">
+          <a class="lesson-row" href="{{ site.baseurl }}{{ lesson.url }}" data-level="{{ lesson.level }}" data-search="{{ lesson.title | downcase }}">
             <div class="lesson-row-main">
               <div class="lesson-row-title-line">
                 <span class="lesson-row-title">{{ lesson.title }}</span>

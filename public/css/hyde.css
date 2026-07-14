@@ -482,7 +482,8 @@ a.lesson-row:hover {
 /* Grid layout used on taxonomy pages for grouped-by-level lessons */
 .lesson-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  grid-template-columns: repeat(auto-fill, 16rem);
+  justify-content: start;
   gap: .6rem;
   margin-bottom: 0;
 }
