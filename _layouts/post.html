@@ -75,8 +75,13 @@ layout: default
     <div class="lesson-exercise-card">
       {% for ex in pkv.exercises %}
       <div class="lesson-answer-block">
+        {% if ex.number %}
+        <label class="lesson-answer-label"><span class="lesson-answer-number">Exercise {{ ex.number }}.</span> {{ ex.question }}</label>
+        <textarea class="lesson-answer-textarea" data-answer-label="Exercise {{ ex.number }}. {{ ex.question }}" placeholder="Write your answer..."></textarea>
+        {% else %}
         <label class="lesson-answer-label">{{ ex.label }}</label>
         <textarea class="lesson-answer-textarea" data-answer-label="{{ ex.label }}" placeholder="Write your answer..."></textarea>
+        {% endif %}
       </div>
       {% endfor %}
     </div>

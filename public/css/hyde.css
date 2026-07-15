@@ -839,6 +839,9 @@ a.video-tag:hover {
   font-weight: normal;
   color: var(--color-text);
 }
+.lesson-answer-number {
+  font-weight: 700;
+}
 .lesson-answer-textarea {
   display: block;
   width: 100%;
