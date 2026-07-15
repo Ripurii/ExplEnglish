@@ -2,7 +2,20 @@
 layout: default
 ---
 
-<div class="breadcrumb"><a href="{{ site.baseurl }}">Home</a> / <a href="{{ site.baseurl }}/library">Library</a> / {{ page.title }}</div>
+<div class="breadcrumb">
+  <a href="{{ site.baseurl }}">Home</a> / <a href="{{ site.baseurl }}/library">Library</a>
+  {% if page.lesson_series %}
+    {% assign series_home = site.posts | where: 'lesson_series', page.lesson_series | where: 'series_home', true | first %}
+    {% unless page.series_home %}
+      / <a href="{{ site.baseurl }}{{ series_home.url }}">{{ series_home.title }}</a>
+    {% endunless %}
+    {% if page.lesson_number %}
+      {% assign episode_page = site.pages | where: 'lesson_series', page.lesson_series | where: 'is_episode', true | where: 'episode_number', page.episode_number | first %}
+      / <a href="{{ site.baseurl }}{{ episode_page.url }}">{{ episode_page.title }}</a>
+    {% endif %}
+  {% endif %}
+  / {{ page.title }}
+</div>
 
 <div class="content-header">
   <h1 class="content-title">{{ page.title }}</h1>
