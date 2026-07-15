@@ -814,6 +814,9 @@ a.video-tag:hover {
   color: var(--color-rust);
 }
 .lesson-exercise-number {
+  font-size: 1rem;
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--color-text);
 }
 .lesson-exercise-instructions {
