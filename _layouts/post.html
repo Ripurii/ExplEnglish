@@ -46,12 +46,31 @@ layout: default
   {% endif %}
 </div>
 
+{% if page.prior_knowledge %}
+<div class="section-divider">
+  <span class="section-divider-line"></span>
+</div>
+<div class="lesson-prose">
+  <h2 class="lesson-section-heading center">Prior Knowledge</h2>
+  <div class="lesson-exercise-card">
+    {% for pk in page.prior_knowledge %}
+    <div class="lesson-answer-block">
+      <label class="lesson-answer-label">{{ forloop.index }}. {{ pk.question }}</label>
+      <textarea class="lesson-answer-textarea" data-answer-label="Prior Knowledge {{ forloop.index }}: {{ pk.question }}" placeholder="Write what you know..."></textarea>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
 {% if page.videos %}
+<div class="lesson-video-jumpnav">
+  {% for video in page.videos %}<a class="video-tag" href="#video-{{ video.number }}">Video {{ video.number }}</a>{% endfor %}
+</div>
 {% for video in page.videos %}
 {% assign video_parity = forloop.index0 | modulo: 2 %}
-<div class="section-divider">
-  <span class="section-divider-label">Video {{ video.number }}</span>
-  <span class="section-divider-line"></span>
+<div class="lesson-video-header" id="video-{{ video.number }}">
+  <span class="video-tag">Video {{ video.number }}</span>
 </div>
 <div class="lesson-video-row{% if video_parity == 1 %} video-right{% endif %}">
   <div class="lesson-video-media">
@@ -63,7 +82,16 @@ layout: default
     <div class="lesson-video lesson-video-placeholder">Video not added yet</div>
     {% endif %}
   </div>
-  <div class="lesson-video-exercise"></div>
+  <div class="lesson-video-exercise">
+    {% if video.fun_fact %}<div class="lesson-fun-fact"><strong>Fun fact!</strong> {{ video.fun_fact }}</div>{% endif %}
+    {% if video.exercise %}
+    <div class="lesson-exercise-card">
+      {% if video.exercise.category %}<p class="lesson-exercise-label">{{ video.exercise.category }}</p>{% endif %}
+      {% if video.exercise.instructions %}<p class="lesson-exercise-instructions">{{ video.exercise.instructions }}</p>{% endif %}
+      <textarea class="lesson-answer-textarea" data-answer-label="Video {{ video.number }} exercise" placeholder="Write your answer..."></textarea>
+    </div>
+    {% endif %}
+  </div>
 </div>
 {% endfor %}
 {% endif %}
@@ -175,4 +203,62 @@ layout: default
     {% endfor %}
   </div>
 </div>
+{% endif %}
+
+{% if page.prior_knowledge or page.videos %}
+<div class="section-divider">
+  <span class="section-divider-line"></span>
+</div>
+<div class="lesson-save-answers">
+  <h2 class="lesson-section-heading center">Save Your Answers</h2>
+  <p class="content-subtitle">Enter your email address to receive a copy of everything you've written on this page.</p>
+  <div class="lesson-save-form">
+    <input type="email" id="student-email" placeholder="you@example.com">
+    <button type="button" id="send-answers-btn" class="lesson-pill">Send my answers</button>
+  </div>
+  <p id="send-answers-status" class="lesson-save-status"></p>
+</div>
+
+<script>
+(function () {
+  var textareas = document.querySelectorAll('.lesson-answer-textarea');
+
+  function hasContent() {
+    return Array.prototype.some.call(textareas, function (t) { return t.value.trim().length > 0; });
+  }
+
+  window.addEventListener('beforeunload', function (e) {
+    if (hasContent()) {
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
+
+  var sendBtn = document.getElementById('send-answers-btn');
+  if (sendBtn) {
+    sendBtn.addEventListener('click', function () {
+      var email = document.getElementById('student-email').value.trim();
+      var status = document.getElementById('send-answers-status');
+      if (!email) {
+        status.textContent = 'Please enter an email address first.';
+        return;
+      }
+      var lines = [];
+      textareas.forEach(function (t) {
+        if (t.value.trim()) {
+          lines.push((t.getAttribute('data-answer-label') || 'Answer') + ':\n' + t.value.trim());
+        }
+      });
+      if (lines.length === 0) {
+        status.textContent = 'No answers filled in yet.';
+        return;
+      }
+      var body = encodeURIComponent(lines.join('\n\n'));
+      var subject = encodeURIComponent('{{ page.title }} - My Answers');
+      window.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
+      status.textContent = 'Opening your email app with your answers filled in...';
+    });
+  }
+})();
+</script>
 {% endif %}
