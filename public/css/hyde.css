@@ -191,6 +191,10 @@ a.sidebar-nav-item:focus {
 .sidebar-nav-group[open] > summary.sidebar-nav-item::after {
   transform: rotate(90deg);
 }
+.sidebar-nav-group summary.sidebar-nav-item a {
+  color: inherit;
+  text-decoration: none;
+}
 
 .sidebar-submenu {
   display: flex;

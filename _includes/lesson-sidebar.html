@@ -18,7 +18,7 @@
       {% for ep in episode_pages %}
       {% assign ep_lessons = all_series_pages | where: 'episode_number', ep.episode_number | where_exp: 'p', 'p.is_episode != true' | sort: 'lesson_number' %}
       <details class="sidebar-nav-group"{% if page.episode_number == ep.episode_number %} open{% endif %}>
-        <summary class="sidebar-nav-item{% if page.url == ep.url %} active{% endif %}">{{ ep.title }}</summary>
+        <summary class="sidebar-nav-item{% if page.url == ep.url %} active{% endif %}"><a href="{{ site.baseurl }}{{ ep.url }}">{{ ep.title }}</a></summary>
         {% if ep_lessons.size > 0 %}
         <div class="sidebar-submenu">
           {% for l in ep_lessons %}
