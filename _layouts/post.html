@@ -2,11 +2,11 @@
 layout: default
 ---
 
-<div class="lesson-banner">
-  <h1 class="lesson-banner-title">{{ page.title }}</h1>
-</div>
-
 <div class="breadcrumb"><a href="{{ site.baseurl }}">Home</a> / <a href="{{ site.baseurl }}/library">Library</a> / {{ page.title }}</div>
+
+<div class="content-header">
+  <h1 class="content-title">{{ page.title }}</h1>
+</div>
 
 <div class="lesson-meta-line">
   {% if page.level %}<span class="badge badge-level">{{ page.level }}</span>{% endif %}
