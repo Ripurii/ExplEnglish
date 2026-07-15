@@ -48,11 +48,12 @@ layout: default
 
 {% if page.videos %}
 {% for video in page.videos %}
+{% assign video_parity = forloop.index0 | modulo: 2 %}
 <div class="section-divider">
   <span class="section-divider-label">Video {{ video.number }}</span>
   <span class="section-divider-line"></span>
 </div>
-<div class="lesson-video-row{% if forloop.index0 % 2 == 1 %} video-right{% endif %}">
+<div class="lesson-video-row{% if video_parity == 1 %} video-right{% endif %}">
   <div class="lesson-video-media">
     {% if video.video_url %}
     <div class="lesson-video">
