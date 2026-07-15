@@ -106,13 +106,48 @@ layout: default
   </div>
   <div class="lesson-video-exercise">
     {% if video.fun_fact %}<div class="lesson-fun-fact"><strong>Fun fact!</strong> {{ video.fun_fact }}</div>{% endif %}
-    {% if video.exercise %}
+    {% for ex in video.exercises %}
+    {% assign ex_id = video.number | append: '-' | append: forloop.index %}
     <div class="lesson-exercise-card">
-      {% if video.exercise.category %}<p class="lesson-exercise-label">{{ video.exercise.category }}</p>{% endif %}
-      {% if video.exercise.instructions %}<p class="lesson-exercise-instructions">{{ video.exercise.instructions }}</p>{% endif %}
-      <textarea class="lesson-answer-textarea" data-answer-label="Video {{ video.number }} exercise" placeholder="Write your answer..."></textarea>
+      {% if ex.title %}<p class="lesson-exercise-label">{{ ex.title }}</p>{% endif %}
+      {% if ex.instructions %}<p class="lesson-exercise-instructions">{{ ex.instructions }}</p>{% endif %}
+
+      {% case ex.type %}
+
+      {% when 'matching' %}
+      <div class="lesson-matching-list">
+        {% for term in ex.terms %}
+        <div class="lesson-matching-row">
+          <span class="lesson-matching-term">{{ forloop.index }}. {{ term }}</span>
+          <select class="lesson-matching-select" data-term="{{ forloop.index }}. {{ term }}">
+            <option value="">-- choose --</option>
+            {% for def in ex.definitions %}<option value="{{ def.key }}">{{ def.key }}. {{ def.text }}</option>{% endfor %}
+          </select>
+        </div>
+        {% endfor %}
+      </div>
+      <button type="button" class="lesson-pill lesson-check-btn" data-check-type="matching" data-check-target="matching-{{ ex_id }}" data-answers="{{ ex.answers | join: ',' }}">Check answers</button>
+      <p class="lesson-check-result"></p>
+
+      {% when 'multiple_choice' %}
+      <p class="lesson-mc-question">{{ ex.question }}</p>
+      <div class="lesson-mc-options">
+        {% for opt in ex.options %}
+        <label class="lesson-mc-option">
+          <input type="radio" name="mc-{{ ex_id }}" value="{{ forloop.index0 }}">
+          {{ opt }}
+        </label>
+        {% endfor %}
+      </div>
+      <button type="button" class="lesson-pill lesson-check-btn" data-check-type="multiple_choice" data-check-target="mc-{{ ex_id }}" data-answer-index="{{ ex.answer_index }}">Check answer</button>
+      <p class="lesson-check-result"></p>
+
+      {% else %}
+      <textarea class="lesson-answer-textarea" data-answer-label="{{ ex.title | default: 'Video ' | append: video.number | append: ' exercise' }}" placeholder="Write your answer..."></textarea>
+
+      {% endcase %}
     </div>
-    {% endif %}
+    {% endfor %}
   </div>
 </div>
 {% endfor %}
@@ -233,11 +268,9 @@ layout: default
 </div>
 <div class="lesson-save-answers">
   <h2 class="lesson-section-heading center">Save Your Answers</h2>
-  <p class="content-subtitle">Enter your email address to receive a copy of everything you've written on this page.</p>
+  <p class="content-subtitle">Have you finished all the exercises? Make sure to copy them and send them to your teacher!</p>
   <div class="lesson-save-form">
-    <input type="email" id="student-email" placeholder="you@example.com">
-    <button type="button" id="send-answers-btn" class="lesson-pill">Send my answers</button>
-    <button type="button" id="copy-answers-btn" class="lesson-pill lesson-pill-secondary">Copy answers</button>
+    <button type="button" id="copy-answers-btn" class="lesson-pill">Copy answers</button>
   </div>
   <p id="send-answers-status" class="lesson-save-status"></p>
 </div>
@@ -245,18 +278,53 @@ layout: default
 <script>
 (function () {
   var textareas = document.querySelectorAll('.lesson-answer-textarea');
+  var matchingSelects = document.querySelectorAll('.lesson-matching-select');
+  var mcGroups = {};
+  document.querySelectorAll('input[type="radio"][name^="mc-"]').forEach(function (r) {
+    mcGroups[r.name] = mcGroups[r.name] || [];
+    mcGroups[r.name].push(r);
+  });
 
   function hasContent() {
-    return Array.prototype.some.call(textareas, function (t) { return t.value.trim().length > 0; });
+    var textHasContent = Array.prototype.some.call(textareas, function (t) { return t.value.trim().length > 0; });
+    var matchingHasContent = Array.prototype.some.call(matchingSelects, function (s) { return s.value !== ''; });
+    var mcHasContent = Object.keys(mcGroups).some(function (name) {
+      return mcGroups[name].some(function (r) { return r.checked; });
+    });
+    return textHasContent || matchingHasContent || mcHasContent;
   }
 
   function collectAnswerText() {
     var lines = [];
+
     textareas.forEach(function (t) {
       if (t.value.trim()) {
         lines.push((t.getAttribute('data-answer-label') || 'Answer') + ':\n' + t.value.trim());
       }
     });
+
+    document.querySelectorAll('[data-check-type="matching"]').forEach(function (btn) {
+      var card = btn.closest('.lesson-exercise-card');
+      var title = card.querySelector('.lesson-exercise-label');
+      var rows = [];
+      card.querySelectorAll('.lesson-matching-row').forEach(function (row) {
+        var select = row.querySelector('.lesson-matching-select');
+        var term = select.getAttribute('data-term');
+        var chosen = select.options[select.selectedIndex].text;
+        rows.push(term + ' -> ' + (select.value ? chosen : '(not answered)'));
+      });
+      lines.push((title ? title.textContent : 'Matching exercise') + ':\n' + rows.join('\n'));
+    });
+
+    document.querySelectorAll('[data-check-type="multiple_choice"]').forEach(function (btn) {
+      var card = btn.closest('.lesson-exercise-card');
+      var title = card.querySelector('.lesson-exercise-label');
+      var name = btn.getAttribute('data-check-target');
+      var checked = card.querySelector('input[name="' + name + '"]:checked');
+      var answerText = checked ? checked.closest('.lesson-mc-option').textContent.trim() : '(not answered)';
+      lines.push((title ? title.textContent : 'Multiple choice') + ':\n' + answerText);
+    });
+
     return lines.join('\n\n');
   }
 
@@ -269,29 +337,45 @@ layout: default
 
   var status = document.getElementById('send-answers-status');
 
-  var sendBtn = document.getElementById('send-answers-btn');
-  if (sendBtn) {
-    sendBtn.addEventListener('click', function () {
-      var email = document.getElementById('student-email').value.trim();
-      if (!email) {
-        status.textContent = 'Please enter an email address first.';
-        return;
+  document.querySelectorAll('.lesson-check-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var card = btn.closest('.lesson-exercise-card');
+      var result = card.querySelector('.lesson-check-result');
+      var checkType = btn.getAttribute('data-check-type');
+
+      if (checkType === 'matching') {
+        var answers = btn.getAttribute('data-answers').split(',');
+        var rows = card.querySelectorAll('.lesson-matching-row');
+        var correctCount = 0;
+        rows.forEach(function (row, i) {
+          var select = row.querySelector('.lesson-matching-select');
+          row.classList.remove('is-correct', 'is-incorrect');
+          if (select.value === answers[i]) {
+            row.classList.add('is-correct');
+            correctCount++;
+          } else {
+            row.classList.add('is-incorrect');
+          }
+        });
+        result.textContent = correctCount + ' / ' + rows.length + ' correct';
+        result.className = 'lesson-check-result ' + (correctCount === rows.length ? 'is-correct' : 'is-incorrect');
       }
-      var text = collectAnswerText();
-      if (!text) {
-        status.textContent = 'No answers filled in yet.';
-        return;
+
+      if (checkType === 'multiple_choice') {
+        var name = btn.getAttribute('data-check-target');
+        var correctIndex = btn.getAttribute('data-answer-index');
+        var checked = card.querySelector('input[name="' + name + '"]:checked');
+        if (!checked) {
+          result.textContent = 'Choose an answer first.';
+          result.className = 'lesson-check-result';
+          return;
+        }
+        var isCorrect = checked.value === correctIndex;
+        result.textContent = isCorrect ? 'Correct!' : 'Incorrect, try again.';
+        result.className = 'lesson-check-result ' + (isCorrect ? 'is-correct' : 'is-incorrect');
       }
-      var subject = encodeURIComponent('{{ page.title }} - My Answers');
-      var body = encodeURIComponent(text);
-      var mailtoUrl = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
-      // mailto: only works if the browser has a default email app registered --
-      // if nothing happens after clicking, use "Copy answers" instead and paste
-      // into whatever email/webmail you actually use.
-      window.location.href = mailtoUrl;
-      status.textContent = "Opening your email app now. If nothing happens, your browser has no default email app set up -- use \"Copy answers\" instead and paste them into an email yourself.";
     });
-  }
+  });
 
   var copyBtn = document.getElementById('copy-answers-btn');
   if (copyBtn) {
@@ -303,7 +387,7 @@ layout: default
       }
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(function () {
-          status.textContent = 'Copied! Paste your answers into an email to send them.';
+          status.textContent = 'Copied! Paste your answers into an email to send to your teacher.';
         }, function () {
           status.textContent = 'Could not copy automatically -- please select and copy the answers manually.';
         });
