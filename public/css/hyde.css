@@ -192,6 +192,8 @@ a.sidebar-nav-item:focus {
   transform: rotate(90deg);
 }
 .sidebar-nav-group summary.sidebar-nav-item a {
+  display: block;
+  flex: 1;
   color: inherit;
   text-decoration: none;
 }

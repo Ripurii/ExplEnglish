@@ -8,7 +8,7 @@ posted: "today"
 date: 2026-07-14
 lesson_series: our-planet
 series_home: true
-episodes_subtitle: "Choose an episode to see its two lessons."
+episodes_subtitle: "Choose an episode and you will be directed to the teacher page with all the necessary materials. If you wish to teach this lesson online, click the lesson buttons on that page. Each episode has two lessons."
 episodes:
   - label: "Episode 1"
     url: /our-planet/episode-1
