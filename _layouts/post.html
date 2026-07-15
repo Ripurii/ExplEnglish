@@ -37,13 +37,7 @@ layout: default
 <div class="lesson-intro{% if page.image %} has-image{% endif %}">
   <div class="lesson-intro-text">
     {% if page.intro %}<p>{{ page.intro }}</p>{% else %}{{ content }}{% endif %}
-
-    {% if page.learning_goals %}
-    <p class="lesson-goals-label">Learning goals:</p>
-    <ul class="lesson-goals-list">
-      {% for goal in page.learning_goals %}<li>{{ goal }}</li>{% endfor %}
-    </ul>
-    {% endif %}
+    {% if page.intro_note %}<p>{{ page.intro_note }}</p>{% endif %}
   </div>
   {% if page.image %}
   <div class="lesson-intro-image">
@@ -51,6 +45,72 @@ layout: default
   </div>
   {% endif %}
 </div>
+
+{% if page.learning_goals %}
+<div class="section-divider">
+  <span class="section-divider-line"></span>
+</div>
+<div class="lesson-prose">
+  <h2 class="lesson-section-heading">Lesson Goals</h2>
+  <ul class="lesson-goals-list">
+    {% for goal in page.learning_goals %}<li>{{ goal }}</li>{% endfor %}
+  </ul>
+
+  {% if page.cross_curricular %}
+  <h3 class="lesson-subheading">Cross-curricular</h3>
+  <ul class="lesson-goals-list">
+    {% for item in page.cross_curricular %}<li><strong>{{ item.subject }}</strong> &mdash; {{ item.description }}</li>{% endfor %}
+  </ul>
+  {% endif %}
+</div>
+{% endif %}
+
+{% if page.lesson_phases or page.info %}
+<div class="section-divider">
+  <span class="section-divider-line"></span>
+</div>
+<div class="lesson-two-col">
+  {% if page.lesson_phases %}
+  <div class="lesson-col">
+    <h2 class="lesson-section-heading">Lesson Phases</h2>
+    {% if page.lesson_phases.warmup %}<p><strong>Warm-up</strong> &mdash; {{ page.lesson_phases.warmup }}</p>{% endif %}
+    {% if page.lesson_phases.repeating %}
+    <div class="lesson-phase-box">
+      <p class="lesson-phase-box-label">Repeats per video</p>
+      {% for phase in page.lesson_phases.repeating %}<p><strong>{{ phase.label }}</strong> &mdash; {{ phase.text }}</p>{% endfor %}
+    </div>
+    {% endif %}
+    {% if page.lesson_phases.reflection %}<p><strong>Reflection</strong> &mdash; {{ page.lesson_phases.reflection }}</p>{% endif %}
+  </div>
+  {% endif %}
+
+  {% if page.info %}
+  <div class="lesson-col">
+    <h2 class="lesson-section-heading">Info &amp; Printables</h2>
+    {% if page.info.duration_detail %}<p><strong>Lesson duration:</strong> {{ page.info.duration_detail }}</p>{% endif %}
+    {% if page.info.printables %}
+    <p class="lesson-goals-label">Printables:</p>
+    <div class="lesson-pill-group">
+      {% for item in page.info.printables %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}">{{ item.label }}</a>{% endfor %}
+    </div>
+    {% endif %}
+    {% if page.info.extra_materials %}
+    <p class="lesson-goals-label">Extra materials:</p>
+    <div class="lesson-pill-group">
+      {% for item in page.info.extra_materials %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}">{{ item.label }}</a>{% endfor %}
+    </div>
+    {% endif %}
+    {% if page.info.homework %}<p><strong>Homework:</strong> {{ page.info.homework }}</p>{% endif %}
+    {% if page.info.differentiation %}
+    <p class="lesson-goals-label">Differentiation:</p>
+    <ul class="lesson-goals-list">
+      {% for item in page.info.differentiation %}<li><strong>{{ item.label }}</strong> &mdash; {{ item.text }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endif %}
 
 {% if page.exercises %}
 <div class="section-divider">
@@ -81,7 +141,7 @@ layout: default
   <span class="section-divider-line"></span>
 </div>
 <div class="lesson-episodes">
-  <h2 class="lesson-heading">Episodes</h2>
+  <h2 class="lesson-heading">{{ page.episodes_heading | default: "Episodes" }}</h2>
   {% if page.episodes_subtitle %}<p class="content-subtitle">{{ page.episodes_subtitle }}</p>{% endif %}
   <div class="lesson-episode-grid">
     {% for episode in page.episodes %}
