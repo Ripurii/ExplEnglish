@@ -815,6 +815,7 @@ a.video-tag:hover {
 }
 .lesson-exercise-number {
   font-size: 1rem;
+  font-weight: 700;
   letter-spacing: normal;
   text-transform: none;
   color: var(--color-text);
@@ -822,7 +823,7 @@ a.video-tag:hover {
 .lesson-exercise-instructions {
   margin: 0 0 .75rem;
   font-size: .85rem;
-  color: var(--color-text-muted);
+  color: var(--color-text);
 }
 
 .lesson-answer-block {
@@ -916,7 +917,9 @@ a.video-tag:hover {
 .lesson-matching-term {
   flex: none;
   min-width: 8rem;
-  font-weight: bold;
+  font-weight: normal;
+  font-size: .85rem;
+  color: var(--color-text);
 }
 .lesson-matching-slot {
   flex: 1;
@@ -944,7 +947,7 @@ a.video-tag:hover {
 
 .lesson-mc-question {
   margin: 0 0 .75rem;
-  font-weight: bold;
+  font-weight: normal;
 }
 .lesson-mc-options {
   display: flex;
