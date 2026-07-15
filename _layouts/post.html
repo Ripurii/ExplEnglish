@@ -27,11 +27,11 @@ layout: default
   <span class="lesson-meta-text">{{ page.duration }}{% if page.duration and page.posted %} &middot; {% endif %}{{ page.posted }}</span>
 </div>
 
-{% if page.lesson_number or page.tagline %}
+{% if page.tagline %}
 <div class="section-divider">
   <span class="section-divider-line"></span>
 </div>
-<h2 class="lesson-heading">{% if page.lesson_number %}<span class="lesson-heading-number">Lesson {{ page.lesson_number }}.</span> {% endif %}{% if page.tagline %}<em>{{ page.tagline }}</em>{% endif %}</h2>
+<h2 class="lesson-heading">{% if page.lesson_number %}<span class="lesson-heading-number">Lesson {{ page.lesson_number }}.</span> {% endif %}<em>{{ page.tagline }}</em></h2>
 {% endif %}
 
 <div class="lesson-intro{% if page.image %} has-image{% endif %}">

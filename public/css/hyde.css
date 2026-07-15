@@ -597,7 +597,7 @@ a.lesson-row:hover {
   font-size: 1.4rem;
 }
 .lesson-heading-number {
-  color: var(--color-green);
+  color: var(--color-rust);
 }
 .lesson-heading em {
   color: var(--color-text);
