@@ -835,7 +835,9 @@ a.video-tag:hover {
 .lesson-answer-label {
   display: block;
   margin-bottom: .5rem;
-  font-weight: bold;
+  font-size: .85rem;
+  font-weight: normal;
+  color: var(--color-text);
 }
 .lesson-answer-textarea {
   display: block;
