@@ -421,6 +421,7 @@ a.sidebar-nav-item:focus {
   align-items: center;
   gap: .75rem;
   margin: 1.75rem 0 .75rem;
+  scroll-margin-top: 1.5rem;
 }
 .section-divider:first-child {
   margin-top: 0;
@@ -790,10 +791,6 @@ a.video-tag:hover {
   margin: 1.5rem 0;
 }
 
-.lesson-video-header {
-  margin: 2rem 0 .75rem;
-  scroll-margin-top: 1.5rem;
-}
 
 .lesson-fun-fact {
   padding: 1rem 1.25rem;
@@ -877,6 +874,13 @@ a.video-tag:hover {
   cursor: pointer;
   font-family: var(--font-sans);
   font-size: .95rem;
+}
+.lesson-pill-secondary {
+  background-color: var(--color-card-bg);
+  color: var(--color-text);
+}
+.lesson-pill-secondary:hover {
+  background-color: var(--color-card-bg-hover);
 }
 .lesson-save-status {
   margin-top: .75rem;

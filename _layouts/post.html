@@ -46,31 +46,53 @@ layout: default
   {% endif %}
 </div>
 
-{% if page.prior_knowledge %}
-<div class="section-divider">
-  <span class="section-divider-line"></span>
-</div>
-<div class="lesson-prose">
-  <h2 class="lesson-section-heading center">Prior Knowledge</h2>
-  <div class="lesson-exercise-card">
-    {% for pk in page.prior_knowledge %}
-    <div class="lesson-answer-block">
-      <label class="lesson-answer-label">{{ forloop.index }}. {{ pk.question }}</label>
-      <textarea class="lesson-answer-textarea" data-answer-label="Prior Knowledge {{ forloop.index }}: {{ pk.question }}" placeholder="Write what you know..."></textarea>
-    </div>
-    {% endfor %}
-  </div>
-</div>
-{% endif %}
-
 {% if page.videos %}
 <div class="lesson-video-jumpnav">
   {% for video in page.videos %}<a class="video-tag" href="#video-{{ video.number }}">Video {{ video.number }}</a>{% endfor %}
 </div>
+{% endif %}
+
+{% if page.prior_knowledge %}
+<div class="section-divider">
+  <span class="section-divider-label">Prior Knowledge</span>
+  <span class="section-divider-line"></span>
+</div>
+{% if page.prior_knowledge.videos %}
+{% for pkv in page.prior_knowledge.videos %}
+{% assign pk_parity = forloop.index0 | modulo: 2 %}
+<div class="lesson-video-row{% if pk_parity == 1 %} video-right{% endif %}">
+  <div class="lesson-video-media">
+    {% if pkv.video_url %}
+    <div class="lesson-video">
+      <iframe src="{{ pkv.video_url }}" title="Prior knowledge video {{ forloop.index }}" allowfullscreen></iframe>
+    </div>
+    {% else %}
+    <div class="lesson-video lesson-video-placeholder">Video not added yet</div>
+    {% endif %}
+  </div>
+  <div class="lesson-video-exercise">
+    {% if pkv.exercises %}
+    <div class="lesson-exercise-card">
+      {% for ex in pkv.exercises %}
+      <div class="lesson-answer-block">
+        <label class="lesson-answer-label">{{ ex.label }}</label>
+        <textarea class="lesson-answer-textarea" data-answer-label="{{ ex.label }}" placeholder="Write your answer..."></textarea>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endif %}
+
+{% if page.videos %}
 {% for video in page.videos %}
 {% assign video_parity = forloop.index0 | modulo: 2 %}
-<div class="lesson-video-header" id="video-{{ video.number }}">
-  <span class="video-tag">Video {{ video.number }}</span>
+<div class="section-divider" id="video-{{ video.number }}">
+  <span class="section-divider-label">Video {{ video.number }}</span>
+  <span class="section-divider-line"></span>
 </div>
 <div class="lesson-video-row{% if video_parity == 1 %} video-right{% endif %}">
   <div class="lesson-video-media">
@@ -215,6 +237,7 @@ layout: default
   <div class="lesson-save-form">
     <input type="email" id="student-email" placeholder="you@example.com">
     <button type="button" id="send-answers-btn" class="lesson-pill">Send my answers</button>
+    <button type="button" id="copy-answers-btn" class="lesson-pill lesson-pill-secondary">Copy answers</button>
   </div>
   <p id="send-answers-status" class="lesson-save-status"></p>
 </div>
@@ -227,6 +250,16 @@ layout: default
     return Array.prototype.some.call(textareas, function (t) { return t.value.trim().length > 0; });
   }
 
+  function collectAnswerText() {
+    var lines = [];
+    textareas.forEach(function (t) {
+      if (t.value.trim()) {
+        lines.push((t.getAttribute('data-answer-label') || 'Answer') + ':\n' + t.value.trim());
+      }
+    });
+    return lines.join('\n\n');
+  }
+
   window.addEventListener('beforeunload', function (e) {
     if (hasContent()) {
       e.preventDefault();
@@ -234,29 +267,49 @@ layout: default
     }
   });
 
+  var status = document.getElementById('send-answers-status');
+
   var sendBtn = document.getElementById('send-answers-btn');
   if (sendBtn) {
     sendBtn.addEventListener('click', function () {
       var email = document.getElementById('student-email').value.trim();
-      var status = document.getElementById('send-answers-status');
       if (!email) {
         status.textContent = 'Please enter an email address first.';
         return;
       }
-      var lines = [];
-      textareas.forEach(function (t) {
-        if (t.value.trim()) {
-          lines.push((t.getAttribute('data-answer-label') || 'Answer') + ':\n' + t.value.trim());
-        }
-      });
-      if (lines.length === 0) {
+      var text = collectAnswerText();
+      if (!text) {
         status.textContent = 'No answers filled in yet.';
         return;
       }
-      var body = encodeURIComponent(lines.join('\n\n'));
       var subject = encodeURIComponent('{{ page.title }} - My Answers');
-      window.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
-      status.textContent = 'Opening your email app with your answers filled in...';
+      var body = encodeURIComponent(text);
+      var mailtoUrl = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
+      // mailto: only works if the browser has a default email app registered --
+      // if nothing happens after clicking, use "Copy answers" instead and paste
+      // into whatever email/webmail you actually use.
+      window.location.href = mailtoUrl;
+      status.textContent = "Opening your email app now. If nothing happens, your browser has no default email app set up -- use \"Copy answers\" instead and paste them into an email yourself.";
+    });
+  }
+
+  var copyBtn = document.getElementById('copy-answers-btn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function () {
+      var text = collectAnswerText();
+      if (!text) {
+        status.textContent = 'No answers filled in yet.';
+        return;
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          status.textContent = 'Copied! Paste your answers into an email to send them.';
+        }, function () {
+          status.textContent = 'Could not copy automatically -- please select and copy the answers manually.';
+        });
+      } else {
+        status.textContent = 'Copying isn\'t supported in this browser -- please select and copy the answers manually.';
+      }
     });
   }
 })();
