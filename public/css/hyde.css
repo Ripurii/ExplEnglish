@@ -813,6 +813,9 @@ a.video-tag:hover {
   text-transform: uppercase;
   color: var(--color-rust);
 }
+.lesson-exercise-number {
+  color: var(--color-text);
+}
 .lesson-exercise-instructions {
   margin: 0 0 .75rem;
   font-size: .85rem;
@@ -847,11 +850,59 @@ a.video-tag:hover {
   color: var(--color-text-faint);
 }
 
-.lesson-matching-list {
+.lesson-matching {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.lesson-matching-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  padding: .75rem;
+  border: 1.5px dashed var(--color-border);
+  border-radius: .6rem;
+  background-color: var(--color-content-bg);
+}
+.lesson-matching-chip {
+  padding: .5rem .75rem;
+  border-radius: .5rem;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card-bg);
+  font-size: .85rem;
+  color: var(--color-text);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.lesson-matching-chip:hover {
+  background-color: var(--color-card-bg-hover);
+}
+.lesson-matching-chip.is-selected {
+  border-color: var(--color-rust);
+  box-shadow: 0 0 0 1px var(--color-rust);
+}
+.lesson-matching-chip.is-dragging {
+  opacity: .35;
+}
+.lesson-matching-chip.is-placed {
+  width: 100%;
+  cursor: pointer;
+}
+.lesson-matching-ghost {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: .95;
+  box-shadow: 0 6px 14px rgba(44, 33, 23, .3);
+}
+.lesson-matching-targets {
   display: flex;
   flex-direction: column;
   gap: .6rem;
-  margin-bottom: 1rem;
 }
 .lesson-matching-row {
   display: flex;
@@ -864,21 +915,27 @@ a.video-tag:hover {
   min-width: 8rem;
   font-weight: bold;
 }
-.lesson-matching-select {
+.lesson-matching-slot {
   flex: 1;
   min-width: 12rem;
-  padding: .5rem .75rem;
-  border: 1px solid var(--color-border);
+  min-height: 2.6rem;
+  padding: .3rem;
+  display: flex;
+  align-items: center;
+  border: 1.5px dashed var(--color-border);
   border-radius: .5rem;
   background-color: var(--color-content-bg);
-  font-family: var(--font-sans);
-  font-size: .9rem;
-  color: var(--color-text);
 }
-.lesson-matching-row.is-correct .lesson-matching-select {
+.lesson-matching-slot.is-over {
+  border-color: var(--color-rust);
+  background-color: var(--color-card-bg-hover);
+}
+.lesson-matching-row.is-correct .lesson-matching-slot {
+  border-style: solid;
   border-color: var(--color-green);
 }
-.lesson-matching-row.is-incorrect .lesson-matching-select {
+.lesson-matching-row.is-incorrect .lesson-matching-slot {
+  border-style: solid;
   border-color: var(--color-rust);
 }
 
@@ -893,11 +950,48 @@ a.video-tag:hover {
   margin-bottom: 1rem;
 }
 .lesson-mc-option {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: .6rem;
+  padding: .6rem .9rem;
+  border: 1px solid var(--color-border);
+  border-radius: .5rem;
+  background-color: var(--color-content-bg);
   font-size: .95rem;
+  color: var(--color-text);
   cursor: pointer;
+}
+.lesson-mc-option:hover {
+  background-color: var(--color-card-bg-hover);
+}
+.lesson-mc-radio {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+}
+.lesson-mc-option::before {
+  content: "";
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background-color: var(--color-content-bg);
+}
+.lesson-mc-option:has(.lesson-mc-radio:checked) {
+  border-color: var(--color-rust);
+  background-color: var(--color-card-bg);
+}
+.lesson-mc-option:has(.lesson-mc-radio:checked)::before {
+  border-color: var(--color-rust);
+  background-image: radial-gradient(circle, var(--color-rust) 0 40%, transparent 42%);
+}
+.lesson-mc-option:has(.lesson-mc-radio:focus-visible) {
+  outline: 2px solid var(--color-rust);
+  outline-offset: 2px;
 }
 
 .lesson-check-btn {

@@ -109,22 +109,30 @@ layout: default
     {% for ex in video.exercises %}
     {% assign ex_id = video.number | append: '-' | append: forloop.index %}
     <div class="lesson-exercise-card">
-      {% if ex.title %}<p class="lesson-exercise-label">{{ ex.title }}</p>{% endif %}
+      {% if ex.number %}
+      <p class="lesson-exercise-label"><span class="lesson-exercise-number">Exercise {{ ex.number }}.</span> {{ ex.label }}</p>
+      {% elsif ex.title %}
+      <p class="lesson-exercise-label">{{ ex.title }}</p>
+      {% endif %}
       {% if ex.instructions %}<p class="lesson-exercise-instructions">{{ ex.instructions }}</p>{% endif %}
 
       {% case ex.type %}
 
       {% when 'matching' %}
-      <div class="lesson-matching-list">
-        {% for term in ex.terms %}
-        <div class="lesson-matching-row">
-          <span class="lesson-matching-term">{{ forloop.index }}. {{ term }}</span>
-          <select class="lesson-matching-select" data-term="{{ forloop.index }}. {{ term }}">
-            <option value="">-- choose --</option>
-            {% for def in ex.definitions %}<option value="{{ def.key }}">{{ def.key }}. {{ def.text }}</option>{% endfor %}
-          </select>
+      <div class="lesson-matching">
+        <div class="lesson-matching-bank">
+          {% for def in ex.definitions %}
+          <div class="lesson-matching-chip" data-key="{{ def.key }}">{{ def.key }}. {{ def.text }}</div>
+          {% endfor %}
         </div>
-        {% endfor %}
+        <div class="lesson-matching-targets">
+          {% for term in ex.terms %}
+          <div class="lesson-matching-row">
+            <span class="lesson-matching-term">{{ forloop.index }}. {{ term }}</span>
+            <div class="lesson-matching-slot"></div>
+          </div>
+          {% endfor %}
+        </div>
       </div>
       <button type="button" class="lesson-pill lesson-check-btn" data-check-type="matching" data-check-target="matching-{{ ex_id }}" data-answers="{{ ex.answers | join: ',' }}">Check answers</button>
       <p class="lesson-check-result"></p>
@@ -134,8 +142,8 @@ layout: default
       <div class="lesson-mc-options">
         {% for opt in ex.options %}
         <label class="lesson-mc-option">
-          <input type="radio" name="mc-{{ ex_id }}" value="{{ forloop.index0 }}">
-          {{ opt }}
+          <input type="radio" name="mc-{{ ex_id }}" value="{{ forloop.index0 }}" class="lesson-mc-radio">
+          <span class="lesson-mc-option-text">{{ opt }}</span>
         </label>
         {% endfor %}
       </div>
@@ -143,7 +151,7 @@ layout: default
       <p class="lesson-check-result"></p>
 
       {% else %}
-      <textarea class="lesson-answer-textarea" data-answer-label="{{ ex.title | default: 'Video ' | append: video.number | append: ' exercise' }}" placeholder="Write your answer..."></textarea>
+      <textarea class="lesson-answer-textarea" data-answer-label="{{ ex.label | default: ex.title | default: 'Video ' | append: video.number | append: ' exercise' }}" placeholder="Write your answer..."></textarea>
 
       {% endcase %}
     </div>
@@ -277,8 +285,100 @@ layout: default
 
 <script>
 (function () {
+  document.querySelectorAll('.lesson-matching').forEach(function (matching) {
+    var bank = matching.querySelector('.lesson-matching-bank');
+    var selected = null;
+
+    function clearSelected() {
+      if (selected) selected.classList.remove('is-selected');
+      selected = null;
+    }
+
+    function returnToBank(chip) {
+      chip.classList.remove('is-placed');
+      bank.appendChild(chip);
+    }
+
+    function placeInSlot(chip, slot) {
+      var existing = slot.querySelector('.lesson-matching-chip');
+      if (existing && existing !== chip) returnToBank(existing);
+      chip.classList.add('is-placed');
+      slot.appendChild(chip);
+    }
+
+    function selectChip(chip) {
+      if (selected === chip) { clearSelected(); return; }
+      clearSelected();
+      selected = chip;
+      chip.classList.add('is-selected');
+    }
+
+    function bindChip(chip) {
+      chip.addEventListener('pointerdown', function (e) {
+        var startX = e.clientX, startY = e.clientY, dragging = false, ghost = null;
+
+        function onMove(ev) {
+          var dx = ev.clientX - startX, dy = ev.clientY - startY;
+          if (!dragging && Math.sqrt(dx * dx + dy * dy) > 6) {
+            dragging = true;
+            clearSelected();
+            ghost = chip.cloneNode(true);
+            ghost.classList.add('lesson-matching-ghost');
+            ghost.style.width = chip.getBoundingClientRect().width + 'px';
+            document.body.appendChild(ghost);
+            chip.classList.add('is-dragging');
+          }
+          if (dragging) {
+            ghost.style.left = (ev.clientX - ghost.offsetWidth / 2) + 'px';
+            ghost.style.top = (ev.clientY - ghost.offsetHeight / 2) + 'px';
+            ghost.style.display = 'none';
+            var target = document.elementFromPoint(ev.clientX, ev.clientY);
+            ghost.style.display = '';
+            var slot = target ? target.closest('.lesson-matching-slot') : null;
+            matching.querySelectorAll('.lesson-matching-slot.is-over').forEach(function (s) {
+              if (s !== slot) s.classList.remove('is-over');
+            });
+            if (slot) slot.classList.add('is-over');
+          }
+        }
+
+        function onUp() {
+          document.removeEventListener('pointermove', onMove);
+          document.removeEventListener('pointerup', onUp);
+          if (dragging) {
+            chip.classList.remove('is-dragging');
+            var overSlot = matching.querySelector('.lesson-matching-slot.is-over');
+            if (overSlot) {
+              overSlot.classList.remove('is-over');
+              placeInSlot(chip, overSlot);
+            } else {
+              returnToBank(chip);
+            }
+            if (ghost) ghost.remove();
+          } else {
+            selectChip(chip);
+          }
+        }
+
+        document.addEventListener('pointermove', onMove);
+        document.addEventListener('pointerup', onUp);
+      });
+    }
+
+    matching.querySelectorAll('.lesson-matching-chip').forEach(bindChip);
+
+    matching.querySelectorAll('.lesson-matching-slot').forEach(function (slot) {
+      slot.addEventListener('pointerup', function () {
+        if (selected) {
+          placeInSlot(selected, slot);
+          clearSelected();
+        }
+      });
+    });
+  });
+
   var textareas = document.querySelectorAll('.lesson-answer-textarea');
-  var matchingSelects = document.querySelectorAll('.lesson-matching-select');
+  var matchingSlots = document.querySelectorAll('.lesson-matching-slot');
   var mcGroups = {};
   document.querySelectorAll('input[type="radio"][name^="mc-"]').forEach(function (r) {
     mcGroups[r.name] = mcGroups[r.name] || [];
@@ -287,7 +387,7 @@ layout: default
 
   function hasContent() {
     var textHasContent = Array.prototype.some.call(textareas, function (t) { return t.value.trim().length > 0; });
-    var matchingHasContent = Array.prototype.some.call(matchingSelects, function (s) { return s.value !== ''; });
+    var matchingHasContent = Array.prototype.some.call(matchingSlots, function (s) { return !!s.querySelector('.lesson-matching-chip'); });
     var mcHasContent = Object.keys(mcGroups).some(function (name) {
       return mcGroups[name].some(function (r) { return r.checked; });
     });
@@ -308,10 +408,9 @@ layout: default
       var title = card.querySelector('.lesson-exercise-label');
       var rows = [];
       card.querySelectorAll('.lesson-matching-row').forEach(function (row) {
-        var select = row.querySelector('.lesson-matching-select');
-        var term = select.getAttribute('data-term');
-        var chosen = select.options[select.selectedIndex].text;
-        rows.push(term + ' -> ' + (select.value ? chosen : '(not answered)'));
+        var term = row.querySelector('.lesson-matching-term').textContent;
+        var chip = row.querySelector('.lesson-matching-chip');
+        rows.push(term + ' -> ' + (chip ? chip.textContent.trim() : '(not answered)'));
       });
       lines.push((title ? title.textContent : 'Matching exercise') + ':\n' + rows.join('\n'));
     });
@@ -348,9 +447,9 @@ layout: default
         var rows = card.querySelectorAll('.lesson-matching-row');
         var correctCount = 0;
         rows.forEach(function (row, i) {
-          var select = row.querySelector('.lesson-matching-select');
+          var chip = row.querySelector('.lesson-matching-chip');
           row.classList.remove('is-correct', 'is-incorrect');
-          if (select.value === answers[i]) {
+          if (chip && chip.getAttribute('data-key') === answers[i]) {
             row.classList.add('is-correct');
             correctCount++;
           } else {
