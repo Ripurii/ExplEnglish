@@ -738,6 +738,35 @@ a.lesson-row:hover {
   height: 100%;
   border: 0;
 }
+.lesson-video-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-faint);
+  font-size: .85rem;
+  font-weight: bold;
+}
+
+.lesson-video-row {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin: 1.5rem 0;
+}
+.lesson-video-row.video-right {
+  flex-direction: row-reverse;
+}
+.lesson-video-media,
+.lesson-video-exercise {
+  flex: 1;
+  min-width: 0;
+}
+@media (max-width: 40em) {
+  .lesson-video-row,
+  .lesson-video-row.video-right {
+    flex-direction: column;
+  }
+}
 
 .lesson-answer label {
   display: block;

@@ -46,6 +46,27 @@ layout: default
   {% endif %}
 </div>
 
+{% if page.videos %}
+{% for video in page.videos %}
+<div class="section-divider">
+  <span class="section-divider-label">Video {{ video.number }}</span>
+  <span class="section-divider-line"></span>
+</div>
+<div class="lesson-video-row{% if forloop.index0 % 2 == 1 %} video-right{% endif %}">
+  <div class="lesson-video-media">
+    {% if video.video_url %}
+    <div class="lesson-video">
+      <iframe src="{{ video.video_url }}" title="Video {{ video.number }}" allowfullscreen></iframe>
+    </div>
+    {% else %}
+    <div class="lesson-video lesson-video-placeholder">Video not added yet</div>
+    {% endif %}
+  </div>
+  <div class="lesson-video-exercise"></div>
+</div>
+{% endfor %}
+{% endif %}
+
 {% if page.learning_goals %}
 <div class="section-divider">
   <span class="section-divider-line"></span>
