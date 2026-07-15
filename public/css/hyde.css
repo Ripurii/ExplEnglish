@@ -646,6 +646,9 @@ a.lesson-row:hover {
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }
+.lesson-section-heading.center {
+  text-align: center;
+}
 .lesson-subheading {
   font-size: 1.1rem;
   margin-top: 1.5rem;
