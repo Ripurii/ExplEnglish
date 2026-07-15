@@ -642,9 +642,6 @@ a.lesson-row:hover {
   margin-bottom: .4rem;
 }
 
-.lesson-prose {
-  max-width: 42rem;
-}
 .lesson-section-heading {
   font-size: 1.5rem;
   margin-bottom: 1rem;
