@@ -100,7 +100,16 @@ a {
     left: 0;
     bottom: 0;
     width: 17rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
   }
+}
+
+.sidebar-sticky {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 /* Sidebar links */
@@ -218,6 +227,8 @@ a.sidebar-nav-item:focus {
 .sidebar-footer {
   font-size: .8rem;
   color: rgba(255,255,255,.35);
+  margin-top: auto;
+  padding-top: 1.5rem;
 }
 
 
