@@ -410,6 +410,19 @@ layout: default
       lines.push((title ? title.textContent : 'Fill in the blank') + ':\n' + rows.join('\n'));
     });
 
+    document.querySelectorAll('[data-check-type="multiple_choice_multi"]').forEach(function (btn) {
+      var card = btn.closest('.lesson-exercise-card');
+      var title = card.querySelector('.lesson-exercise-label');
+      var rows = [];
+      card.querySelectorAll('.lesson-mc-block').forEach(function (block, i) {
+        var name = block.getAttribute('data-mc-name');
+        var checked = card.querySelector('input[name="' + name + '"]:checked');
+        var answerText = checked ? checked.closest('.lesson-mc-option').textContent.trim() : '(not answered)';
+        rows.push((i + 1) + '. ' + answerText);
+      });
+      lines.push((title ? title.textContent : 'Multiple choice') + ':\n' + rows.join('\n'));
+    });
+
     return lines.join('\n\n');
   }
 
@@ -475,6 +488,25 @@ layout: default
         });
         result.textContent = correctCount + ' / ' + sentences.length + ' correct';
         result.className = 'lesson-check-result ' + (correctCount === sentences.length ? 'is-correct' : 'is-incorrect');
+      }
+
+      if (checkType === 'multiple_choice_multi') {
+        var blocks = card.querySelectorAll('.lesson-mc-block');
+        var correctCount = 0;
+        blocks.forEach(function (block) {
+          var name = block.getAttribute('data-mc-name');
+          var correctIndex = block.getAttribute('data-answer-index');
+          var checked = card.querySelector('input[name="' + name + '"]:checked');
+          block.classList.remove('is-correct', 'is-incorrect');
+          if (checked && checked.value === correctIndex) {
+            block.classList.add('is-correct');
+            correctCount++;
+          } else {
+            block.classList.add('is-incorrect');
+          }
+        });
+        result.textContent = correctCount + ' / ' + blocks.length + ' correct';
+        result.className = 'lesson-check-result ' + (correctCount === blocks.length ? 'is-correct' : 'is-incorrect');
       }
     });
   });

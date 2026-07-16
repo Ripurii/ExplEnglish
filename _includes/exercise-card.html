@@ -30,6 +30,23 @@
   <p class="lesson-check-result"></p>
 
   {% when 'multiple_choice' %}
+  {% if ex.questions %}
+  {% for q in ex.questions %}
+  <div class="lesson-mc-block" data-answer-index="{{ q.answer_index }}" data-mc-name="mc-{{ ex_id }}-{{ forloop.index }}">
+    <p class="lesson-mc-question"><span class="lesson-mc-index">{{ forloop.index }}.</span> {{ q.question }}</p>
+    <div class="lesson-mc-options">
+      {% for opt in q.options %}
+      <label class="lesson-mc-option">
+        <input type="radio" name="mc-{{ ex_id }}-{{ forloop.parentloop.index }}" value="{{ forloop.index0 }}" class="lesson-mc-radio">
+        <span class="lesson-mc-option-text">{{ opt }}</span>
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+  <button type="button" class="lesson-pill lesson-check-btn" data-check-type="multiple_choice_multi" data-check-target="mc-{{ ex_id }}">Check answers</button>
+  <p class="lesson-check-result"></p>
+  {% else %}
   <p class="lesson-mc-question">{{ ex.question }}</p>
   <div class="lesson-mc-options">
     {% for opt in ex.options %}
@@ -41,6 +58,7 @@
   </div>
   <button type="button" class="lesson-pill lesson-check-btn" data-check-type="multiple_choice" data-check-target="mc-{{ ex_id }}" data-answer-index="{{ ex.answer_index }}">Check answer</button>
   <p class="lesson-check-result"></p>
+  {% endif %}
 
   {% when 'fill_blank' %}
   <div class="lesson-matching lesson-fillblank">
