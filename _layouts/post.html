@@ -136,6 +136,61 @@ layout: default
 {% endfor %}
 {% endif %}
 
+{% if page.think_pair_share %}
+{% assign tps = page.think_pair_share %}
+<div class="section-divider">
+  <span class="section-divider-label">Think-Pair-Share</span>
+  <span class="section-divider-line"></span>
+</div>
+<div class="lesson-tps-grid">
+  <div class="lesson-exercise-card">
+    <p class="lesson-exercise-label">Think</p>
+    <p class="lesson-exercise-instructions">{{ tps.think.instructions }}</p>
+    <div class="lesson-answer-block">
+      <label class="lesson-answer-label">Animal:</label>
+      <select class="lesson-themed-select" data-answer-label="Think - Animal">
+        <option value="">-- choose an animal --</option>
+        {% for a in tps.animals %}<option value="{{ a }}">{{ a }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="lesson-answer-block">
+      <label class="lesson-answer-label">{{ tps.think.prompt2 }}</label>
+      <textarea class="lesson-answer-textarea" data-answer-label="Think - Reason" placeholder="Write your answer..."></textarea>
+    </div>
+  </div>
+
+  <div class="lesson-exercise-card">
+    <p class="lesson-exercise-label">Pair</p>
+    <p class="lesson-exercise-instructions">{{ tps.pair.instructions }}</p>
+    <div class="lesson-answer-block">
+      <label class="lesson-answer-label">My partner chose, and why:</label>
+      <textarea class="lesson-answer-textarea" data-answer-label="Pair - Partner's choice" placeholder="Write your answer..."></textarea>
+    </div>
+    <p class="lesson-exercise-instructions"><strong>Discuss:</strong></p>
+    <ul class="lesson-goals-list">
+      {% for q in tps.pair.questions %}<li>{{ q }}</li>{% endfor %}
+    </ul>
+    <div class="lesson-answer-block">
+      <label class="lesson-answer-label">Our final choice:</label>
+      <textarea class="lesson-answer-textarea" data-answer-label="Pair - Final choice" placeholder="Write your answer..."></textarea>
+    </div>
+    <div class="lesson-answer-block">
+      <label class="lesson-answer-label">Reason:</label>
+      <textarea class="lesson-answer-textarea" data-answer-label="Pair - Reason" placeholder="Write your answer..."></textarea>
+    </div>
+  </div>
+
+  <div class="lesson-exercise-card">
+    <p class="lesson-exercise-label">Share <span class="lesson-tps-duration">({{ tps.share.duration }})</span></p>
+    <p class="lesson-exercise-instructions">{{ tps.share.instructions }}</p>
+    <p class="lesson-exercise-instructions"><strong>Sentence starters:</strong></p>
+    <ul class="lesson-goals-list">
+      {% for s in tps.share.sentence_starters %}<li>{{ s }}</li>{% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}
+
 {% if page.learning_goals %}
 <div class="section-divider">
   <span class="section-divider-line"></span>
@@ -354,6 +409,7 @@ layout: default
 
   var textareas = document.querySelectorAll('.lesson-answer-textarea');
   var matchingSlots = document.querySelectorAll('.lesson-matching-slot');
+  var themedSelects = document.querySelectorAll('.lesson-themed-select');
   var mcGroups = {};
   document.querySelectorAll('input[type="radio"][name^="mc-"]').forEach(function (r) {
     mcGroups[r.name] = mcGroups[r.name] || [];
@@ -363,10 +419,11 @@ layout: default
   function hasContent() {
     var textHasContent = Array.prototype.some.call(textareas, function (t) { return t.value.trim().length > 0; });
     var matchingHasContent = Array.prototype.some.call(matchingSlots, function (s) { return !!s.querySelector('.lesson-matching-chip'); });
+    var selectHasContent = Array.prototype.some.call(themedSelects, function (s) { return s.value !== ''; });
     var mcHasContent = Object.keys(mcGroups).some(function (name) {
       return mcGroups[name].some(function (r) { return r.checked; });
     });
-    return textHasContent || matchingHasContent || mcHasContent;
+    return textHasContent || matchingHasContent || selectHasContent || mcHasContent;
   }
 
   function collectAnswerText() {
@@ -375,6 +432,12 @@ layout: default
     textareas.forEach(function (t) {
       if (t.value.trim()) {
         lines.push((t.getAttribute('data-answer-label') || 'Answer') + ':\n' + t.value.trim());
+      }
+    });
+
+    themedSelects.forEach(function (s) {
+      if (s.value) {
+        lines.push((s.getAttribute('data-answer-label') || 'Answer') + ':\n' + s.value);
       }
     });
 
