@@ -434,6 +434,19 @@ layout: default
       lines.push((title ? title.textContent : 'Food chain') + ':\n' + rows.join('\n'));
     });
 
+    document.querySelectorAll('[data-check-type="ordering"]').forEach(function (btn) {
+      var card = btn.closest('.lesson-exercise-card');
+      var title = card.querySelector('.lesson-exercise-label');
+      var rows = [];
+      card.querySelectorAll('.lesson-ordering-step').forEach(function (step, i) {
+        var fixedText = step.querySelector('.lesson-ordering-fixed-text');
+        var chip = step.querySelector('.lesson-matching-chip');
+        var text = fixedText ? fixedText.textContent.trim() : (chip ? chip.textContent.trim() : '(not answered)');
+        rows.push((i + 1) + '. ' + text);
+      });
+      lines.push((title ? title.textContent : 'Cause and effect') + ':\n' + rows.join('\n'));
+    });
+
     return lines.join('\n\n');
   }
 
@@ -552,6 +565,23 @@ layout: default
           }
         });
 
+        result.textContent = correctCount + ' / ' + slots.length + ' correct';
+        result.className = 'lesson-check-result ' + (correctCount === slots.length ? 'is-correct' : 'is-incorrect');
+      }
+
+      if (checkType === 'ordering') {
+        var slots = card.querySelectorAll('.lesson-ordering-slot[data-answer]');
+        var correctCount = 0;
+        slots.forEach(function (slot) {
+          var chip = slot.querySelector('.lesson-matching-chip');
+          slot.classList.remove('is-correct', 'is-incorrect');
+          if (chip && chip.getAttribute('data-key') === slot.getAttribute('data-answer')) {
+            slot.classList.add('is-correct');
+            correctCount++;
+          } else {
+            slot.classList.add('is-incorrect');
+          }
+        });
         result.textContent = correctCount + ' / ' + slots.length + ' correct';
         result.className = 'lesson-check-result ' + (correctCount === slots.length ? 'is-correct' : 'is-incorrect');
       }

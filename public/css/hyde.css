@@ -1103,6 +1103,34 @@ a.video-tag:hover {
   }
 }
 
+.lesson-ordering-steps {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.lesson-ordering-step {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: .85rem;
+  color: var(--color-text);
+}
+.lesson-ordering-index {
+  flex: none;
+  min-width: 1.4rem;
+  font-weight: bold;
+}
+.lesson-ordering-step.is-fixed {
+  color: var(--color-text-muted);
+}
+.lesson-ordering-fixed-text {
+  font-style: italic;
+}
+.lesson-ordering-slot {
+  flex: 1;
+  min-height: 2.4rem;
+}
+
 .lesson-mc-block {
   margin-bottom: 1.25rem;
 }

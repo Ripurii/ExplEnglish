@@ -127,6 +127,29 @@
   <button type="button" class="lesson-pill lesson-check-btn" data-check-type="food_chain" data-check-target="foodchain-{{ ex_id }}">Check answers</button>
   <p class="lesson-check-result"></p>
 
+  {% when 'ordering' %}
+  <div class="lesson-matching lesson-ordering">
+    <div class="lesson-matching-bank">
+      {% for w in ex.words %}
+      <div class="lesson-matching-chip" data-key="{{ w | slugify }}">{{ w }}</div>
+      {% endfor %}
+    </div>
+    <div class="lesson-ordering-steps">
+      {% for step in ex.steps %}
+      <div class="lesson-ordering-step{% if step.fixed %} is-fixed{% endif %}">
+        <span class="lesson-ordering-index">{{ forloop.index }}.</span>
+        {% if step.fixed %}
+        <span class="lesson-ordering-fixed-text">{{ step.text }}</span>
+        {% else %}
+        <div class="lesson-matching-slot lesson-ordering-slot" data-answer="{{ step.answer | slugify }}"></div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <button type="button" class="lesson-pill lesson-check-btn" data-check-type="ordering" data-check-target="ordering-{{ ex_id }}">Check answers</button>
+  <p class="lesson-check-result"></p>
+
   {% else %}
   <textarea class="lesson-answer-textarea" data-answer-label="{{ ex.label | default: ex.title | default: 'Video ' | append: include.video_number | append: ' exercise' }}" placeholder="Write your answer..."></textarea>
 
