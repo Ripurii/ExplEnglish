@@ -513,6 +513,21 @@ layout: default
     return lines.join('\n\n');
   }
 
+  document.querySelectorAll('.lesson-answer-textarea-counted').forEach(function (textarea) {
+    var counter = textarea.nextElementSibling;
+    if (!counter || !counter.classList.contains('lesson-word-counter')) return;
+    var target = parseInt(counter.getAttribute('data-target'), 10);
+
+    function updateCount() {
+      var words = textarea.value.trim().length ? textarea.value.trim().split(/\s+/).length : 0;
+      counter.textContent = words + ' / ' + target + ' words';
+      counter.classList.toggle('is-over', words > target);
+    }
+
+    textarea.addEventListener('input', updateCount);
+    updateCount();
+  });
+
   window.addEventListener('beforeunload', function (e) {
     if (hasContent()) {
       e.preventDefault();

@@ -867,6 +867,17 @@ a.video-tag:hover {
   color: var(--color-text-faint);
 }
 
+.lesson-word-counter {
+  margin: .4rem 0 0;
+  font-size: .8rem;
+  text-align: right;
+  color: var(--color-text-muted);
+}
+.lesson-word-counter.is-over {
+  color: var(--color-rust);
+  font-weight: bold;
+}
+
 .lesson-matching {
   display: flex;
   flex-direction: column;

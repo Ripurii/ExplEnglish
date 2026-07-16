@@ -151,7 +151,10 @@
   <p class="lesson-check-result"></p>
 
   {% else %}
-  <textarea class="lesson-answer-textarea" data-answer-label="{{ ex.label | default: ex.title | default: 'Video ' | append: include.video_number | append: ' exercise' }}" placeholder="Write your answer..."></textarea>
+  <textarea class="lesson-answer-textarea{% if ex.word_target %} lesson-answer-textarea-counted{% endif %}" data-answer-label="{{ ex.label | default: ex.title | default: 'Video ' | append: include.video_number | append: ' exercise' }}" placeholder="Write your answer..."></textarea>
+  {% if ex.word_target %}
+  <p class="lesson-word-counter" data-target="{{ ex.word_target }}">0 / {{ ex.word_target }} words</p>
+  {% endif %}
 
   {% endcase %}
 </div>
