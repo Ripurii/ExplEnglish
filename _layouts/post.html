@@ -521,9 +521,27 @@ layout: default
       }
 
       if (checkType === 'food_chain') {
-        var slots = card.querySelectorAll('.lesson-diagram .lesson-matching-slot[data-answer]');
+        var slots = Array.prototype.slice.call(card.querySelectorAll('.lesson-diagram .lesson-matching-slot[data-answer]'));
+        var topSlots = Array.prototype.slice.call(card.querySelectorAll('.lesson-diagram-top-row .lesson-diagram-circle'));
+        var otherSlots = slots.filter(function (s) { return topSlots.indexOf(s) === -1; });
         var correctCount = 0;
-        slots.forEach(function (slot) {
+
+        if (topSlots.length === 2) {
+          var expected = topSlots.map(function (s) { return s.getAttribute('data-answer'); }).slice().sort();
+          var placed = topSlots.map(function (s) {
+            var c = s.querySelector('.lesson-matching-chip');
+            return c ? c.getAttribute('data-key') : null;
+          });
+          var placedSorted = placed.slice().sort();
+          var pairCorrect = placed[0] && placed[1] && placedSorted[0] === expected[0] && placedSorted[1] === expected[1];
+          topSlots.forEach(function (s) {
+            s.classList.remove('is-correct', 'is-incorrect');
+            s.classList.add(pairCorrect ? 'is-correct' : 'is-incorrect');
+          });
+          if (pairCorrect) correctCount += 2;
+        }
+
+        otherSlots.forEach(function (slot) {
           var chip = slot.querySelector('.lesson-matching-chip');
           slot.classList.remove('is-correct', 'is-incorrect');
           if (chip && chip.getAttribute('data-key') === slot.getAttribute('data-answer')) {
@@ -533,6 +551,7 @@ layout: default
             slot.classList.add('is-incorrect');
           }
         });
+
         result.textContent = correctCount + ' / ' + slots.length + ' correct';
         result.className = 'lesson-check-result ' + (correctCount === slots.length ? 'is-correct' : 'is-incorrect');
       }
