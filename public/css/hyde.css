@@ -1226,13 +1226,6 @@ a.video-tag:hover {
   gap: 1.25rem;
   margin-bottom: 1.5rem;
 }
-.lesson-tps-duration {
-  font-weight: normal;
-  text-transform: none;
-  letter-spacing: normal;
-  font-size: .75rem;
-  color: var(--color-text-muted);
-}
 
 .lesson-themed-select {
   appearance: none;
