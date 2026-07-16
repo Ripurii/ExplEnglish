@@ -750,9 +750,9 @@ a.lesson-row:hover {
 
 .lesson-video-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 2rem;
-  margin: 1.5rem 0;
+  margin: 1.5rem 0 1rem;
 }
 .lesson-video-row.video-right {
   flex-direction: row-reverse;
@@ -766,6 +766,18 @@ a.lesson-row:hover {
   .lesson-video-row,
   .lesson-video-row.video-right {
     flex-direction: column;
+  }
+}
+
+.lesson-video-extra-exercises {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 0 0 1.5rem;
+}
+@media (max-width: 40em) {
+  .lesson-video-extra-exercises {
+    grid-template-columns: 1fr;
   }
 }
 

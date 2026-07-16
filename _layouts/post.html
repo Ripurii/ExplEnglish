@@ -111,76 +111,21 @@ layout: default
   </div>
   <div class="lesson-video-exercise">
     {% if video.fun_fact %}<div class="lesson-fun-fact"><strong>Fun fact!</strong> {{ video.fun_fact }}</div>{% endif %}
-    {% for ex in video.exercises %}
-    {% assign ex_id = video.number | append: '-' | append: forloop.index %}
-    <div class="lesson-exercise-card">
-      {% if ex.number %}
-      <p class="lesson-exercise-label"><span class="lesson-exercise-number">Exercise {{ ex.number }}.</span> {{ ex.label }}</p>
-      {% elsif ex.title %}
-      <p class="lesson-exercise-label">{{ ex.title }}</p>
-      {% endif %}
-      {% if ex.instructions %}<p class="lesson-exercise-instructions">{{ ex.instructions }}</p>{% endif %}
-
-      {% case ex.type %}
-
-      {% when 'matching' %}
-      <div class="lesson-matching">
-        <div class="lesson-matching-bank">
-          {% for def in ex.definitions %}
-          <div class="lesson-matching-chip" data-key="{{ def.key }}">{{ def.key }}. {{ def.text }}</div>
-          {% endfor %}
-        </div>
-        <div class="lesson-matching-targets">
-          {% for term in ex.terms %}
-          <div class="lesson-matching-row">
-            <span class="lesson-matching-term">{{ forloop.index }}. {{ term }}</span>
-            <div class="lesson-matching-slot"></div>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-      <button type="button" class="lesson-pill lesson-check-btn" data-check-type="matching" data-check-target="matching-{{ ex_id }}" data-answers="{{ ex.answers | join: ',' }}">Check answers</button>
-      <p class="lesson-check-result"></p>
-
-      {% when 'multiple_choice' %}
-      <p class="lesson-mc-question">{{ ex.question }}</p>
-      <div class="lesson-mc-options">
-        {% for opt in ex.options %}
-        <label class="lesson-mc-option">
-          <input type="radio" name="mc-{{ ex_id }}" value="{{ forloop.index0 }}" class="lesson-mc-radio">
-          <span class="lesson-mc-option-text">{{ opt }}</span>
-        </label>
-        {% endfor %}
-      </div>
-      <button type="button" class="lesson-pill lesson-check-btn" data-check-type="multiple_choice" data-check-target="mc-{{ ex_id }}" data-answer-index="{{ ex.answer_index }}">Check answer</button>
-      <p class="lesson-check-result"></p>
-
-      {% when 'fill_blank' %}
-      <div class="lesson-matching lesson-fillblank">
-        <div class="lesson-matching-bank">
-          {% for w in ex.words %}
-          <div class="lesson-matching-chip" data-key="{{ w | slugify }}">{{ w }}</div>
-          {% endfor %}
-        </div>
-        <div class="lesson-fillblank-sentences">
-          {% for s in ex.sentences %}
-          <p class="lesson-fillblank-sentence" data-answer="{{ s.answer | slugify }}">
-            <span class="lesson-fillblank-index">{{ forloop.index }}.</span> {{ s.before }} <span class="lesson-matching-slot lesson-fillblank-slot"></span> {{ s.after }}
-          </p>
-          {% endfor %}
-        </div>
-      </div>
-      <button type="button" class="lesson-pill lesson-check-btn" data-check-type="fill_blank" data-check-target="fillblank-{{ ex_id }}">Check answers</button>
-      <p class="lesson-check-result"></p>
-
-      {% else %}
-      <textarea class="lesson-answer-textarea" data-answer-label="{{ ex.label | default: ex.title | default: 'Video ' | append: video.number | append: ' exercise' }}" placeholder="Write your answer..."></textarea>
-
-      {% endcase %}
-    </div>
-    {% endfor %}
+    {% if video.exercises.first %}
+    {% assign first_ex_id = video.number | append: '-1' %}
+    {% include exercise-card.html ex=video.exercises.first ex_id=first_ex_id video_number=video.number %}
+    {% endif %}
   </div>
 </div>
+{% if video.exercises.size > 1 %}
+<div class="lesson-video-extra-exercises">
+  {% for ex in video.exercises offset:1 %}
+  {% assign real_index = forloop.index | plus: 1 %}
+  {% assign ex_id = video.number | append: '-' | append: real_index %}
+  {% include exercise-card.html ex=ex ex_id=ex_id video_number=video.number %}
+  {% endfor %}
+</div>
+{% endif %}
 {% endfor %}
 {% endif %}
 
