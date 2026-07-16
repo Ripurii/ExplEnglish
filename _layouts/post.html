@@ -111,13 +111,20 @@ layout: default
   </div>
   <div class="lesson-video-exercise">
     {% if video.fun_fact %}<div class="lesson-fun-fact"><strong>Fun fact!</strong> {{ video.fun_fact }}</div>{% endif %}
+    {% if video.split_exercises %}
     {% if video.exercises.first %}
     {% assign first_ex_id = video.number | append: '-1' %}
     {% include exercise-card.html ex=video.exercises.first ex_id=first_ex_id video_number=video.number %}
     {% endif %}
+    {% else %}
+    {% for ex in video.exercises %}
+    {% assign ex_id = video.number | append: '-' | append: forloop.index %}
+    {% include exercise-card.html ex=ex ex_id=ex_id video_number=video.number %}
+    {% endfor %}
+    {% endif %}
   </div>
 </div>
-{% if video.exercises.size > 1 %}
+{% if video.split_exercises and video.exercises.size > 1 %}
 <div class="lesson-video-extra-exercises">
   {% for ex in video.exercises offset:1 %}
   {% assign real_index = forloop.index | plus: 1 %}
