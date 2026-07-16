@@ -527,18 +527,18 @@ layout: default
         var correctCount = 0;
 
         if (topSlots.length === 2) {
-          var expected = topSlots.map(function (s) { return s.getAttribute('data-answer'); }).slice().sort();
-          var placed = topSlots.map(function (s) {
-            var c = s.querySelector('.lesson-matching-chip');
-            return c ? c.getAttribute('data-key') : null;
-          });
-          var placedSorted = placed.slice().sort();
-          var pairCorrect = placed[0] && placed[1] && placedSorted[0] === expected[0] && placedSorted[1] === expected[1];
+          var validSet = topSlots.map(function (s) { return s.getAttribute('data-answer'); });
           topSlots.forEach(function (s) {
+            var c = s.querySelector('.lesson-matching-chip');
+            var key = c ? c.getAttribute('data-key') : null;
             s.classList.remove('is-correct', 'is-incorrect');
-            s.classList.add(pairCorrect ? 'is-correct' : 'is-incorrect');
+            if (key && validSet.indexOf(key) !== -1) {
+              s.classList.add('is-correct');
+              correctCount++;
+            } else {
+              s.classList.add('is-incorrect');
+            }
           });
-          if (pairCorrect) correctCount += 2;
         }
 
         otherSlots.forEach(function (slot) {
