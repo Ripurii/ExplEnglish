@@ -155,6 +155,24 @@ layout: default
       <button type="button" class="lesson-pill lesson-check-btn" data-check-type="multiple_choice" data-check-target="mc-{{ ex_id }}" data-answer-index="{{ ex.answer_index }}">Check answer</button>
       <p class="lesson-check-result"></p>
 
+      {% when 'fill_blank' %}
+      <div class="lesson-matching lesson-fillblank">
+        <div class="lesson-matching-bank">
+          {% for w in ex.words %}
+          <div class="lesson-matching-chip" data-key="{{ w | slugify }}">{{ w }}</div>
+          {% endfor %}
+        </div>
+        <div class="lesson-fillblank-sentences">
+          {% for s in ex.sentences %}
+          <p class="lesson-fillblank-sentence" data-answer="{{ s.answer | slugify }}">
+            <span class="lesson-fillblank-index">{{ forloop.index }}.</span> {{ s.before }} <span class="lesson-matching-slot lesson-fillblank-slot"></span> {{ s.after }}
+          </p>
+          {% endfor %}
+        </div>
+      </div>
+      <button type="button" class="lesson-pill lesson-check-btn" data-check-type="fill_blank" data-check-target="fillblank-{{ ex_id }}">Check answers</button>
+      <p class="lesson-check-result"></p>
+
       {% else %}
       <textarea class="lesson-answer-textarea" data-answer-label="{{ ex.label | default: ex.title | default: 'Video ' | append: video.number | append: ' exercise' }}" placeholder="Write your answer..."></textarea>
 
@@ -429,6 +447,17 @@ layout: default
       lines.push((title ? title.textContent : 'Multiple choice') + ':\n' + answerText);
     });
 
+    document.querySelectorAll('[data-check-type="fill_blank"]').forEach(function (btn) {
+      var card = btn.closest('.lesson-exercise-card');
+      var title = card.querySelector('.lesson-exercise-label');
+      var rows = [];
+      card.querySelectorAll('.lesson-fillblank-sentence').forEach(function (sentence, i) {
+        var chip = sentence.querySelector('.lesson-matching-chip');
+        rows.push((i + 1) + '. ' + (chip ? chip.textContent.trim() : '(not answered)'));
+      });
+      lines.push((title ? title.textContent : 'Fill in the blank') + ':\n' + rows.join('\n'));
+    });
+
     return lines.join('\n\n');
   }
 
@@ -477,6 +506,23 @@ layout: default
         var isCorrect = checked.value === correctIndex;
         result.textContent = isCorrect ? 'Correct!' : 'Incorrect, try again.';
         result.className = 'lesson-check-result ' + (isCorrect ? 'is-correct' : 'is-incorrect');
+      }
+
+      if (checkType === 'fill_blank') {
+        var sentences = card.querySelectorAll('.lesson-fillblank-sentence');
+        var correctCount = 0;
+        sentences.forEach(function (sentence) {
+          var chip = sentence.querySelector('.lesson-matching-chip');
+          sentence.classList.remove('is-correct', 'is-incorrect');
+          if (chip && chip.getAttribute('data-key') === sentence.getAttribute('data-answer')) {
+            sentence.classList.add('is-correct');
+            correctCount++;
+          } else {
+            sentence.classList.add('is-incorrect');
+          }
+        });
+        result.textContent = correctCount + ' / ' + sentences.length + ' correct';
+        result.className = 'lesson-check-result ' + (correctCount === sentences.length ? 'is-correct' : 'is-incorrect');
       }
     });
   });

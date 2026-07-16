@@ -951,6 +951,37 @@ a.video-tag:hover {
   border-color: var(--color-rust);
 }
 
+.lesson-fillblank-sentences {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+.lesson-fillblank-sentence {
+  margin: 0;
+  font-size: .85rem;
+  color: var(--color-text);
+  line-height: 1.9;
+}
+.lesson-fillblank-index {
+  font-weight: bold;
+}
+.lesson-fillblank-slot {
+  display: inline-flex;
+  min-width: 7rem;
+  min-height: 1.8rem;
+  vertical-align: middle;
+  margin: 0 .25rem;
+  padding: .15rem .5rem;
+}
+.lesson-fillblank-sentence.is-correct .lesson-fillblank-slot {
+  border-style: solid;
+  border-color: var(--color-green);
+}
+.lesson-fillblank-sentence.is-incorrect .lesson-fillblank-slot {
+  border-style: solid;
+  border-color: var(--color-rust);
+}
+
 .lesson-mc-question {
   margin: 0 0 .75rem;
   font-weight: normal;
