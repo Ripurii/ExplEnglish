@@ -423,6 +423,17 @@ layout: default
       lines.push((title ? title.textContent : 'Multiple choice') + ':\n' + rows.join('\n'));
     });
 
+    document.querySelectorAll('[data-check-type="food_chain"]').forEach(function (btn) {
+      var card = btn.closest('.lesson-exercise-card');
+      var title = card.querySelector('.lesson-exercise-label');
+      var rows = [];
+      card.querySelectorAll('.lesson-diagram .lesson-matching-slot[data-answer]').forEach(function (slot, i) {
+        var chip = slot.querySelector('.lesson-matching-chip');
+        rows.push((i + 1) + '. ' + (chip ? chip.textContent.trim() : '(not answered)'));
+      });
+      lines.push((title ? title.textContent : 'Food chain') + ':\n' + rows.join('\n'));
+    });
+
     return lines.join('\n\n');
   }
 
@@ -507,6 +518,23 @@ layout: default
         });
         result.textContent = correctCount + ' / ' + blocks.length + ' correct';
         result.className = 'lesson-check-result ' + (correctCount === blocks.length ? 'is-correct' : 'is-incorrect');
+      }
+
+      if (checkType === 'food_chain') {
+        var slots = card.querySelectorAll('.lesson-diagram .lesson-matching-slot[data-answer]');
+        var correctCount = 0;
+        slots.forEach(function (slot) {
+          var chip = slot.querySelector('.lesson-matching-chip');
+          slot.classList.remove('is-correct', 'is-incorrect');
+          if (chip && chip.getAttribute('data-key') === slot.getAttribute('data-answer')) {
+            slot.classList.add('is-correct');
+            correctCount++;
+          } else {
+            slot.classList.add('is-incorrect');
+          }
+        });
+        result.textContent = correctCount + ' / ' + slots.length + ' correct';
+        result.className = 'lesson-check-result ' + (correctCount === slots.length ? 'is-correct' : 'is-incorrect');
       }
     });
   });

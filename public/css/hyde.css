@@ -989,6 +989,120 @@ a.video-tag:hover {
   border-color: var(--color-rust);
 }
 
+.lesson-matching-slot.is-correct {
+  border-style: solid;
+  border-color: var(--color-green);
+}
+.lesson-matching-slot.is-incorrect {
+  border-style: solid;
+  border-color: var(--color-rust);
+}
+
+.lesson-diagram-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.lesson-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .35rem;
+  padding: 1.5rem 1rem;
+  border-radius: .6rem;
+  background-color: var(--color-content-bg);
+}
+.lesson-diagram-top-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.lesson-diagram-circle-wrap {
+  display: flex;
+  flex: none;
+}
+.lesson-diagram-circle {
+  width: 6.5rem;
+  height: 6.5rem;
+  flex: none;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: .5rem;
+  font-size: .8rem;
+  background-color: var(--color-card-bg);
+}
+.lesson-diagram-harrow,
+.lesson-diagram-diag,
+.lesson-diagram-varrow-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .35rem;
+}
+.lesson-diagram-arrow-icon {
+  width: 2.5rem;
+  height: 1.5rem;
+  color: var(--color-text-muted);
+}
+.lesson-diagram-diag .lesson-diagram-arrow-icon {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+.lesson-diagram-varrow-row > .lesson-diagram-arrow-icon {
+  width: 1.5rem;
+  height: 2.25rem;
+}
+.lesson-diagram-slot-pill {
+  flex: none;
+  min-width: 5.5rem;
+  min-height: 2rem;
+  padding: .25rem .6rem;
+  font-size: .8rem;
+  justify-content: center;
+  text-align: center;
+}
+.lesson-diagram-diag-row {
+  display: flex;
+  justify-content: center;
+  gap: 3.5rem;
+  width: 100%;
+}
+.lesson-diagram-mid-row,
+.lesson-diagram-bottom-row {
+  display: flex;
+}
+.lesson-diagram-bank {
+  justify-content: center;
+}
+.lesson-diagram-circle .lesson-matching-chip,
+.lesson-diagram-slot-pill .lesson-matching-chip {
+  border: none;
+  background: transparent;
+  padding: 0;
+  text-align: center;
+}
+.lesson-diagram-circle .lesson-matching-chip {
+  font-size: .75rem;
+}
+@media (max-width: 40em) {
+  .lesson-diagram-top-row {
+    gap: .5rem;
+  }
+  .lesson-diagram-diag-row {
+    gap: 1.5rem;
+  }
+  .lesson-diagram-circle {
+    width: 5.25rem;
+    height: 5.25rem;
+    font-size: .7rem;
+  }
+}
+
 .lesson-mc-block {
   margin-bottom: 1.25rem;
 }

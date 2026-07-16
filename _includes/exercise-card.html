@@ -78,6 +78,55 @@
   <button type="button" class="lesson-pill lesson-check-btn" data-check-type="fill_blank" data-check-target="fillblank-{{ ex_id }}">Check answers</button>
   <p class="lesson-check-result"></p>
 
+  {% when 'food_chain' %}
+  <div class="lesson-matching lesson-diagram-wrap">
+    <div class="lesson-diagram">
+      <div class="lesson-diagram-top-row">
+        <div class="lesson-diagram-circle-wrap">
+          <div class="lesson-diagram-circle lesson-matching-slot" data-answer="{{ ex.nodes.top_left | slugify }}"></div>
+        </div>
+        <div class="lesson-diagram-harrow">
+          <svg class="lesson-diagram-arrow-icon" viewBox="0 0 60 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12h56M2 12l10-8M2 12l10 8M58 12l-10-8M58 12l-10 8" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="lesson-diagram-slot-pill lesson-matching-slot" data-answer="{{ ex.labels.horizontal | slugify }}"></div>
+        </div>
+        <div class="lesson-diagram-circle-wrap">
+          <div class="lesson-diagram-circle lesson-matching-slot" data-answer="{{ ex.nodes.top_right | slugify }}"></div>
+        </div>
+      </div>
+      <div class="lesson-diagram-diag-row">
+        <div class="lesson-diagram-diag lesson-diagram-diag-left">
+          <svg class="lesson-diagram-arrow-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l28 28M34 22v12H22" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="lesson-diagram-slot-pill lesson-matching-slot" data-answer="{{ ex.labels.diag_left | slugify }}"></div>
+        </div>
+        <div class="lesson-diagram-diag lesson-diagram-diag-right">
+          <svg class="lesson-diagram-arrow-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M34 6L6 34M6 22v12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="lesson-diagram-slot-pill lesson-matching-slot" data-answer="{{ ex.labels.diag_right | slugify }}"></div>
+        </div>
+      </div>
+      <div class="lesson-diagram-mid-row">
+        <div class="lesson-diagram-circle-wrap">
+          <div class="lesson-diagram-circle lesson-matching-slot" data-answer="{{ ex.nodes.middle | slugify }}"></div>
+        </div>
+      </div>
+      <div class="lesson-diagram-varrow-row">
+        <svg class="lesson-diagram-arrow-icon" viewBox="0 0 24 50" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2v42M2 34l10 10 10-10" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="lesson-diagram-slot-pill lesson-matching-slot" data-answer="{{ ex.labels.vertical | slugify }}"></div>
+      </div>
+      <div class="lesson-diagram-bottom-row">
+        <div class="lesson-diagram-circle-wrap">
+          <div class="lesson-diagram-circle lesson-matching-slot" data-answer="{{ ex.nodes.bottom | slugify }}"></div>
+        </div>
+      </div>
+    </div>
+    <div class="lesson-matching-bank lesson-diagram-bank">
+      {% for w in ex.words %}
+      <div class="lesson-matching-chip" data-key="{{ w | slugify }}">{{ w }}</div>
+      {% endfor %}
+    </div>
+  </div>
+  <button type="button" class="lesson-pill lesson-check-btn" data-check-type="food_chain" data-check-target="foodchain-{{ ex_id }}">Check answers</button>
+  <p class="lesson-check-result"></p>
+
   {% else %}
   <textarea class="lesson-answer-textarea" data-answer-label="{{ ex.label | default: ex.title | default: 'Video ' | append: include.video_number | append: ' exercise' }}" placeholder="Write your answer..."></textarea>
 

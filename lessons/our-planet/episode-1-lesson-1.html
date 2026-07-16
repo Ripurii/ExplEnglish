@@ -183,6 +183,79 @@ videos:
             answer_index: 0
   - number: "1.4"
     video_url: "https://www.youtube.com/embed/GfO-3Oir-qM?start=400&end=620&controls=0&rel=0&modestbranding=1"
+    split_exercises: true
+    exercises:
+      - type: matching
+        number: 1
+        label: "Vocabulary"
+        instructions: "Match the correct words with their meanings. Watch the video afterwards to check if you got them right."
+        terms:
+          - "Desert"
+          - "Enriched"
+          - "Dust"
+          - "A quarter"
+          - "Nutrients"
+          - "Foundation"
+        definitions:
+          - key: a
+            text: "The basic structure or starting point that something is built on."
+          - key: b
+            text: "Substances that provide the nourishment needed for growth and health."
+          - key: c
+            text: "Fine, dry particles of matter."
+          - key: d
+            text: "A large, dry area of land with very little rainfall."
+          - key: e
+            text: "One of four equal parts of something."
+          - key: f
+            text: "Made better in quality by adding something valuable."
+        answers: [d, f, c, e, b, a]
+      - type: multiple_choice
+        number: 2
+        label: "Multiple choice"
+        instructions: "Choose the correct answer - make sure to read the questions before watching and listening."
+        questions:
+          - question: "How much dust/sand falls into the ocean after the wind carries it?"
+            options:
+              - "Half of it."
+              - "A trillion kilos."
+              - "A quarter of it."
+            answer_index: 2
+          - question: "What happens to the dust that falls into the ocean?"
+            options:
+              - "It serves as food for microscopic organisms."
+              - "It kills the microscopic organisms in the ocean."
+              - "It serves as food for the ocean."
+            answer_index: 0
+          - question: "What does the Mackerel eat?"
+            options:
+              - "Dolphins"
+              - "Krill"
+              - "Sea birds"
+            answer_index: 1
+      - type: food_chain
+        number: 3
+        label: "Food chain"
+        instructions: "Complete the food chain you have seen in the video. Use the words below. Fill in the circles and the arrows."
+        words:
+          - "Dolphin"
+          - "Sea birds"
+          - "Mackerel"
+          - "Krill"
+          - "Work together"
+          - "hunt"
+          - "hunt"
+          - "eat"
+        nodes:
+          top_left: "Dolphin"
+          top_right: "Sea birds"
+          middle: "Mackerel"
+          bottom: "Krill"
+        labels:
+          horizontal: "Work together"
+          diag_left: "hunt"
+          diag_right: "hunt"
+          vertical: "eat"
   - number: "1.5"
     video_url: "https://www.youtube.com/embed/GfO-3Oir-qM?start=620&end=1053&controls=0&rel=0&modestbranding=1"
   - number: "1.6"
