@@ -31,7 +31,7 @@ permalink: /latest
 </div>
 
 <ul class="lesson-list" id="latest-list">
-  {% for lesson in latest_lessons limit:20 %}
+  {% for lesson in latest_lessons limit:10 %}
   <li>
     <a class="lesson-row" href="{{ site.baseurl }}{{ lesson.url }}" data-level="{{ lesson.level }}" data-search="{{ lesson.title | downcase }}">
       <div class="lesson-row-main">
@@ -40,7 +40,6 @@ permalink: /latest
           {% if lesson.level %}<span class="badge badge-level">{{ lesson.level }}</span>{% endif %}
           {% for tag in lesson.tags %}<span class="badge badge-tag tag-{{ tag | slugify }}">{{ tag | capitalize }}</span>{% endfor %}
         </div>
-        <div class="lesson-row-meta">{{ lesson.posted }}</div>
       </div>
       <span class="lesson-row-time">{{ lesson.duration }}</span>
     </a>
