@@ -235,8 +235,9 @@ layout: default
     {% if page.info.duration_detail %}<p><strong>Lesson duration:</strong> {{ page.info.duration_detail }}</p>{% endif %}
     {% if page.info.printables %}
     <p class="lesson-goals-label">Printables:</p>
+    {% if page.info.printables_note %}<p class="lesson-printables-note">{{ page.info.printables_note }}</p>{% endif %}
     <div class="lesson-pill-group">
-      {% for item in page.info.printables %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}">{{ item.label }}</a>{% endfor %}
+      {% for item in page.info.printables %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}" download>{{ item.label }}</a>{% endfor %}
     </div>
     {% endif %}
     {% if page.info.extra_materials %}
