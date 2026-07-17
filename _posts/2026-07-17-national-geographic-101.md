@@ -10,11 +10,11 @@ series_home: true
 episodes_heading: "Topics"
 episodes_subtitle: "Choose a topic and you will be directed to the teacher page with all the necessary materials. Each video comes with its own vocabulary, listening, and discussion exercises."
 episodes:
-  - label: "Topic 1 101"
-  - label: "Topic 2 101"
-  - label: "Topic 3 101"
-  - label: "Topic 4 101"
-  - label: "Topic 5 101"
+  - label: "Earth 101"
+  - label: "Volcanoes 101"
+  - label: "Earthquakes 101"
+  - label: "Hurricanes 101"
+  - label: "Stars 101"
 ---
 
 Short, fast-paced National Geographic explainer videos, each covering one topic in a few minutes. Students build vocabulary and listening skills around real scientific and geographic subjects, from natural phenomena to space and wildlife.
