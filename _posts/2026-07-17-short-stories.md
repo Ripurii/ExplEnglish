@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Short Stories"
+title: "The FableCottage"
 level: A2
-tags: [digital-tools, reading, vocabulary]
+tags: [digital-tools, reading, vocabulary, cross-curricular]
 posted: "today"
 date: 2026-07-17
 lesson_series: short-stories
