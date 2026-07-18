@@ -3,7 +3,6 @@ layout: post
 title: "Harry Potter Project"
 level: B1
 tags: [vocabulary, reading, speaking, writing, novels, culture, book-series]
-posted: "today"
 date: 2026-07-17
 lesson_series: harry-potter-project
 series_home: true

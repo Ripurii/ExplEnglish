@@ -4,7 +4,6 @@ title: "Our Planet"
 level: B1
 tags: [listening, vocabulary, themed-series, cross-curricular]
 duration: 8 episodes
-posted: "today"
 date: 2026-07-14
 lesson_series: our-planet
 series_home: true

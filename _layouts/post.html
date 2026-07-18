@@ -24,7 +24,7 @@ layout: default
 <div class="lesson-meta-line">
   {% if page.level %}<span class="badge badge-level">{{ page.level }}</span>{% endif %}
   {% include tag-badges.html tags=page.tags %}
-  <span class="lesson-meta-text">{{ page.duration }}{% if page.duration and page.posted %} &middot; {% endif %}{{ page.posted }}</span>
+  {% if page.duration %}<span class="lesson-meta-text">{{ page.duration }}</span>{% endif %}
 </div>
 
 {% if page.tagline %}

@@ -3,7 +3,6 @@ layout: post
 title: "Motivation Sheet"
 level: A1
 tags: [tools]
-posted: "today"
 date: 2026-07-17
 intro: "This lesson part can be implemented at the start of the year to get to know your new students better and create an overview of your class on different levels, from personal preference to level of English knowledge. Implement this 10-minute lesson part anywhere within an existing lesson."
 learning_goals:

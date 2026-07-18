@@ -13,7 +13,6 @@ title: "Adjective Order Practice"
 level: A2                     # A1, A2, B1, B2, C1, or C2 — required for the filter pills
 tags: [grammar]                # see "Tags" below — controls badge color + which page(s) it appears on
 duration: 20 min
-posted: "5 days ago"           # freeform display text, not calculated automatically
 date: 2026-08-01
 ---
 
@@ -25,7 +24,7 @@ That's the minimum. It'll immediately show up on `/library` (alphabetical) and o
 
 ### Tags
 
-Each tag both colors the badge and decides which page(s) the lesson appears on. Use one of these exact values: `reading`, `listening`, `speaking`, `writing`, `vocabulary`, `grammar`, `literature`, `novels`, `short-stories`, `poetry`, `literary-devices`, `author-studies`, `themed-series`, `book-series`, `culture`, `cross-curricular`, `tools`, `digital-tools`. A lesson can have more than one tag (e.g. `[grammar, writing]`), and it'll show up on every matching page. `tools` and `digital-tools` are the two A-Z (not level-based) pages — everything else groups by level.
+Each tag both colors the badge and decides which page(s) the lesson appears on. Use one of these exact values: `reading`, `listening`, `speaking`, `writing`, `vocabulary`, `grammar`, `literature`, `novels`, `short-stories`, `poetry`, `literary-devices`, `author-studies`, `themed-series`, `book-series`, `culture`, `cross-curricular`, `tools`, `digital-tools`, `games`. A lesson can have more than one tag (e.g. `[grammar, writing]`), and it'll show up on every matching page. `tools`, `digital-tools`, and `games` are A-Z (not level-based) pages — everything else groups by level. Tag badges always display in the canonical order defined in `_data/tag_order.yml`, regardless of the order you list them in front matter.
 
 ### Richer lesson pages (optional)
 
@@ -38,7 +37,6 @@ title: "Our Planet: Episode 1"
 level: B1
 tags: [listening]
 duration: 45 min
-posted: "2 days ago"
 date: 2026-08-01
 lesson_number: 1
 tagline: "What will I learn?"

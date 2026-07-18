@@ -3,7 +3,6 @@ layout: post
 title: "National Geographic 101"
 level: B1
 tags: [listening, vocabulary, themed-series, cross-curricular]
-posted: "today"
 date: 2026-07-17
 lesson_series: national-geographic-101
 series_home: true
