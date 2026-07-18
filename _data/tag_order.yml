@@ -1,0 +1,21 @@
+# Canonical tag display order, matching the Home page taxonomy groups
+# (Skills, Language Systems, Literature, More). Tags not listed here
+# fall back to front-matter order, appended after these.
+- reading
+- listening
+- speaking
+- writing
+- vocabulary
+- grammar
+- literature
+- novels
+- short-stories
+- poetry
+- literary-devices
+- author-studies
+- themed-series
+- book-series
+- culture
+- cross-curricular
+- tools
+- digital-tools

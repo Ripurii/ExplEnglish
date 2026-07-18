@@ -23,7 +23,7 @@ layout: default
 
 <div class="lesson-meta-line">
   {% if page.level %}<span class="badge badge-level">{{ page.level }}</span>{% endif %}
-  {% for tag in page.tags %}<span class="badge badge-tag tag-{{ tag | slugify }}">{{ tag | capitalize }}</span>{% endfor %}
+  {% include tag-badges.html tags=page.tags %}
   <span class="lesson-meta-text">{{ page.duration }}{% if page.duration and page.posted %} &middot; {% endif %}{{ page.posted }}</span>
 </div>
 

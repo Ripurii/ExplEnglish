@@ -1,0 +1,5 @@
+{% assign remaining = include.tags %}
+{% for slug in site.data.tag_order %}
+  {% if include.tags contains slug %}<span class="badge badge-tag tag-{{ slug }}">{{ slug | capitalize }}</span>{% assign remaining = remaining | where_exp: 't', 't != slug' %}{% endif %}
+{% endfor %}
+{% for tag in remaining %}<span class="badge badge-tag tag-{{ tag | slugify }}">{{ tag | capitalize }}</span>{% endfor %}

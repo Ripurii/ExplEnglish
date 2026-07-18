@@ -50,7 +50,7 @@
               <div class="lesson-row-title-line">
                 <span class="lesson-row-title">{{ lesson.title }}</span>
                 {% if lesson.level %}<span class="badge badge-level">{{ lesson.level }}</span>{% endif %}
-                {% for tag in lesson.tags %}<span class="badge badge-tag tag-{{ tag | slugify }}">{{ tag | capitalize }}</span>{% endfor %}
+                {% include tag-badges.html tags=lesson.tags %}
               </div>
             </div>
             <span class="lesson-row-time">{{ lesson.duration }}</span>
