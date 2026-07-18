@@ -28,6 +28,18 @@
         {% endif %}
       </details>
       {% endfor %}
+
+      {% if episode_pages.size == 0 and series_home.episodes %}
+      <div class="sidebar-submenu">
+        {% for item in series_home.episodes %}
+        {% if item.url %}
+        <a class="sidebar-nav-item{% if page.url == item.url %} active{% endif %}" href="{{ site.baseurl }}{{ item.url }}">{{ item.label }}</a>
+        {% else %}
+        <span class="sidebar-nav-item sidebar-nav-item-disabled">{{ item.label }}</span>
+        {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
     </nav>
 
     <p class="sidebar-footer">&copy; {{ site.time | date: '%Y' }} {{ site.title }}. All rights reserved.</p>

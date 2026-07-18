@@ -219,6 +219,10 @@ a.sidebar-nav-item:focus {
   font-weight: bold;
   opacity: 1;
 }
+.sidebar-nav-item-disabled {
+  cursor: default;
+  opacity: .45 !important;
+}
 
 .sidebar-divider {
   border: 0;
