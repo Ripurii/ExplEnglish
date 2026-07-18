@@ -411,7 +411,8 @@ a.sidebar-nav-item:focus {
 .badge-tag.tag-culture,
 .badge-tag.tag-cross-curricular,
 .badge-tag.tag-tools,
-.badge-tag.tag-digital-tools {
+.badge-tag.tag-digital-tools,
+.badge-tag.tag-games {
   background-color: var(--color-amber);
 }
 
