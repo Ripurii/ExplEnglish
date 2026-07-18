@@ -220,6 +220,9 @@ layout: default
   <div class="lesson-col">
     <h2 class="lesson-section-heading">Lesson Phases</h2>
     {% if page.lesson_phases.warmup %}<p><strong>Warm-up</strong> &mdash; {{ page.lesson_phases.warmup }}</p>{% endif %}
+    {% if page.lesson_phases.phases %}
+    {% for phase in page.lesson_phases.phases %}<p><strong>{{ phase.label }}</strong> &mdash; {{ phase.text }}</p>{% endfor %}
+    {% endif %}
     {% if page.lesson_phases.repeating %}
     <div class="lesson-phase-box">
       <p class="lesson-phase-box-label">Repeats per video</p>
