@@ -15,6 +15,7 @@
       <a class="sidebar-nav-item" href="{{ site.baseurl }}">Home</a>
       <a class="sidebar-nav-item{% if page.url == series_home.url %} active{% endif %}" href="{{ site.baseurl }}{{ series_home.url }}">{{ series_home.title }}</a>
 
+      {% if episode_pages.size > 0 %}
       {% for ep in episode_pages %}
       {% assign ep_lessons = all_series_pages | where: 'episode_number', ep.episode_number | where_exp: 'p', 'p.is_episode != true' | sort: 'lesson_number' %}
       <details class="sidebar-nav-group"{% if page.episode_number == ep.episode_number %} open{% endif %}>
@@ -29,7 +30,25 @@
       </details>
       {% endfor %}
 
-      {% if episode_pages.size == 0 and series_home.episodes %}
+      {% elsif series_home.chapters %}
+      {% for chapter in series_home.chapters %}
+      <details class="sidebar-nav-group">
+        <summary class="sidebar-nav-item">{{ chapter.label }}</summary>
+        {% if chapter.lessons.size > 0 %}
+        <div class="sidebar-submenu">
+          {% for lesson in chapter.lessons %}
+          {% if lesson.url %}
+          <a class="sidebar-nav-item{% if page.url == lesson.url %} active{% endif %}" href="{{ site.baseurl }}{{ lesson.url }}">{{ lesson.label }}</a>
+          {% else %}
+          <span class="sidebar-nav-item sidebar-nav-item-disabled">{{ lesson.label }}</span>
+          {% endif %}
+          {% endfor %}
+        </div>
+        {% endif %}
+      </details>
+      {% endfor %}
+
+      {% elsif series_home.episodes %}
       <div class="sidebar-submenu">
         {% for item in series_home.episodes %}
         {% if item.url %}

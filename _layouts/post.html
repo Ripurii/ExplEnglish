@@ -283,7 +283,7 @@ layout: default
 {% endfor %}
 {% endif %}
 
-{% if page.episodes %}
+{% if page.episodes or page.chapters %}
 <div class="section-divider">
   <span class="section-divider-line"></span>
 </div>
@@ -291,13 +291,25 @@ layout: default
   <h2 class="lesson-heading">{{ page.episodes_heading | default: "Episodes" }}</h2>
   {% if page.episodes_subtitle %}<p class="content-subtitle">{{ page.episodes_subtitle }}</p>{% endif %}
   <div class="lesson-episode-grid">
-    {% for episode in page.episodes %}
-      {% if episode.url %}
-        <a class="lesson-episode-button{% if episode.url == page.url %} current{% endif %}" href="{{ site.baseurl }}{{ episode.url }}">{{ episode.label }}</a>
-      {% else %}
-        <span class="lesson-episode-button">{{ episode.label | default: episode }}</span>
-      {% endif %}
-    {% endfor %}
+    {% if page.chapters %}
+      {% for chapter in page.chapters %}
+        {% for lesson in chapter.lessons %}
+          {% if lesson.url %}
+            <a class="lesson-episode-button{% if lesson.url == page.url %} current{% endif %}" href="{{ site.baseurl }}{{ lesson.url }}">{{ lesson.label }}</a>
+          {% else %}
+            <span class="lesson-episode-button">{{ lesson.label }}</span>
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    {% else %}
+      {% for episode in page.episodes %}
+        {% if episode.url %}
+          <a class="lesson-episode-button{% if episode.url == page.url %} current{% endif %}" href="{{ site.baseurl }}{{ episode.url }}">{{ episode.label }}</a>
+        {% else %}
+          <span class="lesson-episode-button">{{ episode.label | default: episode }}</span>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
   </div>
 </div>
 {% endif %}
