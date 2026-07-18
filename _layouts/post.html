@@ -38,6 +38,7 @@ layout: default
   <div class="lesson-intro-text">
     {% if page.intro %}<p>{{ page.intro }}</p>{% else %}{{ content }}{% endif %}
     {% if page.intro_note %}<p>{{ page.intro_note }}</p>{% endif %}
+    {% if page.website_link %}<a class="lesson-pill" href="{{ page.website_link.url }}" target="_blank" rel="noopener">{{ page.website_link.label | default: "Visit the website here" }}</a>{% endif %}
   </div>
   {% if page.image %}
   <div class="lesson-intro-image">
