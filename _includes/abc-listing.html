@@ -30,7 +30,7 @@
   {% assign tag_lessons = site.posts %}
 {% endif %}
 {% assign tag_lessons = tag_lessons | sort: 'title' %}
-{% assign grouped = tag_lessons | group_by_exp: 'lesson', 'lesson.title | slice: 0 | upcase' %}
+{% assign grouped = tag_lessons | group_by_exp: 'lesson', 'lesson.title | replace_first: "The ", "" | slice: 0 | upcase' %}
 {% assign az_letters = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z" | split: "," %}
 
 <div id="{{ include.slug }}-groups">
