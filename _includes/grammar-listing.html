@@ -1,0 +1,109 @@
+<div class="breadcrumb"><a href="{{ site.baseurl }}">Home</a> / {{ include.title }}</div>
+
+<div class="content-header">
+  <h1 class="content-title">{{ include.title }}</h1>
+  <p class="content-subtitle">{{ include.subtitle }}</p>
+</div>
+
+<div class="search-bar">
+  <span class="search-bar-icon">&#128269;</span>
+  <input type="text" id="{{ include.slug }}-search" placeholder="{{ include.search_placeholder }}">
+</div>
+
+<div class="filter-pills" id="{{ include.slug }}-filters">
+  <button type="button" class="filter-pill active" data-topic="all">All</button>
+  {% for topic in site.data.grammar_topics %}
+  <button type="button" class="filter-pill" data-topic="{{ topic }}">{{ topic }}</button>
+  {% endfor %}
+</div>
+
+{% assign tag_lessons = site.posts | where_exp: 'lesson', 'lesson.tags contains include.tag' %}
+
+<div id="{{ include.slug }}-groups">
+  {% for topic in site.data.grammar_topics %}
+  {% assign topic_lessons = tag_lessons | where_exp: 'lesson', 'lesson.grammar_topic == topic' %}
+  <div class="letter-group" data-letter="{{ topic }}">
+    <div class="section-divider">
+      <span class="section-divider-label">{{ topic }}</span>
+      <span class="section-divider-line"></span>
+    </div>
+    {% if topic_lessons.size > 0 %}
+    <div class="lesson-grid">
+      {% for lesson in topic_lessons %}
+      <a class="lesson-row" href="{{ site.baseurl }}{{ lesson.url }}" data-search="{{ lesson.title | downcase }}">
+        <div class="lesson-row-main">
+          <div class="lesson-row-title-line">
+            <span class="lesson-row-title">{{ lesson.title }}</span>
+            {% if lesson.level %}<span class="badge badge-level">{{ lesson.level }}</span>{% endif %}
+            {% include tag-badges.html tags=lesson.tags %}
+          </div>
+          {% if lesson.duration %}<div class="lesson-row-meta">{{ lesson.duration }}</div>{% endif %}
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+
+  {% assign uncategorized = tag_lessons | where_exp: 'lesson', 'lesson.grammar_topic == nil' %}
+  {% if uncategorized.size > 0 %}
+  <div class="letter-group" data-letter="uncategorized">
+    <div class="section-divider">
+      <span class="section-divider-label">More grammar practice</span>
+      <span class="section-divider-line"></span>
+    </div>
+    <div class="lesson-grid">
+      {% for lesson in uncategorized %}
+      <a class="lesson-row" href="{{ site.baseurl }}{{ lesson.url }}" data-search="{{ lesson.title | downcase }}">
+        <div class="lesson-row-main">
+          <div class="lesson-row-title-line">
+            <span class="lesson-row-title">{{ lesson.title }}</span>
+            {% if lesson.level %}<span class="badge badge-level">{{ lesson.level }}</span>{% endif %}
+            {% include tag-badges.html tags=lesson.tags %}
+          </div>
+          {% if lesson.duration %}<div class="lesson-row-meta">{{ lesson.duration }}</div>{% endif %}
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+(function () {
+  var searchInput = document.getElementById('{{ include.slug }}-search');
+  var filterButtons = document.querySelectorAll('#{{ include.slug }}-filters .filter-pill');
+  var groups = document.querySelectorAll('#{{ include.slug }}-groups .letter-group');
+  var activeTopic = 'all';
+
+  function applyFilters() {
+    var query = searchInput.value.trim().toLowerCase();
+
+    groups.forEach(function (group) {
+      var groupTopic = group.getAttribute('data-letter');
+      var groupMatchesTopic = activeTopic === 'all' || groupTopic === activeTopic;
+      group.style.display = groupMatchesTopic ? '' : 'none';
+
+      group.querySelectorAll('.lesson-row').forEach(function (row) {
+        var matchesQuery = !query || row.getAttribute('data-search').indexOf(query) !== -1;
+        row.style.display = matchesQuery ? '' : 'none';
+      });
+    });
+  }
+
+  searchInput.addEventListener('input', applyFilters);
+
+  filterButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      filterButtons.forEach(function (b) { b.classList.remove('active'); });
+      button.classList.add('active');
+      activeTopic = button.getAttribute('data-topic');
+      applyFilters();
+    });
+  });
+
+  applyFilters();
+})();
+</script>

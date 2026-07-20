@@ -26,6 +26,10 @@ That's the minimum. It'll immediately show up on `/library` (alphabetical) and o
 
 Each tag both colors the badge and decides which page(s) the lesson appears on. Use one of these exact values: `reading`, `listening`, `speaking`, `writing`, `vocabulary`, `grammar`, `literature`, `novels`, `short-stories`, `poetry`, `literary-devices`, `author-studies`, `themed-series`, `book-series`, `culture`, `cross-curricular`, `tools`, `digital-tools`, `games`. A lesson can have more than one tag (e.g. `[grammar, writing]`), and it'll show up on every matching page. `tools`, `digital-tools`, and `games` are A-Z (not level-based) pages — everything else groups by level. Tag badges always display in the canonical order defined in `_data/tag_order.yml`, regardless of the order you list them in front matter.
 
+### Grammar topics (Grammar page only)
+
+Posts tagged `grammar` can also set `grammar_topic:` (one value, e.g. `"Passive Voice"`) to group and filter them on `/grammar` by subject instead of by level. Valid values live in `_data/grammar_topics.yml` — add new ones there as needed. This field is separate from the tag system: it never shows as a badge and has no effect anywhere except the Grammar page. Posts without a `grammar_topic` still show up on `/grammar`, under a catch-all "More grammar practice" group.
+
 ### Richer lesson pages (optional)
 
 The lesson layout supports extra front matter for a fuller page — banner image color (auto-picked from your first tag), learning objectives, a side image, video exercises, and an episode picker for multi-part series:

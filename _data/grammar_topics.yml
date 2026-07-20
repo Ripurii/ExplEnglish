@@ -1,0 +1,7 @@
+# Grammar-page-only categories. These are NOT part of the site-wide tag
+# system (_data/tag_order.yml) -- they only group/filter posts on the
+# Grammar page itself, via each post's optional `grammar_topic` field.
+- Tenses
+- Tense vs. Tense
+- Passive Voice
+- Relative Pronouns
