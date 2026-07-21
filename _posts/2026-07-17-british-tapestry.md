@@ -37,24 +37,26 @@ lesson_phases:
       goal: "Introduce the lesson focus."
       items:
         - "Introduce the learning goals: analyse an artwork about British identity; practise who, which and that; create a collage and museum label."
-    - label: "Pre-reading"
-      goal: "Prepare students for reading."
-      items:
-        - "Predict what the article will discuss based on the artwork."
-        - "Introduce or revise key vocabulary."
-    - label: "While Reading"
-      goal: "Read for understanding and notice language."
-      items:
-        - "Students read the article individually."
-        - "Complete reading comprehension questions."
-        - "Read the text a second time and underline examples of who, which and that."
-        - "In pairs, determine what each pronoun refers to (person or thing) - use two different colours."
-    - label: "Post-reading"
-      goal: "Consolidate understanding and practise grammar."
-      items:
-        - "Discuss the reading answers as a class."
-        - "Elicit the rule for relative pronouns."
-        - "Complete a short exercise combining sentences using who, which and that."
+    - box_label: "Reading Cycle"
+      phases:
+        - label: "Pre-reading"
+          goal: "Prepare students for reading."
+          items:
+            - "Predict what the article will discuss based on the artwork."
+            - "Introduce or revise key vocabulary."
+        - label: "While Reading"
+          goal: "Read for understanding and notice language."
+          items:
+            - "Students read the article individually."
+            - "Complete reading comprehension questions."
+            - "Read the text a second time and underline examples of who, which and that."
+            - "In pairs, determine what each pronoun refers to (person or thing) - use two different colours."
+        - label: "Post-reading"
+          goal: "Consolidate understanding and practise grammar."
+          items:
+            - "Discuss the reading answers as a class."
+            - "Elicit the rule for relative pronouns."
+            - "Complete a short exercise combining sentences using who, which and that."
     - label: "Guided Practice"
       goal: "Consolidate students' understanding of relative pronouns through controlled grammar practice."
       items:

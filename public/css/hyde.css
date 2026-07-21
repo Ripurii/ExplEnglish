@@ -701,8 +701,13 @@ a.lesson-row:hover {
 .lesson-pill-group {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: .5rem;
   margin-bottom: 1rem;
+}
+.lesson-materials-note {
+  font-size: .85rem;
+  color: var(--color-text);
 }
 .lesson-pill {
   display: inline-block;

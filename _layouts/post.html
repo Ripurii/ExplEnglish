@@ -229,16 +229,14 @@ layout: default
     {% if page.lesson_phases.warmup %}<p><strong>Warm-up</strong> &mdash; {{ page.lesson_phases.warmup }}</p>{% endif %}
     {% if page.lesson_phases.phases %}
     {% for phase in page.lesson_phases.phases %}
-    <div class="lesson-phase-item">
-      <p class="lesson-phase-title"><strong>{{ phase.label }}</strong></p>
-      {% if phase.goal %}<p class="lesson-phase-goal"><strong>Goal:</strong> {{ phase.goal }}</p>{% endif %}
-      {% if phase.text %}<p>{{ phase.text }}</p>{% endif %}
-      {% if phase.items %}
-      <ul class="lesson-goals-list">
-        {% for item in phase.items %}<li>{{ item }}</li>{% endfor %}
-      </ul>
+      {% if phase.phases %}
+      <div class="lesson-phase-box">
+        {% if phase.box_label %}<p class="lesson-phase-box-label">{{ phase.box_label }}</p>{% endif %}
+        {% for sub in phase.phases %}{% include lesson-phase-item.html phase=sub %}{% endfor %}
+      </div>
+      {% else %}
+      {% include lesson-phase-item.html phase=phase %}
       {% endif %}
-    </div>
     {% endfor %}
     {% endif %}
     {% if page.lesson_phases.repeating %}
@@ -265,16 +263,16 @@ layout: default
       {% endfor %}
     </div>
     {% endif %}
-    {% if page.info.extra_materials %}
+    {% if page.info.extra_materials or page.info.materials_note %}
     <p class="lesson-goals-label">Extra materials:</p>
     <div class="lesson-pill-group">
       {% for item in page.info.extra_materials %}
         {% if item.url %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}">{{ item.label }}</a>
         {% else %}<span class="lesson-pill lesson-pill-placeholder">{{ item.label }}</span>{% endif %}
       {% endfor %}
+      {% if page.info.materials_note %}<span class="lesson-materials-note">{{ page.info.materials_note }}</span>{% endif %}
     </div>
     {% endif %}
-    {% if page.info.materials_note %}<p><strong>Also needed:</strong> {{ page.info.materials_note }}</p>{% endif %}
     {% if page.info.homework %}<p><strong>Homework:</strong> {{ page.info.homework }}</p>{% endif %}
     {% if page.info.differentiation %}
     <p class="lesson-goals-label">Differentiation:</p>
