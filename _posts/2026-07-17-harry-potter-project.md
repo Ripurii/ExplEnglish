@@ -6,12 +6,16 @@ tags: [vocabulary, reading, speaking, writing, novels, culture, book-series]
 date: 2026-07-17
 lesson_series: harry-potter-project
 series_home: true
-episodes_heading: "Lessons"
-episodes_subtitle: "Pick a lesson to open its teacher page. Lessons are grouped by chapter in the sidebar."
+episodes_heading: "Chapters"
+episodes_subtitle: "Use the dropdown in the sidebar to jump to a chapter's teacher page."
 chapters:
   - label: "Chapter 1: The Boy Who Lived"
+    teacher_page_url: /harry-potter-project/chapter-1
     lessons:
       - label: "Lesson 1"
+        url: /harry-potter-project/chapter-1/lesson-1
+      - label: "Lesson 2"
+        url: /harry-potter-project/chapter-1/lesson-2
   - label: "Chapter 2: The Vanishing Glass"
     lessons:
       - label: "Lesson 1"

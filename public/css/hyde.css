@@ -224,6 +224,45 @@ a.sidebar-nav-item:focus {
   opacity: .45 !important;
 }
 
+.sidebar-chapter-jump {
+  margin: 0 0 .5rem;
+}
+.sidebar-chapter-jump-label {
+  display: block;
+  margin-bottom: .35rem;
+  font-size: .7rem;
+  font-weight: bold;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .55);
+}
+.sidebar-chapter-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  display: block;
+  width: 100%;
+  padding: .55rem 2.25rem .55rem .75rem;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: .5rem;
+  background-color: rgba(255, 255, 255, .06);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23ffffff' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .75rem center;
+  background-size: .7rem;
+  font-family: var(--font-sans);
+  font-size: .85rem;
+  color: #fff;
+  cursor: pointer;
+}
+.sidebar-chapter-select:hover {
+  background-color: rgba(255, 255, 255, .12);
+}
+.sidebar-chapter-select option {
+  color: var(--color-text);
+  background-color: var(--color-content-bg);
+}
+
 .sidebar-divider {
   border: 0;
   border-top: 1px solid rgba(255,255,255,.15);
@@ -1399,6 +1438,12 @@ a.lesson-episode-button:hover {
 a.lesson-episode-button.current {
   background-color: var(--color-rust);
   color: #fff;
+}
+.lesson-episode-button-secondary {
+  background-color: var(--color-amber);
+}
+a.lesson-episode-button-secondary:hover {
+  background-color: var(--color-rust-dark);
 }
 
 

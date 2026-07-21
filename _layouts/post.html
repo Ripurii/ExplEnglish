@@ -10,8 +10,12 @@ layout: default
       / <a href="{{ site.baseurl }}{{ series_home.url }}">{{ series_home.title }}</a>
     {% endunless %}
     {% if page.lesson_number %}
-      {% assign episode_page = site.pages | where: 'lesson_series', page.lesson_series | where: 'is_episode', true | where: 'episode_number', page.episode_number | first %}
-      / <a href="{{ site.baseurl }}{{ episode_page.url }}">{{ episode_page.title }}</a>
+      {% if page.episode_number %}
+        {% assign parent_page = site.pages | where: 'lesson_series', page.lesson_series | where: 'is_episode', true | where: 'episode_number', page.episode_number | first %}
+      {% elsif page.chapter_number %}
+        {% assign parent_page = site.pages | where: 'lesson_series', page.lesson_series | where: 'is_chapter', true | where: 'chapter_number', page.chapter_number | first %}
+      {% endif %}
+      {% if parent_page %}/ <a href="{{ site.baseurl }}{{ parent_page.url }}">{{ parent_page.title }}</a>{% endif %}
     {% endif %}
   {% endif %}
   / {{ page.title }}
@@ -218,71 +222,47 @@ layout: default
 </div>
 {% endif %}
 
-{% if page.lesson_phases or page.info %}
+{% if page.chapter_info %}
+<div class="section-divider">
+  <span class="section-divider-label">Chapter Info</span>
+  <span class="section-divider-line"></span>
+</div>
+<div class="lesson-prose">
+  {% if page.chapter_info.text %}<p>{{ page.chapter_info.text }}</p>{% endif %}
+  {% if page.chapter_info.extra_materials %}
+  <p class="lesson-goals-label">Extra materials:</p>
+  <div class="lesson-pill-group">
+    {% for item in page.chapter_info.extra_materials %}
+      {% if item.url %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}">{{ item.label }}</a>
+      {% else %}<span class="lesson-pill lesson-pill-placeholder">{{ item.label }}</span>{% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if page.chapter_info.printables %}
+  <p class="lesson-goals-label">Printables:</p>
+  <div class="lesson-pill-group">
+    {% for item in page.chapter_info.printables %}
+      {% if item.url %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}" download>{{ item.label }}</a>
+      {% else %}<span class="lesson-pill lesson-pill-placeholder">{{ item.label }}</span>{% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endif %}
+
+{% if page.lessons %}
+{% for lesson in page.lessons %}
+<div class="section-divider">
+  <span class="section-divider-label">{{ lesson.label }}</span>
+  <span class="section-divider-line"></span>
+</div>
+{% include lesson-phases-info.html lesson_phases=lesson.lesson_phases info=lesson.info learning_goals=lesson.learning_goals %}
+{% endfor %}
+{% elsif page.lesson_phases or page.info %}
 <div class="section-divider">
   <span class="section-divider-line"></span>
 </div>
-<div class="lesson-two-col">
-  {% if page.lesson_phases %}
-  <div class="lesson-col">
-    <h2 class="lesson-section-heading">Lesson Phases</h2>
-    {% if page.lesson_phases.warmup %}<p><strong>Warm-up</strong> &mdash; {{ page.lesson_phases.warmup }}</p>{% endif %}
-    {% if page.lesson_phases.phases %}
-    {% for phase in page.lesson_phases.phases %}
-      {% if phase.phases %}
-      <div class="lesson-phase-box">
-        {% if phase.box_label %}<p class="lesson-phase-box-label">{{ phase.box_label }}</p>{% endif %}
-        {% for sub in phase.phases %}{% include lesson-phase-item.html phase=sub %}{% endfor %}
-      </div>
-      {% else %}
-      {% include lesson-phase-item.html phase=phase %}
-      {% endif %}
-    {% endfor %}
-    {% endif %}
-    {% if page.lesson_phases.repeating %}
-    <div class="lesson-phase-box">
-      <p class="lesson-phase-box-label">Repeats per video</p>
-      {% for phase in page.lesson_phases.repeating %}<p><strong>{{ phase.label }}</strong> &mdash; {{ phase.text }}</p>{% endfor %}
-    </div>
-    {% endif %}
-    {% if page.lesson_phases.reflection %}<p><strong>Reflection</strong> &mdash; {{ page.lesson_phases.reflection }}</p>{% endif %}
-  </div>
-  {% endif %}
-
-  {% if page.info %}
-  <div class="lesson-col">
-    <h2 class="lesson-section-heading">Info &amp; Printables</h2>
-    {% if page.info.duration_detail %}<p><strong>Lesson duration:</strong> {{ page.info.duration_detail }}</p>{% endif %}
-    {% if page.info.printables %}
-    <p class="lesson-goals-label">Printables:</p>
-    {% if page.info.printables_note %}<p class="lesson-printables-note">{{ page.info.printables_note }}</p>{% endif %}
-    <div class="lesson-pill-group">
-      {% for item in page.info.printables %}
-        {% if item.url %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}" download>{{ item.label }}</a>
-        {% else %}<span class="lesson-pill lesson-pill-placeholder">{{ item.label }}</span>{% endif %}
-      {% endfor %}
-    </div>
-    {% endif %}
-    {% if page.info.extra_materials or page.info.materials_note %}
-    <p class="lesson-goals-label">Extra materials:</p>
-    <div class="lesson-pill-group">
-      {% for item in page.info.extra_materials %}
-        {% if item.url %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}">{{ item.label }}</a>
-        {% else %}<span class="lesson-pill lesson-pill-placeholder">{{ item.label }}</span>{% endif %}
-      {% endfor %}
-      {% if page.info.materials_note %}<span class="lesson-materials-note">{{ page.info.materials_note }}</span>{% endif %}
-    </div>
-    {% endif %}
-    {% if page.info.homework %}<p><strong>Homework:</strong> {{ page.info.homework }}</p>{% endif %}
-    {% if page.info.differentiation %}
-    <p class="lesson-goals-label">Differentiation:</p>
-    <ul class="lesson-goals-list">
-      {% for item in page.info.differentiation %}<li><strong>{{ item.label }}</strong> &mdash; {{ item.text }}</li>{% endfor %}
-    </ul>
-    {% endif %}
-  </div>
-  {% endif %}
-</div>
+{% include lesson-phases-info.html lesson_phases=page.lesson_phases info=page.info %}
 {% endif %}
 
 {% if page.exercises %}
@@ -323,6 +303,11 @@ layout: default
       <span class="section-divider-line"></span>
     </div>
     <div class="lesson-episode-grid">
+      {% if chapter.teacher_page_url %}
+        <a class="lesson-episode-button lesson-episode-button-secondary{% if chapter.teacher_page_url == page.url %} current{% endif %}" href="{{ site.baseurl }}{{ chapter.teacher_page_url }}">Teacher page</a>
+      {% else %}
+        <span class="lesson-episode-button lesson-episode-button-secondary">Teacher page</span>
+      {% endif %}
       {% for lesson in chapter.lessons %}
         {% if lesson.url %}
           <a class="lesson-episode-button{% if lesson.url == page.url %} current{% endif %}" href="{{ site.baseurl }}{{ lesson.url }}">{{ lesson.label }}</a>

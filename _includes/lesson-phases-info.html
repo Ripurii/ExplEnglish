@@ -1,0 +1,72 @@
+<div class="lesson-two-col">
+  {% if include.lesson_phases %}
+  <div class="lesson-col">
+    <h2 class="lesson-section-heading">Lesson Phases</h2>
+    {% if include.lesson_phases.warmup %}<p><strong>Warm-up</strong> &mdash; {{ include.lesson_phases.warmup }}</p>{% endif %}
+    {% if include.lesson_phases.phases %}
+    {% for phase in include.lesson_phases.phases %}
+      {% if phase.phases %}
+      <div class="lesson-phase-box">
+        {% if phase.box_label %}<p class="lesson-phase-box-label">{{ phase.box_label }}</p>{% endif %}
+        {% for sub in phase.phases %}{% include lesson-phase-item.html phase=sub %}{% endfor %}
+      </div>
+      {% else %}
+      {% include lesson-phase-item.html phase=phase %}
+      {% endif %}
+    {% endfor %}
+    {% endif %}
+    {% if include.lesson_phases.repeating %}
+    <div class="lesson-phase-box">
+      <p class="lesson-phase-box-label">Repeats per video</p>
+      {% for phase in include.lesson_phases.repeating %}<p><strong>{{ phase.label }}</strong> &mdash; {{ phase.text }}</p>{% endfor %}
+    </div>
+    {% endif %}
+    {% if include.lesson_phases.reflection %}<p><strong>Reflection</strong> &mdash; {{ include.lesson_phases.reflection }}</p>{% endif %}
+  </div>
+  {% endif %}
+
+  {% if include.info or include.learning_goals %}
+  <div class="lesson-col">
+    <h2 class="lesson-section-heading">Info &amp; Printables</h2>
+    {% if include.learning_goals %}
+    <p class="lesson-goals-label">Lesson Goals:</p>
+    <ul class="lesson-goals-list">
+      {% for goal in include.learning_goals %}<li>{{ goal }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+    {% if include.info.lesson_url %}
+    <div class="lesson-pill-group">
+      <a class="lesson-pill" href="{{ site.baseurl }}{{ include.info.lesson_url }}">Go to lesson</a>
+    </div>
+    {% endif %}
+    {% if include.info.duration_detail %}<p><strong>Lesson duration:</strong> {{ include.info.duration_detail }}</p>{% endif %}
+    {% if include.info.printables %}
+    <p class="lesson-goals-label">Printables:</p>
+    {% if include.info.printables_note %}<p class="lesson-printables-note">{{ include.info.printables_note }}</p>{% endif %}
+    <div class="lesson-pill-group">
+      {% for item in include.info.printables %}
+        {% if item.url %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}" download>{{ item.label }}</a>
+        {% else %}<span class="lesson-pill lesson-pill-placeholder">{{ item.label }}</span>{% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if include.info.extra_materials or include.info.materials_note %}
+    <p class="lesson-goals-label">Extra materials:</p>
+    <div class="lesson-pill-group">
+      {% for item in include.info.extra_materials %}
+        {% if item.url %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}">{{ item.label }}</a>
+        {% else %}<span class="lesson-pill lesson-pill-placeholder">{{ item.label }}</span>{% endif %}
+      {% endfor %}
+      {% if include.info.materials_note %}<span class="lesson-materials-note">{{ include.info.materials_note }}</span>{% endif %}
+    </div>
+    {% endif %}
+    {% if include.info.homework %}<p><strong>Homework:</strong> {{ include.info.homework }}</p>{% endif %}
+    {% if include.info.differentiation %}
+    <p class="lesson-goals-label">Differentiation:</p>
+    <ul class="lesson-goals-list">
+      {% for item in include.info.differentiation %}<li><strong>{{ item.label }}</strong> &mdash; {{ item.text }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>

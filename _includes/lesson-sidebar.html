@@ -31,22 +31,25 @@
       {% endfor %}
 
       {% elsif series_home.chapters %}
-      {% for chapter in series_home.chapters %}
-      <details class="sidebar-nav-group">
-        <summary class="sidebar-nav-item">{{ chapter.label }}</summary>
-        {% if chapter.lessons.size > 0 %}
-        <div class="sidebar-submenu">
-          {% for lesson in chapter.lessons %}
-          {% if lesson.url %}
-          <a class="sidebar-nav-item{% if page.url == lesson.url %} active{% endif %}" href="{{ site.baseurl }}{{ lesson.url }}">{{ lesson.label }}</a>
-          {% else %}
-          <span class="sidebar-nav-item sidebar-nav-item-disabled">{{ lesson.label }}</span>
-          {% endif %}
+      <div class="sidebar-chapter-jump">
+        <label class="sidebar-chapter-jump-label" for="sidebar-chapter-jump-select">Jump to chapter</label>
+        <select id="sidebar-chapter-jump-select" class="sidebar-chapter-select">
+          <option value="">-- choose a chapter --</option>
+          {% for chapter in series_home.chapters %}
+          <option value="{% if chapter.teacher_page_url %}{{ site.baseurl }}{{ chapter.teacher_page_url }}{% endif %}"{% if chapter.teacher_page_url == nil %} disabled{% endif %}{% if page.url == chapter.teacher_page_url %} selected{% endif %}>{{ chapter.label }}</option>
           {% endfor %}
-        </div>
-        {% endif %}
-      </details>
-      {% endfor %}
+        </select>
+      </div>
+      <script>
+      (function () {
+        var select = document.getElementById('sidebar-chapter-jump-select');
+        if (select) {
+          select.addEventListener('change', function () {
+            if (this.value) window.location.href = this.value;
+          });
+        }
+      })();
+      </script>
 
       {% elsif series_home.episodes %}
       <div class="sidebar-submenu">
