@@ -228,25 +228,17 @@ layout: default
   <span class="section-divider-line"></span>
 </div>
 <div class="lesson-prose">
-  {% if page.chapter_info.text %}<p>{{ page.chapter_info.text }}</p>{% endif %}
-  {% if page.chapter_info.extra_materials %}
-  <p class="lesson-goals-label">Extra materials:</p>
+  {% for block in page.chapter_info %}
+  {% if block.text %}<p>{{ block.text }}</p>{% endif %}
+  {% if block.buttons %}
   <div class="lesson-pill-group">
-    {% for item in page.chapter_info.extra_materials %}
-      {% if item.url %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}">{{ item.label }}</a>
-      {% else %}<span class="lesson-pill lesson-pill-placeholder">{{ item.label }}</span>{% endif %}
-    {% endfor %}
-  </div>
-  {% endif %}
-  {% if page.chapter_info.printables %}
-  <p class="lesson-goals-label">Printables:</p>
-  <div class="lesson-pill-group">
-    {% for item in page.chapter_info.printables %}
+    {% for item in block.buttons %}
       {% if item.url %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}" download>{{ item.label }}</a>
       {% else %}<span class="lesson-pill lesson-pill-placeholder">{{ item.label }}</span>{% endif %}
     {% endfor %}
   </div>
   {% endif %}
+  {% endfor %}
 </div>
 {% endif %}
 
@@ -256,7 +248,15 @@ layout: default
   <span class="section-divider-label">{{ lesson.label }}</span>
   <span class="section-divider-line"></span>
 </div>
-{% include lesson-phases-info.html lesson_phases=lesson.lesson_phases info=lesson.info learning_goals=lesson.learning_goals %}
+{% if lesson.learning_goals %}
+<div class="lesson-prose">
+  <h2 class="lesson-section-heading center">Lesson Goals</h2>
+  <ul class="lesson-goals-list">
+    {% for goal in lesson.learning_goals %}<li>{{ goal }}</li>{% endfor %}
+  </ul>
+</div>
+{% endif %}
+{% include lesson-phases-info.html lesson_phases=lesson.lesson_phases info=lesson.info %}
 {% endfor %}
 {% elsif page.lesson_phases or page.info %}
 <div class="section-divider">

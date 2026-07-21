@@ -25,15 +25,9 @@
   </div>
   {% endif %}
 
-  {% if include.info or include.learning_goals %}
+  {% if include.info %}
   <div class="lesson-col">
     <h2 class="lesson-section-heading">Info &amp; Printables</h2>
-    {% if include.learning_goals %}
-    <p class="lesson-goals-label">Lesson Goals:</p>
-    <ul class="lesson-goals-list">
-      {% for goal in include.learning_goals %}<li>{{ goal }}</li>{% endfor %}
-    </ul>
-    {% endif %}
     {% if include.info.lesson_url %}
     <div class="lesson-pill-group">
       <a class="lesson-pill" href="{{ site.baseurl }}{{ include.info.lesson_url }}">Go to lesson</a>
