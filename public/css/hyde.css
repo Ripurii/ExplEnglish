@@ -717,6 +717,31 @@ a.lesson-row:hover {
 .lesson-pill:hover {
   background-color: var(--color-rust-dark);
 }
+.lesson-pill-placeholder {
+  background-color: var(--color-card-bg);
+  color: var(--color-text-muted);
+  cursor: default;
+}
+
+.lesson-phase-item {
+  margin-bottom: 1.1rem;
+}
+.lesson-phase-item:last-child {
+  margin-bottom: 0;
+}
+.lesson-phase-title {
+  margin: 0 0 .15rem;
+}
+.lesson-phase-duration {
+  font-weight: normal;
+  color: var(--color-text-muted);
+  font-size: .85rem;
+}
+.lesson-phase-goal {
+  margin: 0 0 .4rem;
+  font-size: .85rem;
+  color: var(--color-text-muted);
+}
 
 .lesson-exercise {
   margin-bottom: 2rem;

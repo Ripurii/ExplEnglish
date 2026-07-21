@@ -204,9 +204,16 @@ layout: default
 
   {% if page.cross_curricular %}
   <h3 class="lesson-subheading">Cross-curricular</h3>
+  {% for item in page.cross_curricular %}
+  {% if item.goals %}
+  <p class="lesson-goals-label">{{ item.subject }}</p>
   <ul class="lesson-goals-list">
-    {% for item in page.cross_curricular %}<li><strong>{{ item.subject }}</strong> &mdash; {{ item.description }}</li>{% endfor %}
+    {% for goal in item.goals %}<li>{{ goal }}</li>{% endfor %}
   </ul>
+  {% else %}
+  <p><strong>{{ item.subject }}</strong> &mdash; {{ item.description }}</p>
+  {% endif %}
+  {% endfor %}
   {% endif %}
 </div>
 {% endif %}
@@ -221,7 +228,18 @@ layout: default
     <h2 class="lesson-section-heading">Lesson Phases</h2>
     {% if page.lesson_phases.warmup %}<p><strong>Warm-up</strong> &mdash; {{ page.lesson_phases.warmup }}</p>{% endif %}
     {% if page.lesson_phases.phases %}
-    {% for phase in page.lesson_phases.phases %}<p><strong>{{ phase.label }}</strong> &mdash; {{ phase.text }}</p>{% endfor %}
+    {% for phase in page.lesson_phases.phases %}
+    <div class="lesson-phase-item">
+      <p class="lesson-phase-title"><strong>{{ phase.label }}</strong>{% if phase.duration %} <span class="lesson-phase-duration">({{ phase.duration }})</span>{% endif %}</p>
+      {% if phase.goal %}<p class="lesson-phase-goal"><em>Goal:</em> {{ phase.goal }}</p>{% endif %}
+      {% if phase.text %}<p>{{ phase.text }}</p>{% endif %}
+      {% if phase.items %}
+      <ul class="lesson-goals-list">
+        {% for item in phase.items %}<li>{{ item }}</li>{% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+    {% endfor %}
     {% endif %}
     {% if page.lesson_phases.repeating %}
     <div class="lesson-phase-box">
@@ -241,15 +259,22 @@ layout: default
     <p class="lesson-goals-label">Printables:</p>
     {% if page.info.printables_note %}<p class="lesson-printables-note">{{ page.info.printables_note }}</p>{% endif %}
     <div class="lesson-pill-group">
-      {% for item in page.info.printables %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}" download>{{ item.label }}</a>{% endfor %}
+      {% for item in page.info.printables %}
+        {% if item.url %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}" download>{{ item.label }}</a>
+        {% else %}<span class="lesson-pill lesson-pill-placeholder">{{ item.label }}</span>{% endif %}
+      {% endfor %}
     </div>
     {% endif %}
     {% if page.info.extra_materials %}
     <p class="lesson-goals-label">Extra materials:</p>
     <div class="lesson-pill-group">
-      {% for item in page.info.extra_materials %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}">{{ item.label }}</a>{% endfor %}
+      {% for item in page.info.extra_materials %}
+        {% if item.url %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}">{{ item.label }}</a>
+        {% else %}<span class="lesson-pill lesson-pill-placeholder">{{ item.label }}</span>{% endif %}
+      {% endfor %}
     </div>
     {% endif %}
+    {% if page.info.materials_note %}<p class="lesson-printables-note">{{ page.info.materials_note }}</p>{% endif %}
     {% if page.info.homework %}<p><strong>Homework:</strong> {{ page.info.homework }}</p>{% endif %}
     {% if page.info.differentiation %}
     <p class="lesson-goals-label">Differentiation:</p>
