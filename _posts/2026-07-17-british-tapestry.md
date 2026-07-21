@@ -10,6 +10,9 @@ learning_goals:
   - Students can identify and explain at least five British cultural symbols represented in Comfort Blanket.
   - Students can recognise and use the relative pronouns who, which and that.
   - Students can write a museum label explaining how a collage represents a country's identity.
+  - Students can express their choices about their work in English.
+  - Students can ask and answer questions about a classmate's artwork during the gallery walk.
+  - Students can use appropriate interaction strategies, such as asking for clarification and responding to follow-up questions.
 cross_curricular:
   - subject: "Art"
     goals:
@@ -23,7 +26,6 @@ cross_curricular:
 lesson_phases:
   phases:
     - label: "Warm-up"
-      duration: "± 10 min"
       goal: "Activate prior knowledge and introduce the topic."
       items:
         - "Give each student a Post-it note."
@@ -32,18 +34,15 @@ lesson_phases:
         - "Reveal Grayson Perry's Comfort Blanket."
         - "Students identify and count recognisable British symbols they can find in the artwork - use 'What do you recognize?'"
     - label: "Orientation"
-      duration: "± 5 min"
       goal: "Introduce the lesson focus."
       items:
         - "Introduce the learning goals: analyse an artwork about British identity; practise who, which and that; create a collage and museum label."
     - label: "Pre-reading"
-      duration: "± 5 min"
       goal: "Prepare students for reading."
       items:
         - "Predict what the article will discuss based on the artwork."
         - "Introduce or revise key vocabulary."
     - label: "While Reading"
-      duration: "± 15 min"
       goal: "Read for understanding and notice language."
       items:
         - "Students read the article individually."
@@ -51,7 +50,6 @@ lesson_phases:
         - "Read the text a second time and underline examples of who, which and that."
         - "In pairs, determine what each pronoun refers to (person or thing) - use two different colours."
     - label: "Post-reading"
-      duration: "± 10 min"
       goal: "Consolidate understanding and practise grammar."
       items:
         - "Discuss the reading answers as a class."
@@ -69,7 +67,6 @@ lesson_phases:
         - "Create a collage representing national identity using colours, shapes, composition and visual symbols - for a country of their choosing."
         - "Write a museum label using target vocabulary and relative pronouns."
     - label: "Presentation"
-      duration: "± 10 min"
       goal: "Present and justify artistic choices while evaluating different representations of national identity."
       items:
         - "Divide the class into two groups. One group stands next to their collage and museum label as museum guides, while the other group acts as museum visitors."
@@ -80,7 +77,6 @@ lesson_phases:
         - "Each group briefly explains why they selected these four collages, justifying their decisions with evidence from the presentations, visual design, and museum labels."
         - "Conclude with a whole-class reflection on why different groups made different selections and how national identity can be represented in multiple ways."
     - label: "Reflection (Exit Ticket)"
-      duration: "± 5-10 min"
       goal: "Reflect on different representations of national identity and justify personal choices using relative pronouns."
       items:
         - "Students complete an individual Museum Curator Exit Ticket before leaving the classroom."
@@ -92,7 +88,7 @@ info:
     - label: "Teacher manual"
   extra_materials:
     - label: "PowerPoint"
-  materials_note: "You'll also need: Post-its."
+  materials_note: "Post-its."
   homework: "Collage and museum label."
   differentiation:
     - label: "Support booklet"

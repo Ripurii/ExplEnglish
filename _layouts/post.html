@@ -230,8 +230,8 @@ layout: default
     {% if page.lesson_phases.phases %}
     {% for phase in page.lesson_phases.phases %}
     <div class="lesson-phase-item">
-      <p class="lesson-phase-title"><strong>{{ phase.label }}</strong>{% if phase.duration %} <span class="lesson-phase-duration">({{ phase.duration }})</span>{% endif %}</p>
-      {% if phase.goal %}<p class="lesson-phase-goal"><em>Goal:</em> {{ phase.goal }}</p>{% endif %}
+      <p class="lesson-phase-title"><strong>{{ phase.label }}</strong></p>
+      {% if phase.goal %}<p class="lesson-phase-goal"><strong>Goal:</strong> {{ phase.goal }}</p>{% endif %}
       {% if phase.text %}<p>{{ phase.text }}</p>{% endif %}
       {% if phase.items %}
       <ul class="lesson-goals-list">
@@ -274,7 +274,7 @@ layout: default
       {% endfor %}
     </div>
     {% endif %}
-    {% if page.info.materials_note %}<p class="lesson-printables-note">{{ page.info.materials_note }}</p>{% endif %}
+    {% if page.info.materials_note %}<p><strong>Also needed:</strong> {{ page.info.materials_note }}</p>{% endif %}
     {% if page.info.homework %}<p><strong>Homework:</strong> {{ page.info.homework }}</p>{% endif %}
     {% if page.info.differentiation %}
     <p class="lesson-goals-label">Differentiation:</p>
