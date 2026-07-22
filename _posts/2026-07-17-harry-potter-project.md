@@ -9,6 +9,11 @@ series_home: true
 episodes_heading: "Chapters"
 episodes_subtitle: "Use the dropdown in the sidebar to jump to a chapter's teacher page."
 chapters:
+  - label: "Project Launch"
+    teacher_page_url: /harry-potter-project/launch
+    lessons:
+      - label: "Launch Lesson"
+        url: /harry-potter-project/launch/lesson-1
   - label: "Chapter 1: The Boy Who Lived"
     teacher_page_url: /harry-potter-project/chapter-1
     lessons:
