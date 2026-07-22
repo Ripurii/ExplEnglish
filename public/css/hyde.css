@@ -1462,9 +1462,6 @@ a.lesson-episode-button-secondary:hover {
   border-radius: 1.25rem;
   text-align: center;
   color: #f2ecff;
-  background-image:
-    linear-gradient(rgba(12, 6, 24, .55), rgba(12, 6, 24, .8)),
-    url('{{ site.baseurl }}/assets/lessons/harry-potter-project-launch/bg-space.jpg');
   background-size: cover;
   background-position: center;
   box-shadow: 0 0 0 1px rgba(211, 166, 37, .4), 0 10px 30px rgba(0, 0, 0, .4), 0 0 40px rgba(120, 60, 200, .25);
