@@ -1,0 +1,210 @@
+<div class="house-sorter">
+  <div class="house-sorter-setup">
+    <label class="house-sorter-label" for="house-sorter-count">How many students are you sorting today?</label>
+    <div class="house-sorter-setup-row">
+      <input type="number" id="house-sorter-count" class="house-sorter-input" min="1" max="200" placeholder="e.g. 24">
+      <button type="button" class="lesson-pill house-sorter-start-btn">Start Sorting</button>
+    </div>
+    <p class="house-sorter-hint">Houses are always split as evenly as possible &mdash; then each student gets their own spin.</p>
+  </div>
+
+  <div class="house-sorter-stage" hidden>
+    <p class="house-sorter-progress"></p>
+
+    <div class="house-sorter-wheel-wrap">
+      <div class="house-sorter-pointer"></div>
+      <svg class="house-sorter-wheel-svg" viewBox="0 0 300 300" aria-hidden="true">
+        <g class="house-sorter-wheel-disc">
+          <path d="M150,150 L150,10 A140,140 0 0,1 290,150 Z" fill="#740001"></path>
+          <path d="M150,150 L290,150 A140,140 0 0,1 150,290 Z" fill="#1a4d2e"></path>
+          <path d="M150,150 L150,290 A140,140 0 0,1 10,150 Z" fill="#ecb939"></path>
+          <path d="M150,150 L10,150 A140,140 0 0,1 150,10 Z" fill="#222f5b"></path>
+
+          <line x1="150" y1="150" x2="150" y2="10" stroke="#d3a625" stroke-width="3"></line>
+          <line x1="150" y1="150" x2="290" y2="150" stroke="#d3a625" stroke-width="3"></line>
+          <line x1="150" y1="150" x2="150" y2="290" stroke="#d3a625" stroke-width="3"></line>
+          <line x1="150" y1="150" x2="10" y2="150" stroke="#d3a625" stroke-width="3"></line>
+          <circle cx="150" cy="150" r="145" fill="none" stroke="#d3a625" stroke-width="6"></circle>
+
+          <text class="house-sorter-wheel-text" x="217.2" y="82.8" transform="rotate(45 217.2 82.8)">GRYFFINDOR</text>
+          <text class="house-sorter-wheel-text" x="217.2" y="217.2" transform="rotate(-45 217.2 217.2)">SLYTHERIN</text>
+          <text class="house-sorter-wheel-text on-light" x="82.8" y="217.2" transform="rotate(45 82.8 217.2)">HUFFLEPUFF</text>
+          <text class="house-sorter-wheel-text" x="82.8" y="82.8" transform="rotate(-45 82.8 82.8)">RAVENCLAW</text>
+
+          <circle cx="150" cy="150" r="16" fill="#d3a625" stroke="#2c2117" stroke-width="2"></circle>
+        </g>
+      </svg>
+      <div class="house-sorter-confetti-layer"></div>
+    </div>
+
+    <p class="house-sorter-result" aria-live="polite"></p>
+
+    <button type="button" class="lesson-pill house-sorter-spin-btn">Spin for the next student</button>
+
+    <div class="house-sorter-tally">
+      <div class="house-sorter-tally-item" data-house="gryffindor"><span class="house-sorter-tally-swatch"></span>Gryffindor: <strong>0</strong></div>
+      <div class="house-sorter-tally-item" data-house="slytherin"><span class="house-sorter-tally-swatch"></span>Slytherin: <strong>0</strong></div>
+      <div class="house-sorter-tally-item" data-house="hufflepuff"><span class="house-sorter-tally-swatch"></span>Hufflepuff: <strong>0</strong></div>
+      <div class="house-sorter-tally-item" data-house="ravenclaw"><span class="house-sorter-tally-swatch"></span>Ravenclaw: <strong>0</strong></div>
+    </div>
+
+    <button type="button" class="lesson-pill lesson-pill-secondary house-sorter-reset-btn" hidden>Sort a different class</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var HOUSES = ['gryffindor', 'slytherin', 'hufflepuff', 'ravenclaw'];
+  var HOUSE_NAMES = { gryffindor: 'Gryffindor', slytherin: 'Slytherin', hufflepuff: 'Hufflepuff', ravenclaw: 'Ravenclaw' };
+  var HOUSE_MID_ANGLES = { gryffindor: 45, slytherin: 135, hufflepuff: 225, ravenclaw: 315 };
+  var HOUSE_COLORS = { gryffindor: '#740001', slytherin: '#1a4d2e', hufflepuff: '#ecb939', ravenclaw: '#222f5b' };
+
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+
+  function buildAssignments(n) {
+    var base = Math.floor(n / 4);
+    var remainder = n % 4;
+    var extraHouses = shuffle(HOUSES.slice()).slice(0, remainder);
+    var pool = [];
+    HOUSES.forEach(function (h) {
+      var count = base + (extraHouses.indexOf(h) !== -1 ? 1 : 0);
+      for (var i = 0; i < count; i++) pool.push(h);
+    });
+    return shuffle(pool);
+  }
+
+  document.querySelectorAll('.house-sorter').forEach(function (root) {
+    var setup = root.querySelector('.house-sorter-setup');
+    var stage = root.querySelector('.house-sorter-stage');
+    var countInput = root.querySelector('.house-sorter-input');
+    var startBtn = root.querySelector('.house-sorter-start-btn');
+    var spinBtn = root.querySelector('.house-sorter-spin-btn');
+    var resetBtn = root.querySelector('.house-sorter-reset-btn');
+    var disc = root.querySelector('.house-sorter-wheel-disc');
+    var resultEl = root.querySelector('.house-sorter-result');
+    var progressEl = root.querySelector('.house-sorter-progress');
+    var confettiLayer = root.querySelector('.house-sorter-confetti-layer');
+    var tallyEls = {};
+    root.querySelectorAll('.house-sorter-tally-item').forEach(function (el) {
+      tallyEls[el.getAttribute('data-house')] = el.querySelector('strong');
+    });
+
+    var assignments = [];
+    var index = 0;
+    var total = 0;
+    var currentRotation = 0;
+    var tally = { gryffindor: 0, slytherin: 0, hufflepuff: 0, ravenclaw: 0 };
+    var spinning = false;
+
+    function updateProgress() {
+      if (index >= total) return;
+      progressEl.textContent = 'Student ' + (index + 1) + ' of ' + total;
+    }
+
+    function updateTally() {
+      HOUSES.forEach(function (h) {
+        if (tallyEls[h]) tallyEls[h].textContent = tally[h];
+      });
+    }
+
+    function spawnConfetti(color) {
+      confettiLayer.innerHTML = '';
+      var colors = [color, '#d3a625', '#ffffff'];
+      for (var i = 0; i < 36; i++) {
+        var piece = document.createElement('span');
+        piece.className = 'house-sorter-confetti-piece';
+        piece.style.left = (44 + Math.random() * 12) + '%';
+        piece.style.backgroundColor = colors[i % colors.length];
+        piece.style.setProperty('--x', (Math.random() * 220 - 110) + 'px');
+        piece.style.setProperty('--r', (Math.random() * 720 - 360) + 'deg');
+        piece.style.animationDelay = (Math.random() * 0.15) + 's';
+        confettiLayer.appendChild(piece);
+      }
+      setTimeout(function () { confettiLayer.innerHTML = ''; }, 1800);
+    }
+
+    function startSorting() {
+      var n = parseInt(countInput.value, 10);
+      if (!n || n < 1) {
+        countInput.focus();
+        return;
+      }
+      if (n > 200) n = 200;
+      assignments = buildAssignments(n);
+      total = n;
+      index = 0;
+      tally = { gryffindor: 0, slytherin: 0, hufflepuff: 0, ravenclaw: 0 };
+      updateTally();
+      resultEl.textContent = '';
+      resultEl.className = 'house-sorter-result';
+      setup.hidden = true;
+      stage.hidden = false;
+      spinBtn.hidden = false;
+      resetBtn.hidden = true;
+      updateProgress();
+    }
+
+    function spin() {
+      if (spinning || index >= total) return;
+      spinning = true;
+      spinBtn.disabled = true;
+      resultEl.textContent = '';
+      resultEl.className = 'house-sorter-result';
+
+      var house = assignments[index];
+      var slotStart = HOUSE_MID_ANGLES[house] - 45;
+      var targetAngle = slotStart + 10 + Math.random() * 70;
+      var requiredMod = (360 - targetAngle) % 360;
+      var base = Math.floor(currentRotation / 360) * 360;
+      var candidate = base + requiredMod;
+      while (candidate <= currentRotation) candidate += 360;
+      candidate += 360 * 4;
+      currentRotation = candidate;
+
+      disc.style.transition = 'transform 3.2s cubic-bezier(.17,.67,.16,1)';
+      disc.style.transform = 'rotate(' + currentRotation + 'deg)';
+
+      setTimeout(function () {
+        spinning = false;
+        spinBtn.disabled = false;
+        tally[house]++;
+        updateTally();
+        resultEl.textContent = HOUSE_NAMES[house] + '!';
+        resultEl.className = 'house-sorter-result is-visible house-' + house;
+        spawnConfetti(HOUSE_COLORS[house]);
+        index++;
+        if (index >= total) {
+          spinBtn.hidden = true;
+          resetBtn.hidden = false;
+          progressEl.textContent = 'All ' + total + ' students sorted!';
+        } else {
+          updateProgress();
+        }
+      }, 3300);
+    }
+
+    function reset() {
+      setup.hidden = false;
+      stage.hidden = true;
+      disc.style.transition = 'none';
+      disc.style.transform = 'rotate(0deg)';
+      currentRotation = 0;
+      countInput.value = '';
+      countInput.focus();
+    }
+
+    startBtn.addEventListener('click', startSorting);
+    spinBtn.addEventListener('click', spin);
+    resetBtn.addEventListener('click', reset);
+    countInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') startSorting();
+    });
+  });
+})();
+</script>

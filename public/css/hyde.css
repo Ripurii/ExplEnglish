@@ -1448,6 +1448,172 @@ a.lesson-episode-button-secondary:hover {
 
 
 /*
+ * House Sorter (Harry Potter Project launch activity)
+ */
+
+.house-sorter {
+  padding: 1.5rem;
+  border-radius: .75rem;
+  background-color: var(--color-card-bg);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.house-sorter-label {
+  display: block;
+  margin-bottom: .6rem;
+  font-weight: bold;
+}
+.house-sorter-setup-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .75rem;
+}
+.house-sorter-input {
+  width: 8rem;
+  padding: .6rem .9rem;
+  border: 1px solid var(--color-border);
+  border-radius: .5rem;
+  background-color: var(--color-content-bg);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--color-text);
+  text-align: center;
+}
+.house-sorter-hint {
+  margin: .75rem 0 0;
+  font-size: .8rem;
+  color: var(--color-text-muted);
+}
+.house-sorter-progress {
+  margin: 0 0 .75rem;
+  font-size: .85rem;
+  font-weight: bold;
+  color: var(--color-text-muted);
+}
+
+.house-sorter-wheel-wrap {
+  position: relative;
+  width: min(280px, 80vw);
+  margin: 0 auto 1.25rem;
+}
+.house-sorter-wheel-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .25));
+}
+.house-sorter-wheel-disc {
+  transform-origin: 150px 150px;
+}
+.house-sorter-wheel-text {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 15px;
+  fill: #fff;
+  text-anchor: middle;
+  letter-spacing: .02em;
+}
+.house-sorter-wheel-text.on-light {
+  fill: #2c2117;
+}
+.house-sorter-pointer {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 22px solid var(--color-amber);
+  z-index: 2;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .35));
+}
+.house-sorter-confetti-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+.house-sorter-confetti-piece {
+  position: absolute;
+  top: 45%;
+  width: 8px;
+  height: 14px;
+  border-radius: 2px;
+  animation: house-sorter-confetti-fall 1.4s ease-out forwards;
+}
+@keyframes house-sorter-confetti-fall {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate(var(--x), 160px) rotate(var(--r)); opacity: 0; }
+}
+
+.house-sorter-result {
+  min-height: 2.4rem;
+  margin: 0 0 1rem;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.6rem;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .3s ease, transform .3s ease;
+}
+.house-sorter-result.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.house-sorter-result.house-gryffindor { color: #740001; }
+.house-sorter-result.house-slytherin { color: #1a4d2e; }
+.house-sorter-result.house-hufflepuff { color: #8a6c1a; }
+.house-sorter-result.house-ravenclaw { color: #222f5b; }
+
+.house-sorter-spin-btn {
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: .95rem;
+}
+.house-sorter-spin-btn:disabled {
+  opacity: .6;
+  cursor: default;
+}
+
+.house-sorter-tally {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.25rem 0 .5rem;
+  font-size: .9rem;
+}
+.house-sorter-tally-item {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.house-sorter-tally-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.house-sorter-tally-item[data-house="gryffindor"] .house-sorter-tally-swatch { background: #740001; }
+.house-sorter-tally-item[data-house="slytherin"] .house-sorter-tally-swatch { background: #1a4d2e; }
+.house-sorter-tally-item[data-house="hufflepuff"] .house-sorter-tally-swatch { background: #ecb939; }
+.house-sorter-tally-item[data-house="ravenclaw"] .house-sorter-tally-swatch { background: #222f5b; }
+
+.house-sorter-reset-btn {
+  margin-top: 1rem;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: .95rem;
+}
+
+
+/*
  * Small-screen tweaks
  *
  * Everything above already reflows via flex-wrap/grid; these just rein in
