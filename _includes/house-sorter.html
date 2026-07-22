@@ -1,9 +1,10 @@
 <div class="house-sorter">
   <div class="house-sorter-setup">
+    <p class="house-sorter-title">The Sorting Ceremony</p>
     <label class="house-sorter-label" for="house-sorter-count">How many students are you sorting today?</label>
     <div class="house-sorter-setup-row">
       <input type="number" id="house-sorter-count" class="house-sorter-input" min="1" max="200" placeholder="e.g. 24">
-      <button type="button" class="lesson-pill house-sorter-start-btn">Start Sorting</button>
+      <button type="button" class="house-sorter-btn house-sorter-start-btn">Start Sorting</button>
     </div>
     <p class="house-sorter-hint">Houses are always split as evenly as possible &mdash; then each student gets their own spin.</p>
   </div>
@@ -14,6 +15,12 @@
     <div class="house-sorter-wheel-wrap">
       <div class="house-sorter-pointer"></div>
       <svg class="house-sorter-wheel-svg" viewBox="0 0 300 300" aria-hidden="true">
+        <defs>
+          <clipPath id="house-sorter-badge-gryffindor"><circle cx="217.2" cy="82.8" r="32"></circle></clipPath>
+          <clipPath id="house-sorter-badge-slytherin"><circle cx="217.2" cy="217.2" r="32"></circle></clipPath>
+          <clipPath id="house-sorter-badge-hufflepuff"><circle cx="82.8" cy="217.2" r="32"></circle></clipPath>
+          <clipPath id="house-sorter-badge-ravenclaw"><circle cx="82.8" cy="82.8" r="32"></circle></clipPath>
+        </defs>
         <g class="house-sorter-wheel-disc">
           <path d="M150,150 L150,10 A140,140 0 0,1 290,150 Z" fill="#740001"></path>
           <path d="M150,150 L290,150 A140,140 0 0,1 150,290 Z" fill="#1a4d2e"></path>
@@ -26,20 +33,33 @@
           <line x1="150" y1="150" x2="10" y2="150" stroke="#d3a625" stroke-width="3"></line>
           <circle cx="150" cy="150" r="145" fill="none" stroke="#d3a625" stroke-width="6"></circle>
 
-          <text class="house-sorter-wheel-text" x="217.2" y="82.8" transform="rotate(45 217.2 82.8)">GRYFFINDOR</text>
-          <text class="house-sorter-wheel-text" x="217.2" y="217.2" transform="rotate(-45 217.2 217.2)">SLYTHERIN</text>
-          <text class="house-sorter-wheel-text on-light" x="82.8" y="217.2" transform="rotate(45 82.8 217.2)">HUFFLEPUFF</text>
-          <text class="house-sorter-wheel-text" x="82.8" y="82.8" transform="rotate(-45 82.8 82.8)">RAVENCLAW</text>
+          <image href="{{ site.baseurl }}/assets/lessons/harry-potter-project-launch/crest-gryffindor.png" x="185.2" y="50.8" width="64" height="64" preserveAspectRatio="xMidYMid slice" clip-path="url(#house-sorter-badge-gryffindor)"></image>
+          <circle cx="217.2" cy="82.8" r="32" fill="none" stroke="#d3a625" stroke-width="2.5"></circle>
+
+          <image href="{{ site.baseurl }}/assets/lessons/harry-potter-project-launch/crest-slytherin.png" x="185.2" y="185.2" width="64" height="64" preserveAspectRatio="xMidYMid slice" clip-path="url(#house-sorter-badge-slytherin)"></image>
+          <circle cx="217.2" cy="217.2" r="32" fill="none" stroke="#d3a625" stroke-width="2.5"></circle>
+
+          <image href="{{ site.baseurl }}/assets/lessons/harry-potter-project-launch/crest-hufflepuff.png" x="50.8" y="185.2" width="64" height="64" preserveAspectRatio="xMidYMid slice" clip-path="url(#house-sorter-badge-hufflepuff)"></image>
+          <circle cx="82.8" cy="217.2" r="32" fill="none" stroke="#d3a625" stroke-width="2.5"></circle>
+
+          <image href="{{ site.baseurl }}/assets/lessons/harry-potter-project-launch/crest-ravenclaw.png" x="50.8" y="50.8" width="64" height="64" preserveAspectRatio="xMidYMid slice" clip-path="url(#house-sorter-badge-ravenclaw)"></image>
+          <circle cx="82.8" cy="82.8" r="32" fill="none" stroke="#d3a625" stroke-width="2.5"></circle>
 
           <circle cx="150" cy="150" r="16" fill="#d3a625" stroke="#2c2117" stroke-width="2"></circle>
         </g>
       </svg>
-      <div class="house-sorter-confetti-layer"></div>
+      <div class="house-sorter-sparkle-layer"></div>
     </div>
 
-    <p class="house-sorter-result" aria-live="polite"></p>
+    <div class="house-sorter-reveal">
+      <img class="house-sorter-owl" src="{{ site.baseurl }}/assets/lessons/harry-potter-project-launch/owl.png" alt="">
+      <div class="house-sorter-reveal-card">
+        <img class="house-sorter-reveal-crest" src="" alt="">
+        <p class="house-sorter-result"></p>
+      </div>
+    </div>
 
-    <button type="button" class="lesson-pill house-sorter-spin-btn">Spin for the next student</button>
+    <button type="button" class="house-sorter-btn house-sorter-spin-btn">Spin for the next student</button>
 
     <div class="house-sorter-tally">
       <div class="house-sorter-tally-item" data-house="gryffindor"><span class="house-sorter-tally-swatch"></span>Gryffindor: <strong>0</strong></div>
@@ -48,16 +68,24 @@
       <div class="house-sorter-tally-item" data-house="ravenclaw"><span class="house-sorter-tally-swatch"></span>Ravenclaw: <strong>0</strong></div>
     </div>
 
-    <button type="button" class="lesson-pill lesson-pill-secondary house-sorter-reset-btn" hidden>Sort a different class</button>
+    <button type="button" class="house-sorter-btn house-sorter-btn-secondary house-sorter-reset-btn" hidden>Sort a different class</button>
   </div>
 </div>
 
 <script>
 (function () {
+  var BASEURL = '{{ site.baseurl }}';
+  var ASSET_PATH = BASEURL + '/assets/lessons/harry-potter-project-launch/';
   var HOUSES = ['gryffindor', 'slytherin', 'hufflepuff', 'ravenclaw'];
   var HOUSE_NAMES = { gryffindor: 'Gryffindor', slytherin: 'Slytherin', hufflepuff: 'Hufflepuff', ravenclaw: 'Ravenclaw' };
   var HOUSE_MID_ANGLES = { gryffindor: 45, slytherin: 135, hufflepuff: 225, ravenclaw: 315 };
-  var HOUSE_COLORS = { gryffindor: '#740001', slytherin: '#1a4d2e', hufflepuff: '#ecb939', ravenclaw: '#222f5b' };
+  var HOUSE_COLORS = { gryffindor: '#ffb84d', slytherin: '#6fd89a', hufflepuff: '#ffd75e', ravenclaw: '#9db4ff' };
+  var HOUSE_CRESTS = {
+    gryffindor: ASSET_PATH + 'crest-gryffindor.png',
+    slytherin: ASSET_PATH + 'crest-slytherin.png',
+    hufflepuff: ASSET_PATH + 'crest-hufflepuff.png',
+    ravenclaw: ASSET_PATH + 'crest-ravenclaw.png'
+  };
 
   function shuffle(arr) {
     for (var i = arr.length - 1; i > 0; i--) {
@@ -87,9 +115,12 @@
     var spinBtn = root.querySelector('.house-sorter-spin-btn');
     var resetBtn = root.querySelector('.house-sorter-reset-btn');
     var disc = root.querySelector('.house-sorter-wheel-disc');
+    var owl = root.querySelector('.house-sorter-owl');
+    var revealCard = root.querySelector('.house-sorter-reveal-card');
+    var revealCrest = root.querySelector('.house-sorter-reveal-crest');
     var resultEl = root.querySelector('.house-sorter-result');
     var progressEl = root.querySelector('.house-sorter-progress');
-    var confettiLayer = root.querySelector('.house-sorter-confetti-layer');
+    var sparkleLayer = root.querySelector('.house-sorter-sparkle-layer');
     var tallyEls = {};
     root.querySelectorAll('.house-sorter-tally-item').forEach(function (el) {
       tallyEls[el.getAttribute('data-house')] = el.querySelector('strong');
@@ -113,20 +144,22 @@
       });
     }
 
-    function spawnConfetti(color) {
-      confettiLayer.innerHTML = '';
+    function spawnSparkles(color) {
+      sparkleLayer.innerHTML = '';
       var colors = [color, '#d3a625', '#ffffff'];
-      for (var i = 0; i < 36; i++) {
+      for (var i = 0; i < 30; i++) {
         var piece = document.createElement('span');
-        piece.className = 'house-sorter-confetti-piece';
-        piece.style.left = (44 + Math.random() * 12) + '%';
+        piece.className = 'house-sorter-sparkle';
+        var angle = Math.random() * Math.PI * 2;
+        var dist = 60 + Math.random() * 90;
+        piece.style.color = colors[i % colors.length];
         piece.style.backgroundColor = colors[i % colors.length];
-        piece.style.setProperty('--x', (Math.random() * 220 - 110) + 'px');
-        piece.style.setProperty('--r', (Math.random() * 720 - 360) + 'deg');
-        piece.style.animationDelay = (Math.random() * 0.15) + 's';
-        confettiLayer.appendChild(piece);
+        piece.style.setProperty('--x', (Math.cos(angle) * dist) + 'px');
+        piece.style.setProperty('--y', (Math.sin(angle) * dist) + 'px');
+        piece.style.animationDelay = (Math.random() * 0.2) + 's';
+        sparkleLayer.appendChild(piece);
       }
-      setTimeout(function () { confettiLayer.innerHTML = ''; }, 1800);
+      setTimeout(function () { sparkleLayer.innerHTML = ''; }, 1600);
     }
 
     function startSorting() {
@@ -143,6 +176,8 @@
       updateTally();
       resultEl.textContent = '';
       resultEl.className = 'house-sorter-result';
+      revealCard.classList.remove('is-visible');
+      owl.classList.remove('is-flying');
       setup.hidden = true;
       stage.hidden = false;
       spinBtn.hidden = false;
@@ -154,8 +189,8 @@
       if (spinning || index >= total) return;
       spinning = true;
       spinBtn.disabled = true;
-      resultEl.textContent = '';
-      resultEl.className = 'house-sorter-result';
+      revealCard.classList.remove('is-visible');
+      owl.classList.remove('is-flying');
 
       var house = assignments[index];
       var slotStart = HOUSE_MID_ANGLES[house] - 45;
@@ -175,9 +210,20 @@
         spinBtn.disabled = false;
         tally[house]++;
         updateTally();
+
+        revealCrest.src = HOUSE_CRESTS[house];
+        revealCrest.alt = HOUSE_NAMES[house] + ' crest';
         resultEl.textContent = HOUSE_NAMES[house] + '!';
-        resultEl.className = 'house-sorter-result is-visible house-' + house;
-        spawnConfetti(HOUSE_COLORS[house]);
+        resultEl.className = 'house-sorter-result house-' + house;
+
+        void owl.offsetWidth;
+        owl.classList.add('is-flying');
+        spawnSparkles(HOUSE_COLORS[house]);
+
+        setTimeout(function () {
+          revealCard.classList.add('is-visible');
+        }, 550);
+
         index++;
         if (index >= total) {
           spinBtn.hidden = true;
@@ -195,6 +241,8 @@
       disc.style.transition = 'none';
       disc.style.transform = 'rotate(0deg)';
       currentRotation = 0;
+      revealCard.classList.remove('is-visible');
+      owl.classList.remove('is-flying');
       countInput.value = '';
       countInput.focus();
     }
