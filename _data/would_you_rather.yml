@@ -1,0 +1,12 @@
+# Prompts for the "Would You Rather..." spinning wheel
+# (lessons/would-you-rather/lesson-1.html, via _includes/would-you-rather-wheel.html).
+#
+# To add a new prompt, just add another "- a: ... / b: ..." pair below.
+# No code changes needed -- the wheel picks these up automatically.
+
+- a: "ski"
+  b: "swim"
+- a: "have a cat"
+  b: "have a dog"
+- a: "ask questions"
+  b: "give answers"

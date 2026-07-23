@@ -1,0 +1,110 @@
+<div class="wyr-wheel">
+  <p class="wyr-progress"></p>
+
+  <div class="wyr-wheel-wrap">
+    <div class="wyr-pointer"></div>
+    <div class="wyr-disc"></div>
+    <div class="wyr-sparkle-layer"></div>
+  </div>
+
+  <button type="button" class="wyr-btn wyr-spin-btn">Spin</button>
+
+  <div class="wyr-reveal">
+    <p class="wyr-reveal-label">Would you rather...</p>
+    <div class="wyr-options">
+      <div class="wyr-option wyr-option-a"></div>
+      <div class="wyr-option-divider">or</div>
+      <div class="wyr-option wyr-option-b"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var PROMPTS = {{ site.data.would_you_rather | jsonify }};
+  var COLORS = ['#ad4a2f', '#7c8f5f', '#5c6e82', '#bd7f35'];
+
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+
+  document.querySelectorAll('.wyr-wheel').forEach(function (root) {
+    var disc = root.querySelector('.wyr-disc');
+    var spinBtn = root.querySelector('.wyr-spin-btn');
+    var reveal = root.querySelector('.wyr-reveal');
+    var optionA = root.querySelector('.wyr-option-a');
+    var optionB = root.querySelector('.wyr-option-b');
+    var progressEl = root.querySelector('.wyr-progress');
+    var sparkleLayer = root.querySelector('.wyr-sparkle-layer');
+
+    var deck = [];
+    var currentRotation = 0;
+    var spinning = false;
+
+    function refillDeck() {
+      deck = shuffle(PROMPTS.slice());
+    }
+
+    function updateProgress() {
+      progressEl.textContent = deck.length + ' of ' + PROMPTS.length + ' left this round';
+    }
+
+    function spawnSparkles() {
+      sparkleLayer.innerHTML = '';
+      for (var i = 0; i < 40; i++) {
+        var piece = document.createElement('span');
+        piece.className = 'wyr-sparkle';
+        var angle = Math.random() * Math.PI * 2;
+        var dist = 70 + Math.random() * 130;
+        var size = 5 + Math.random() * 8;
+        var color = COLORS[i % COLORS.length];
+        piece.style.color = color;
+        piece.style.backgroundColor = color;
+        piece.style.setProperty('--x', (Math.cos(angle) * dist) + 'px');
+        piece.style.setProperty('--y', (Math.sin(angle) * dist) + 'px');
+        piece.style.setProperty('--size', size + 'px');
+        piece.style.animationDelay = (Math.random() * 0.2) + 's';
+        sparkleLayer.appendChild(piece);
+      }
+      setTimeout(function () { sparkleLayer.innerHTML = ''; }, 1800);
+    }
+
+    function spin() {
+      if (spinning || !PROMPTS.length) return;
+      spinning = true;
+      spinBtn.disabled = true;
+      reveal.classList.remove('is-visible');
+
+      currentRotation += 360 * 4 + Math.floor(Math.random() * 360);
+      disc.style.transition = 'transform 3s cubic-bezier(.17,.67,.16,1)';
+      disc.style.transform = 'rotate(' + currentRotation + 'deg)';
+
+      setTimeout(function () {
+        spinning = false;
+        spinBtn.disabled = false;
+
+        if (deck.length === 0) refillDeck();
+        var prompt = deck.pop();
+        optionA.textContent = prompt.a;
+        optionB.textContent = prompt.b;
+        reveal.classList.add('is-visible');
+        spawnSparkles();
+        updateProgress();
+      }, 3100);
+    }
+
+    if (PROMPTS.length) {
+      refillDeck();
+      updateProgress();
+      spinBtn.addEventListener('click', spin);
+    } else {
+      spinBtn.disabled = true;
+      progressEl.textContent = 'No prompts yet -- add some to _data/would_you_rather.yml';
+    }
+  });
+})();
+</script>

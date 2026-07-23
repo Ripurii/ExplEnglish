@@ -1680,6 +1680,153 @@ a.lesson-episode-button-secondary:hover {
 
 
 /*
+ * Would You Rather wheel
+ */
+
+.wyr-wheel {
+  padding: 2rem 1.5rem;
+  border-radius: 1rem;
+  background-color: var(--color-card-bg);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.wyr-progress {
+  margin: 0 0 1rem;
+  font-size: .9rem;
+  font-weight: bold;
+  color: var(--color-text-muted);
+}
+
+.wyr-wheel-wrap {
+  position: relative;
+  width: min(300px, 70vw);
+  margin: 0 auto 1.5rem;
+}
+.wyr-disc {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--color-rust) 0deg 45deg,
+    var(--color-green) 45deg 90deg,
+    var(--color-blue) 90deg 135deg,
+    var(--color-amber) 135deg 180deg,
+    var(--color-rust) 180deg 225deg,
+    var(--color-green) 225deg 270deg,
+    var(--color-blue) 270deg 315deg,
+    var(--color-amber) 315deg 360deg
+  );
+  border: 6px solid #fff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .25);
+  transform-origin: center;
+}
+.wyr-pointer {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 24px solid var(--color-text);
+  z-index: 2;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .3));
+}
+.wyr-sparkle-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+.wyr-sparkle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--size, 6px);
+  height: var(--size, 6px);
+  border-radius: 50%;
+  box-shadow: 0 0 8px 2px currentColor;
+  animation: wyr-sparkle-burst 1.2s ease-out forwards;
+}
+@keyframes wyr-sparkle-burst {
+  0%   { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+  15%  { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0); opacity: 0; }
+}
+
+.wyr-btn {
+  display: inline-block;
+  padding: .65rem 1.6rem;
+  border-radius: 999px;
+  border: none;
+  background-color: var(--color-rust);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  font-family: var(--font-sans);
+  cursor: pointer;
+}
+.wyr-btn:hover {
+  background-color: var(--color-rust-dark);
+}
+.wyr-btn:disabled {
+  opacity: .6;
+  cursor: default;
+}
+
+.wyr-reveal {
+  position: relative;
+  margin-top: 1.75rem;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.wyr-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.wyr-reveal-label {
+  margin: 0 0 .75rem;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--color-text);
+}
+.wyr-options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.wyr-option {
+  flex: 1;
+  min-width: 160px;
+  max-width: 280px;
+  padding: 1.25rem 1rem;
+  border-radius: .75rem;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #fff;
+}
+.wyr-option-a {
+  background-color: var(--color-rust);
+}
+.wyr-option-b {
+  background-color: var(--color-blue);
+}
+.wyr-option-divider {
+  font-weight: bold;
+  font-size: .95rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+
+/*
  * Small-screen tweaks
  *
  * Everything above already reflows via flex-wrap/grid; these just rein in
