@@ -3,7 +3,9 @@
 
   <div class="wyr-wheel-wrap">
     <div class="wyr-pointer"></div>
-    <div class="wyr-disc"></div>
+    <svg class="wyr-wheel-svg" viewBox="0 0 300 300" aria-hidden="true">
+      <g class="wyr-disc"></g>
+    </svg>
     <div class="wyr-sparkle-layer"></div>
   </div>
 
@@ -23,6 +25,7 @@
 (function () {
   var PROMPTS = {{ site.data.would_you_rather | jsonify }};
   var COLORS = ['#ad4a2f', '#7c8f5f', '#5c6e82', '#bd7f35'];
+  var CX = 150, CY = 150, R = 145, TEXT_R = 95;
 
   function shuffle(arr) {
     for (var i = arr.length - 1; i > 0; i--) {
@@ -30,6 +33,17 @@
       var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
     }
     return arr;
+  }
+
+  function polar(cx, cy, r, angleDeg) {
+    var rad = angleDeg * Math.PI / 180;
+    return { x: cx + r * Math.sin(rad), y: cy - r * Math.cos(rad) };
+  }
+
+  function svgEl(tag, attrs) {
+    var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for (var key in attrs) el.setAttribute(key, attrs[key]);
+    return el;
   }
 
   document.querySelectorAll('.wyr-wheel').forEach(function (root) {
@@ -41,16 +55,73 @@
     var progressEl = root.querySelector('.wyr-progress');
     var sparkleLayer = root.querySelector('.wyr-sparkle-layer');
 
-    var deck = [];
-    var currentRotation = 0;
+    var total = PROMPTS.length;
+    var deck = shuffle(PROMPTS.slice());
     var spinning = false;
 
-    function refillDeck() {
-      deck = shuffle(PROMPTS.slice());
+    function updateProgress() {
+      if (!total) {
+        progressEl.textContent = '';
+        return;
+      }
+      if (deck.length === 0) {
+        progressEl.textContent = 'All done! Refresh the page to spin again.';
+      } else {
+        progressEl.textContent = deck.length + ' of ' + total + ' left this round';
+      }
     }
 
-    function updateProgress() {
-      progressEl.textContent = deck.length + ' of ' + PROMPTS.length + ' left this round';
+    function renderWheel() {
+      disc.innerHTML = '';
+
+      if (deck.length === 0) {
+        disc.appendChild(svgEl('circle', { cx: CX, cy: CY, r: R, fill: '#e7dcbf' }));
+        var msg = svgEl('text', {
+          x: CX, y: CY, 'text-anchor': 'middle', 'dominant-baseline': 'middle',
+          class: 'wyr-slice-text wyr-slice-text-done'
+        });
+        msg.textContent = 'All done!';
+        disc.appendChild(msg);
+        return;
+      }
+
+      var sliceAngle = 360 / deck.length;
+      deck.forEach(function (prompt, i) {
+        var a0 = i * sliceAngle;
+        var a1 = a0 + sliceAngle;
+        var p1 = polar(CX, CY, R, a0);
+        var p2 = polar(CX, CY, R, a1);
+        var largeArc = sliceAngle > 180 ? 1 : 0;
+        var path = svgEl('path', {
+          d: 'M' + CX + ',' + CY + ' L' + p1.x + ',' + p1.y + ' A' + R + ',' + R + ' 0 ' + largeArc + ',1 ' + p2.x + ',' + p2.y + ' Z',
+          fill: COLORS[i % COLORS.length]
+        });
+        disc.appendChild(path);
+
+        var mid = a0 + sliceAngle / 2;
+        var tp = polar(CX, CY, TEXT_R, mid);
+        var rot = (mid > 90 && mid < 270) ? mid - 180 : mid;
+        var text = svgEl('text', {
+          x: tp.x, y: tp.y,
+          transform: 'rotate(' + rot + ' ' + tp.x + ' ' + tp.y + ')',
+          class: 'wyr-slice-text'
+        });
+        text.textContent = prompt.a + ' or ' + prompt.b;
+        disc.appendChild(text);
+      });
+
+      var divider = deck.length > 1;
+      if (divider) {
+        deck.forEach(function (prompt, i) {
+          var a0 = i * sliceAngle;
+          var p1 = polar(CX, CY, R, a0);
+          disc.appendChild(svgEl('line', {
+            x1: CX, y1: CY, x2: p1.x, y2: p1.y, stroke: '#fff', 'stroke-width': 2
+          }));
+        });
+      }
+
+      disc.appendChild(svgEl('circle', { cx: CX, cy: CY, r: R, fill: 'none', stroke: '#fff', 'stroke-width': 6 }));
     }
 
     function spawnSparkles() {
@@ -74,31 +145,44 @@
     }
 
     function spin() {
-      if (spinning || !PROMPTS.length) return;
+      if (spinning || deck.length === 0) return;
       spinning = true;
       spinBtn.disabled = true;
       reveal.classList.remove('is-visible');
 
-      currentRotation += 360 * 4 + Math.floor(Math.random() * 360);
-      disc.style.transition = 'transform 3s cubic-bezier(.17,.67,.16,1)';
-      disc.style.transform = 'rotate(' + currentRotation + 'deg)';
+      var idx = Math.floor(Math.random() * deck.length);
+      var sliceAngle = 360 / deck.length;
+      var slotStart = idx * sliceAngle;
+      var margin = Math.min(sliceAngle * 0.15, 8);
+      var targetAngle = slotStart + margin + Math.random() * (sliceAngle - margin * 2);
+      var requiredMod = (360 - targetAngle) % 360;
+      var rotation = 360 * 4 + requiredMod;
+
+      disc.style.transition = 'transform 3.2s cubic-bezier(.17,.67,.16,1)';
+      disc.style.transform = 'rotate(' + rotation + 'deg)';
 
       setTimeout(function () {
-        spinning = false;
-        spinBtn.disabled = false;
+        var prompt = deck[idx];
+        deck.splice(idx, 1);
 
-        if (deck.length === 0) refillDeck();
-        var prompt = deck.pop();
         optionA.textContent = prompt.a;
         optionB.textContent = prompt.b;
         reveal.classList.add('is-visible');
         spawnSparkles();
         updateProgress();
-      }, 3100);
+
+        disc.style.transition = 'none';
+        disc.style.transform = 'rotate(0deg)';
+        void disc.getBoundingClientRect();
+        renderWheel();
+
+        spinning = false;
+        spinBtn.disabled = deck.length === 0;
+      }, 3300);
     }
 
-    if (PROMPTS.length) {
-      refillDeck();
+    if (total) {
+      renderWheel();
       updateProgress();
       spinBtn.addEventListener('click', spin);
     } else {

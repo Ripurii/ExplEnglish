@@ -1699,26 +1699,30 @@ a.lesson-episode-button-secondary:hover {
 
 .wyr-wheel-wrap {
   position: relative;
-  width: min(300px, 70vw);
+  width: min(420px, 85vw);
   margin: 0 auto 1.5rem;
 }
-.wyr-disc {
+.wyr-wheel-svg {
+  display: block;
   width: 100%;
-  aspect-ratio: 1;
+  height: auto;
   border-radius: 50%;
-  background: conic-gradient(
-    var(--color-rust) 0deg 45deg,
-    var(--color-green) 45deg 90deg,
-    var(--color-blue) 90deg 135deg,
-    var(--color-amber) 135deg 180deg,
-    var(--color-rust) 180deg 225deg,
-    var(--color-green) 225deg 270deg,
-    var(--color-blue) 270deg 315deg,
-    var(--color-amber) 315deg 360deg
-  );
-  border: 6px solid #fff;
   box-shadow: 0 4px 14px rgba(0, 0, 0, .25);
-  transform-origin: center;
+}
+.wyr-disc {
+  transform-origin: 150px 150px;
+}
+.wyr-slice-text {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 10px;
+  fill: #fff;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+.wyr-slice-text-done {
+  font-size: 20px;
+  fill: var(--color-text-muted);
 }
 .wyr-pointer {
   position: absolute;
