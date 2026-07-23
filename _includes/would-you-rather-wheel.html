@@ -46,6 +46,11 @@
     return el;
   }
 
+  function truncate(str, maxChars) {
+    if (str.length <= maxChars) return str;
+    return str.slice(0, Math.max(1, maxChars - 1)) + '…';
+  }
+
   document.querySelectorAll('.wyr-wheel').forEach(function (root) {
     var disc = root.querySelector('.wyr-disc');
     var spinBtn = root.querySelector('.wyr-spin-btn');
@@ -86,6 +91,11 @@
       }
 
       var sliceAngle = 360 / deck.length;
+      var sliceRad = sliceAngle * Math.PI / 180;
+      var availableWidth = TEXT_R * sliceRad;
+      var fontSize = Math.max(6, Math.min(13, availableWidth / 4.2));
+      var maxChars = Math.max(4, Math.floor(availableWidth / (fontSize * 0.6)));
+
       deck.forEach(function (prompt, i) {
         var a0 = i * sliceAngle;
         var a1 = a0 + sliceAngle;
@@ -104,9 +114,15 @@
         var text = svgEl('text', {
           x: tp.x, y: tp.y,
           transform: 'rotate(' + rot + ' ' + tp.x + ' ' + tp.y + ')',
-          class: 'wyr-slice-text'
+          class: 'wyr-slice-text',
+          'font-size': fontSize
         });
-        text.textContent = prompt.a + ' or ' + prompt.b;
+        var line1 = svgEl('tspan', { x: tp.x, dy: '-0.35em' });
+        line1.textContent = truncate(prompt.a, maxChars);
+        var line2 = svgEl('tspan', { x: tp.x, dy: '1.15em' });
+        line2.textContent = truncate(prompt.b, maxChars);
+        text.appendChild(line1);
+        text.appendChild(line2);
         disc.appendChild(text);
       });
 
