@@ -48,7 +48,7 @@
     <p class="lesson-goals-label">Extra materials:</p>
     <div class="lesson-pill-group">
       {% for item in include.info.extra_materials %}
-        {% if item.url %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}">{{ item.label }}</a>
+        {% if item.url %}<a class="lesson-pill" href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ site.baseurl }}{{ item.url }}{% endif %}" download>{{ item.label }}</a>
         {% else %}<span class="lesson-pill lesson-pill-placeholder">{{ item.label }}</span>{% endif %}
       {% endfor %}
       {% if include.info.materials_note %}<span class="lesson-materials-note">{{ include.info.materials_note }}</span>{% endif %}
