@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Harry Potter Project"
+status: "ongoing"
 level: B1
 tags: [vocabulary, reading, speaking, writing, novels, culture, book-series]
 date: 2026-07-17

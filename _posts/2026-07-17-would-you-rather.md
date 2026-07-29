@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Would You Rather..."
+status: "ongoing"
 tags: [speaking]
 date: 2026-07-17
 lesson_series: would-you-rather

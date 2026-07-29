@@ -17,7 +17,7 @@
   {% endfor %}
 </div>
 
-{% assign tag_lessons = site.posts | where_exp: 'lesson', 'lesson.tags contains include.tag' %}
+{% assign tag_lessons = site.posts | where_exp: 'lesson', 'lesson.tags contains include.tag' | where: 'status', 'finished' %}
 
 <div id="{{ include.slug }}-groups">
   {% for topic in site.data.grammar_topics %}

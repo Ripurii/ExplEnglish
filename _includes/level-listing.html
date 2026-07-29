@@ -20,7 +20,7 @@
   <button type="button" class="filter-pill" data-level="C2">C2</button>
 </div>
 
-{% assign tag_lessons = site.posts | where_exp: 'lesson', 'lesson.tags contains include.tag' %}
+{% assign tag_lessons = site.posts | where_exp: 'lesson', 'lesson.tags contains include.tag' | where: 'status', 'finished' %}
 {% assign cefr_levels = "A1,A2,B1,B2,C1,C2" | split: "," %}
 
 <div id="{{ include.slug }}-groups">

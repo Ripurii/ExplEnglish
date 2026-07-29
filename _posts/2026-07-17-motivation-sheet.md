@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Motivation Sheet"
+status: "finished"
 level: A1
 tags: [tools]
 date: 2026-07-17

@@ -15,7 +15,8 @@ layout: null
    <email>{{ site.author.email }}</email>
  </author>
 
- {% for post in site.posts %}
+ {% assign finished_posts = site.posts | where: 'status', 'finished' %}
+ {% for post in finished_posts %}
  <entry>
    <title>{{ post.title }}</title>
    <link href="{{ site.url }}{{ post.url }}"/>

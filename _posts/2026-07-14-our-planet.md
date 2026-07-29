@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Our Planet"
+status: "ongoing"
 level: B1
 tags: [listening, vocabulary, themed-series, cross-curricular]
 duration: 8 episodes

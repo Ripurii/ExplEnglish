@@ -12,7 +12,7 @@ permalink: /latest
   <p class="content-subtitle">The newest lessons, freshly published.</p>
 </div>
 
-{% assign latest_lessons = site.posts | sort: 'date' | reverse %}
+{% assign latest_lessons = site.posts | where: 'status', 'finished' | sort: 'date' | reverse %}
 
 {% if latest_lessons.size > 0 %}
 <div class="search-bar">
