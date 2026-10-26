@@ -1,0 +1,119 @@
+# Question pools for the Edgar Allan Poe Bingo question-caller wheel
+# (lessons/edgar-allan-poe-bingo/bingo.html, via _includes/poe-bingo-wheel.html).
+#
+# "stories" -- one set per short story, 10 questions each. The teacher ticks
+# the boxes for whichever stories the class has actually covered.
+# "life" -- one fixed set of 20 questions about Poe's own life, toggled the
+# same way as a story.
+#
+# To add a new story or question, just extend the lists below -- no code
+# changes needed, the wheel picks it up automatically.
+
+stories:
+  - id: tell-tale-heart
+    label: "The Tell-Tale Heart"
+    questions:
+      - "What physical feature of the old man disturbs the narrator so much that he decides to kill him?"
+      - "How does the narrator insist he is not insane, despite planning a murder?"
+      - "At what time of night does the narrator visit the old man's room before the murder?"
+      - "How many nights does the narrator sneak into the old man's room before finally killing him?"
+      - "What does the narrator do to the old man's body after the murder?"
+      - "Where does the narrator hide the body parts?"
+      - "Why do the police come to the house?"
+      - "Where does the narrator seat the police officers while they question him?"
+      - "What sound does the narrator believe he hears while talking to the police?"
+      - "Why does the narrator finally confess to the murder?"
+
+  - id: cask-of-amontillado
+    label: "The Cask of Amontillado"
+    questions:
+      - "What is the name of the narrator, and what is the name of the man he plans to kill?"
+      - "During what festive time of year does the story take place?"
+      - "What rare wine does the narrator use to lure his victim into the catacombs?"
+      - "What costume is Fortunato wearing when he meets the narrator?"
+      - "Where does the narrator lead Fortunato to taste the wine?"
+      - "What health problem does Fortunato have that worsens as they go deeper, and how does the narrator react to it?"
+      - "What is the Montresor family motto, and roughly what does it mean?"
+      - "What tool does the narrator use to seal Fortunato into the final niche?"
+      - "How exactly does the narrator trap Fortunato in the wall?"
+      - "How long ago did this murder take place, according to the narrator at the end of the story?"
+
+  - id: fall-of-the-house-of-usher
+    label: "The Fall of the House of Usher"
+    questions:
+      - "Why does the narrator travel to the House of Usher?"
+      - "What is unusual about Roderick Usher's physical and mental condition?"
+      - "Who is Madeline, and what is her relationship to Roderick?"
+      - "What strange architectural feature does the narrator notice on the outside of the mansion?"
+      - "What does the family do with Madeline's body after she apparently dies?"
+      - "What book does the narrator read aloud to Roderick during the storm?"
+      - "What does Roderick reveal he has been hearing for days?"
+      - "How does Madeline reappear at the end of the story?"
+      - "What happens to both Roderick and Madeline at the climax?"
+      - "What ultimately happens to the house itself at the end of the story?"
+
+  - id: masque-of-the-red-death
+    label: "The Masque of the Red Death"
+    questions:
+      - "What is the \"Red Death,\" and how does it affect its victims?"
+      - "How does Prince Prospero try to protect himself and his guests from the plague?"
+      - "How many colored rooms are in Prospero's abbey, and what is unusual about them?"
+      - "What object in the black room disturbs the guests every hour?"
+      - "What costume does the uninvited guest wear to the masquerade?"
+      - "How do the other guests react when they first see the mysterious figure?"
+      - "What happens when Prince Prospero confronts the stranger?"
+      - "What do the guests find when they finally seize the stranger's costume?"
+      - "What happens to all the guests by the end of the story?"
+      - "What stops at the very end of the story, symbolizing the end of time for everyone there?"
+
+  - id: the-black-cat
+    label: "The Black Cat"
+    questions:
+      - "What kind of animal does the narrator love at the start of the story, and what is its name?"
+      - "What vice does the narrator develop that changes his personality?"
+      - "What cruel act does the narrator commit against the cat's eye?"
+      - "How does the narrator eventually kill his first cat?"
+      - "What happens to the narrator's house on the night after he kills the cat?"
+      - "What is unusual about the second black cat the narrator finds?"
+      - "What shape does the white patch on the second cat's chest eventually seem to form?"
+      - "Who does the narrator actually kill when he swings the axe meant for the cat?"
+      - "Where does the narrator hide his wife's body?"
+      - "What ultimately reveals the location of the body to the police?"
+
+  - id: pit-and-the-pendulum
+    label: "The Pit and the Pendulum"
+    questions:
+      - "Who has sentenced the narrator to death, and in what historical setting is the story set?"
+      - "What does the narrator nearly fall into when he first explores his dark cell?"
+      - "What is the narrator tied to when he wakes up the second time?"
+      - "What is painted on the ceiling above the narrator, and what is it holding?"
+      - "What is slowly descending toward the narrator, and what is dangerous about it?"
+      - "What food is left for the narrator, and how does he use it to escape?"
+      - "What animals help free the narrator from his bindings?"
+      - "What happens to the metal walls of the cell after the narrator escapes the blade?"
+      - "Toward what does the shrinking room force the narrator?"
+      - "Who ultimately rescues the narrator at the very end of the story?"
+
+life:
+  label: "The Life of Edgar Allan Poe"
+  questions:
+    - "In what year and city was Edgar Allan Poe born?"
+    - "What was Poe's name at birth, before he gained his middle name?"
+    - "What happened to Poe's parents when he was still a young child?"
+    - "What was the profession of Poe's mother, Eliza Poe?"
+    - "Which family took Poe in as a foster child in Richmond, Virginia?"
+    - "Which university did Poe briefly attend before leaving because of debts?"
+    - "Under what false name did Poe enlist in the US Army?"
+    - "Which military academy did Poe attend, and why was he eventually dismissed?"
+    - "Who did Poe marry in 1836, and how was she related to him?"
+    - "How old was Poe's wife when they married?"
+    - "What illness caused the death of Poe's wife in 1847?"
+    - "What kind of work did Poe often do to earn money, besides writing fiction and poetry?"
+    - "Which poem, published in 1845, made Poe suddenly famous?"
+    - "What literary genre is Poe often credited with inventing or pioneering?"
+    - "What is the name of the detective character Poe created, who later inspired Sherlock Holmes?"
+    - "What personal struggles affected Poe for much of his adult life?"
+    - "In what city did Poe die in 1849?"
+    - "What is unusual or mysterious about the circumstances of Poe's death?"
+    - "What strange tradition involving a mysterious visitor developed at Poe's grave for decades?"
+    - "Name one later writer or artist who was influenced by Poe's work."

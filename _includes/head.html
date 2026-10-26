@@ -19,6 +19,11 @@
   <link rel="stylesheet" href="{{ site.baseurl }}/public/css/syntax.css">
   <link rel="stylesheet" href="{{ site.baseurl }}/public/css/hyde.css?v={{ site.time | date: '%s' }}">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700">
+  {% if page.google_fonts %}
+  {% for gf in page.google_fonts %}
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ gf }}&display=swap">
+  {% endfor %}
+  {% endif %}
 
   <!-- Icons -->
   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ site.baseurl }}/public/apple-touch-icon-144-precomposed.png">

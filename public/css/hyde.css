@@ -1829,6 +1829,264 @@ a.lesson-episode-button-secondary:hover {
 
 
 /*
+ * Edgar Allan Poe Bingo (gothic question-caller wheel)
+ *
+ * A dark, candlelit "stage" that sits inside an otherwise normal lesson
+ * page -- same trick as .house-sorter, just with a Poe palette instead of
+ * a starfield. Everything is scoped under .poe-bingo so it never touches
+ * the rest of the site.
+ */
+
+.poe-bingo {
+  --poe-ink:    #161018;
+  --poe-wine:   #5c1a2b;
+  --poe-violet: #3a2648;
+  --poe-gold:   #bd9b3f;
+  --poe-gold-bright: #e4c767;
+  --poe-mist:   #cfc2d6;
+
+  margin: 2rem 0;
+  padding: 2rem 1.5rem 2.25rem;
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(228, 199, 103, .14), transparent 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(92, 26, 43, .35), transparent 60%),
+    linear-gradient(180deg, var(--poe-ink), #0f0b12);
+  border: 1px solid #2c2130;
+  box-shadow: 0 0 0 1px rgba(228, 199, 103, .12) inset, 0 18px 40px -22px rgba(0, 0, 0, .6);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.poe-bingo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,.5) 0, transparent 60%);
+  background-size: 3px 3px;
+  background-position: 10% 15%, 80% 30%, 40% 70%, 65% 85%;
+  opacity: .25;
+  pointer-events: none;
+}
+.poe-bingo-raven {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto .5rem;
+  display: block;
+  fill: var(--poe-gold);
+  opacity: .9;
+}
+.poe-bingo-setup-title,
+.poe-bingo-stage-title {
+  font-family: 'Cinzel', var(--font-serif);
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: .03em;
+  color: var(--poe-gold-bright);
+  margin: 0 0 .4rem;
+  text-shadow: 0 2px 10px rgba(0,0,0,.5);
+}
+.poe-bingo-setup-hint {
+  max-width: 34rem;
+  margin: 0 auto 1.5rem;
+  color: var(--poe-mist);
+  font-size: .95rem;
+  line-height: 1.5;
+}
+.poe-bingo-checklist {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: .6rem;
+  max-width: 40rem;
+  margin: 0 auto 1.25rem;
+  text-align: left;
+}
+.poe-bingo-check {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .6rem .8rem;
+  border: 1px solid #3a2d40;
+  border-radius: .6rem;
+  background-color: rgba(255,255,255,.03);
+  cursor: pointer;
+  transition: border-color .15s, background-color .15s;
+}
+.poe-bingo-check:hover {
+  border-color: var(--poe-gold);
+  background-color: rgba(228, 199, 103, .06);
+}
+.poe-bingo-check-input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--poe-wine);
+  flex-shrink: 0;
+}
+.poe-bingo-check-label {
+  flex: 1;
+  color: #ece3d2;
+  font-size: .95rem;
+}
+.poe-bingo-check-life .poe-bingo-check-label {
+  font-style: italic;
+}
+.poe-bingo-check-count {
+  font-size: .75rem;
+  color: var(--poe-gold);
+  border: 1px solid #4a3a2a;
+  border-radius: 999px;
+  padding: .1rem .5rem;
+  flex-shrink: 0;
+}
+.poe-bingo-setup-actions {
+  margin-bottom: 1.25rem;
+}
+.poe-bingo-link-btn {
+  background: none;
+  border: none;
+  color: var(--poe-gold);
+  text-decoration: underline;
+  text-underline-offset: .2em;
+  font-size: .85rem;
+  cursor: pointer;
+  padding: 0 .5rem;
+}
+.poe-bingo-link-btn:hover {
+  color: var(--poe-gold-bright);
+}
+.poe-bingo-setup-error {
+  color: #e08a93;
+  font-size: .9rem;
+  margin-top: .75rem;
+}
+
+.poe-bingo-btn {
+  display: inline-block;
+  padding: .75rem 1.75rem;
+  border: 1px solid var(--poe-gold);
+  border-radius: 999px;
+  background-color: var(--poe-wine);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: .02em;
+  cursor: pointer;
+  transition: background-color .15s, transform .15s;
+}
+.poe-bingo-btn:hover:not(:disabled) {
+  background-color: #74212f;
+  transform: translateY(-1px);
+}
+.poe-bingo-btn:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+.poe-bingo-btn-secondary {
+  background-color: transparent;
+  border-color: #4a3a2a;
+  color: var(--poe-mist);
+  margin-top: 1.25rem;
+}
+.poe-bingo-btn-secondary:hover:not(:disabled) {
+  background-color: rgba(255,255,255,.06);
+  border-color: var(--poe-gold);
+}
+
+.poe-bingo-progress {
+  margin: 0 0 1rem;
+  font-size: .9rem;
+  color: var(--poe-mist);
+  min-height: 1.2em;
+}
+.poe-bingo-wheel-wrap {
+  position: relative;
+  width: min(300px, 80vw);
+  margin: 0 auto 1.5rem;
+  filter: drop-shadow(0 10px 30px rgba(0,0,0,.55));
+}
+.poe-bingo-wheel-svg {
+  width: 100%;
+  display: block;
+}
+.poe-bingo-disc {
+  transform-origin: 150px 150px;
+}
+.poe-bingo-slice-text {
+  font-family: var(--font-sans);
+  text-anchor: middle;
+  fill: #f3e9c8;
+  font-weight: 600;
+}
+.poe-bingo-slice-text-done {
+  font-size: 15px;
+  fill: var(--poe-mist);
+}
+.poe-bingo-pointer {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-top: 22px solid var(--poe-gold-bright);
+  z-index: 2;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.6));
+}
+.poe-bingo-sparkle-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.poe-bingo-sparkle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background-color: currentColor;
+  animation: poe-bingo-sparkle-fly 1.1s ease-out forwards;
+}
+@keyframes poe-bingo-sparkle-fly {
+  0%   { transform: translate(-50%, -50%) translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) translate(var(--x), var(--y)) scale(0); opacity: 0; }
+}
+
+.poe-bingo-reveal {
+  max-width: 34rem;
+  margin: 1.5rem auto 0;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .35s, transform .35s;
+}
+.poe-bingo-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.poe-bingo-reveal-source {
+  display: inline-block;
+  margin: 0 0 .6rem;
+  padding: .25rem .85rem;
+  border: 1px solid var(--poe-gold);
+  border-radius: 999px;
+  color: var(--poe-gold);
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.poe-bingo-reveal-question {
+  margin: 0;
+  font-family: 'Cinzel', var(--font-serif);
+  font-size: 1.3rem;
+  line-height: 1.5;
+  color: #fdf6e3;
+}
+
+
+/*
  * Small-screen tweaks
  *
  * Everything above already reflows via flex-wrap/grid; these just rein in

@@ -1,0 +1,294 @@
+<div class="poe-bingo">
+  <svg class="poe-bingo-raven" viewBox="0 0 64 64" aria-hidden="true">
+    <path d="M8 40c2-10 10-18 18-20-2-3-2-7 1-9 2 3 4 4 7 4 1-4 5-7 9-6-2 3-2 6 0 8 6 1 10 6 11 12-3-1-6-1-8 1 3 2 4 6 3 10-3-2-6-2-8 0 1 4-1 8-4 10 0-3-1-5-3-6-3 3-8 4-12 3 1-2 1-4 0-6-5 1-10-1-14-1z"></path>
+  </svg>
+
+  <div class="poe-bingo-setup">
+    <p class="poe-bingo-setup-title">Choose Your Questions</p>
+    <p class="poe-bingo-setup-hint">Tick every story your class has actually read, plus "The Life of Edgar Allan Poe" if you want biography questions in the mix too. Only ticked sets go into the wheel.</p>
+
+    <div class="poe-bingo-checklist">
+      {% for story in site.data.poe_bingo.stories %}
+      <label class="poe-bingo-check">
+        <input type="checkbox" class="poe-bingo-check-input" data-set-id="{{ story.id }}">
+        <span class="poe-bingo-check-label">{{ story.label }}</span>
+        <span class="poe-bingo-check-count">{{ story.questions.size }}</span>
+      </label>
+      {% endfor %}
+      <label class="poe-bingo-check poe-bingo-check-life">
+        <input type="checkbox" class="poe-bingo-check-input" data-set-id="life">
+        <span class="poe-bingo-check-label">{{ site.data.poe_bingo.life.label }}</span>
+        <span class="poe-bingo-check-count">{{ site.data.poe_bingo.life.questions.size }}</span>
+      </label>
+    </div>
+
+    <div class="poe-bingo-setup-actions">
+      <button type="button" class="poe-bingo-link-btn poe-bingo-select-all">Select all</button>
+      <button type="button" class="poe-bingo-link-btn poe-bingo-select-none">Clear</button>
+    </div>
+
+    <button type="button" class="poe-bingo-btn poe-bingo-start-btn" disabled>Build the Wheel</button>
+    <p class="poe-bingo-setup-error" hidden>Tick at least one set first.</p>
+  </div>
+
+  <div class="poe-bingo-stage" hidden>
+    <p class="poe-bingo-stage-title">The Wheel Awaits</p>
+    <p class="poe-bingo-progress"></p>
+
+    <div class="poe-bingo-wheel-wrap">
+      <div class="poe-bingo-pointer"></div>
+      <svg class="poe-bingo-wheel-svg" viewBox="0 0 300 300" aria-hidden="true">
+        <g class="poe-bingo-disc"></g>
+      </svg>
+      <div class="poe-bingo-sparkle-layer"></div>
+    </div>
+
+    <button type="button" class="poe-bingo-btn poe-bingo-spin-btn">Call the Next Question</button>
+
+    <div class="poe-bingo-reveal">
+      <p class="poe-bingo-reveal-source"></p>
+      <p class="poe-bingo-reveal-question"></p>
+    </div>
+
+    <button type="button" class="poe-bingo-btn poe-bingo-btn-secondary poe-bingo-reset-btn" hidden>Choose different sets</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var DATA = {{ site.data.poe_bingo | jsonify }};
+  var SETS = {};
+  DATA.stories.forEach(function (s) { SETS[s.id] = { label: s.label, questions: s.questions }; });
+  SETS.life = { label: DATA.life.label, questions: DATA.life.questions };
+
+  var COLORS = ['#5c1a2b', '#241c30', '#3a2e22', '#6e4a1e', '#44263a'];
+  var CX = 150, CY = 150, R = 145, TEXT_R = 95;
+
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+
+  function polar(cx, cy, r, angleDeg) {
+    var rad = angleDeg * Math.PI / 180;
+    return { x: cx + r * Math.sin(rad), y: cy - r * Math.cos(rad) };
+  }
+
+  function svgEl(tag, attrs) {
+    var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for (var key in attrs) el.setAttribute(key, attrs[key]);
+    return el;
+  }
+
+  function truncate(str, maxChars) {
+    if (str.length <= maxChars) return str;
+    return str.slice(0, Math.max(1, maxChars - 1)) + '…';
+  }
+
+  document.querySelectorAll('.poe-bingo').forEach(function (root) {
+    var setup = root.querySelector('.poe-bingo-setup');
+    var stage = root.querySelector('.poe-bingo-stage');
+    var checks = root.querySelectorAll('.poe-bingo-check-input');
+    var startBtn = root.querySelector('.poe-bingo-start-btn');
+    var errorEl = root.querySelector('.poe-bingo-setup-error');
+    var selectAllBtn = root.querySelector('.poe-bingo-select-all');
+    var selectNoneBtn = root.querySelector('.poe-bingo-select-none');
+
+    var disc = root.querySelector('.poe-bingo-disc');
+    var spinBtn = root.querySelector('.poe-bingo-spin-btn');
+    var reveal = root.querySelector('.poe-bingo-reveal');
+    var revealSource = root.querySelector('.poe-bingo-reveal-source');
+    var revealQuestion = root.querySelector('.poe-bingo-reveal-question');
+    var progressEl = root.querySelector('.poe-bingo-progress');
+    var sparkleLayer = root.querySelector('.poe-bingo-sparkle-layer');
+    var resetBtn = root.querySelector('.poe-bingo-reset-btn');
+
+    var deck = [];
+    var total = 0;
+    var spinning = false;
+
+    function anyChecked() {
+      return Array.prototype.some.call(checks, function (c) { return c.checked; });
+    }
+
+    function updateStartState() {
+      var any = anyChecked();
+      startBtn.disabled = !any;
+      if (any) errorEl.hidden = true;
+    }
+
+    function buildDeck() {
+      var pool = [];
+      checks.forEach(function (c) {
+        if (!c.checked) return;
+        var set = SETS[c.getAttribute('data-set-id')];
+        if (!set) return;
+        set.questions.forEach(function (q) { pool.push({ text: q, source: set.label }); });
+      });
+      return shuffle(pool);
+    }
+
+    function updateProgress() {
+      if (!total) { progressEl.textContent = ''; return; }
+      if (deck.length === 0) {
+        progressEl.textContent = 'All questions called! Choose different sets to play again.';
+      } else {
+        progressEl.textContent = deck.length + ' of ' + total + ' questions left';
+      }
+    }
+
+    function renderWheel() {
+      disc.innerHTML = '';
+
+      if (deck.length === 0) {
+        disc.appendChild(svgEl('circle', { cx: CX, cy: CY, r: R, fill: '#241c30' }));
+        var msg = svgEl('text', {
+          x: CX, y: CY, 'text-anchor': 'middle', 'dominant-baseline': 'middle',
+          class: 'poe-bingo-slice-text poe-bingo-slice-text-done'
+        });
+        msg.textContent = 'All done!';
+        disc.appendChild(msg);
+        return;
+      }
+
+      var sliceAngle = 360 / deck.length;
+      var sliceRad = sliceAngle * Math.PI / 180;
+      var availableWidth = TEXT_R * sliceRad;
+      var fontSize = Math.max(6, Math.min(12, availableWidth / 4.4));
+      var maxChars = Math.max(4, Math.floor(availableWidth / (fontSize * 0.62)));
+
+      deck.forEach(function (item, i) {
+        var a0 = i * sliceAngle;
+        var a1 = a0 + sliceAngle;
+        var p1 = polar(CX, CY, R, a0);
+        var p2 = polar(CX, CY, R, a1);
+        var largeArc = sliceAngle > 180 ? 1 : 0;
+        var path = svgEl('path', {
+          d: 'M' + CX + ',' + CY + ' L' + p1.x + ',' + p1.y + ' A' + R + ',' + R + ' 0 ' + largeArc + ',1 ' + p2.x + ',' + p2.y + ' Z',
+          fill: COLORS[i % COLORS.length]
+        });
+        disc.appendChild(path);
+
+        var mid = a0 + sliceAngle / 2;
+        var tp = polar(CX, CY, TEXT_R, mid);
+        var rot = (mid > 90 && mid < 270) ? mid - 180 : mid;
+        var text = svgEl('text', {
+          x: tp.x, y: tp.y,
+          transform: 'rotate(' + rot + ' ' + tp.x + ' ' + tp.y + ')',
+          class: 'poe-bingo-slice-text',
+          'font-size': fontSize
+        });
+        text.textContent = truncate(item.source, maxChars);
+        disc.appendChild(text);
+      });
+
+      if (deck.length > 1) {
+        deck.forEach(function (item, i) {
+          var a0 = i * sliceAngle;
+          var p1 = polar(CX, CY, R, a0);
+          disc.appendChild(svgEl('line', {
+            x1: CX, y1: CY, x2: p1.x, y2: p1.y, stroke: '#bd9b3f', 'stroke-width': 1.5
+          }));
+        });
+      }
+
+      disc.appendChild(svgEl('circle', { cx: CX, cy: CY, r: R, fill: 'none', stroke: '#bd9b3f', 'stroke-width': 5 }));
+    }
+
+    function spawnSparkles() {
+      sparkleLayer.innerHTML = '';
+      for (var i = 0; i < 34; i++) {
+        var piece = document.createElement('span');
+        piece.className = 'poe-bingo-sparkle';
+        var angle = Math.random() * Math.PI * 2;
+        var dist = 70 + Math.random() * 130;
+        var size = 4 + Math.random() * 7;
+        var color = (i % 2 === 0) ? '#bd9b3f' : '#8a3049';
+        piece.style.color = color;
+        piece.style.backgroundColor = color;
+        piece.style.setProperty('--x', (Math.cos(angle) * dist) + 'px');
+        piece.style.setProperty('--y', (Math.sin(angle) * dist) + 'px');
+        piece.style.setProperty('--size', size + 'px');
+        piece.style.animationDelay = (Math.random() * 0.2) + 's';
+        sparkleLayer.appendChild(piece);
+      }
+      setTimeout(function () { sparkleLayer.innerHTML = ''; }, 1800);
+    }
+
+    function spin() {
+      if (spinning || deck.length === 0) return;
+      spinning = true;
+      spinBtn.disabled = true;
+      reveal.classList.remove('is-visible');
+
+      var idx = Math.floor(Math.random() * deck.length);
+      var sliceAngle = 360 / deck.length;
+      var slotStart = idx * sliceAngle;
+      var margin = Math.min(sliceAngle * 0.15, 8);
+      var targetAngle = slotStart + margin + Math.random() * (sliceAngle - margin * 2);
+      var requiredMod = (360 - targetAngle) % 360;
+      var rotation = 360 * 4 + requiredMod;
+
+      disc.style.transition = 'transform 3.2s cubic-bezier(.17,.67,.16,1)';
+      disc.style.transform = 'rotate(' + rotation + 'deg)';
+
+      setTimeout(function () {
+        var item = deck[idx];
+        deck.splice(idx, 1);
+
+        revealSource.textContent = item.source;
+        revealQuestion.textContent = item.text;
+        reveal.classList.add('is-visible');
+        spawnSparkles();
+        updateProgress();
+
+        disc.style.transition = 'none';
+        disc.style.transform = 'rotate(0deg)';
+        void disc.getBoundingClientRect();
+        renderWheel();
+
+        spinning = false;
+        spinBtn.disabled = deck.length === 0;
+        if (deck.length === 0) resetBtn.hidden = false;
+      }, 3300);
+    }
+
+    checks.forEach(function (c) { c.addEventListener('change', updateStartState); });
+
+    selectAllBtn.addEventListener('click', function () {
+      checks.forEach(function (c) { c.checked = true; });
+      updateStartState();
+    });
+
+    selectNoneBtn.addEventListener('click', function () {
+      checks.forEach(function (c) { c.checked = false; });
+      updateStartState();
+    });
+
+    startBtn.addEventListener('click', function () {
+      if (!anyChecked()) { errorEl.hidden = false; return; }
+      deck = buildDeck();
+      total = deck.length;
+      setup.hidden = true;
+      stage.hidden = false;
+      reveal.classList.remove('is-visible');
+      resetBtn.hidden = true;
+      spinBtn.disabled = false;
+      renderWheel();
+      updateProgress();
+    });
+
+    resetBtn.addEventListener('click', function () {
+      setup.hidden = false;
+      stage.hidden = true;
+      reveal.classList.remove('is-visible');
+    });
+
+    spinBtn.addEventListener('click', spin);
+    updateStartState();
+  });
+})();
+</script>
