@@ -46,7 +46,6 @@
     <button type="button" class="poe-bingo-btn poe-bingo-spin-btn">Call the Next Question</button>
 
     <div class="poe-bingo-reveal">
-      <p class="poe-bingo-reveal-source"></p>
       <p class="poe-bingo-reveal-question"></p>
     </div>
 
@@ -100,7 +99,6 @@
     var disc = root.querySelector('.poe-bingo-disc');
     var spinBtn = root.querySelector('.poe-bingo-spin-btn');
     var reveal = root.querySelector('.poe-bingo-reveal');
-    var revealSource = root.querySelector('.poe-bingo-reveal-source');
     var revealQuestion = root.querySelector('.poe-bingo-reveal-question');
     var progressEl = root.querySelector('.poe-bingo-progress');
     var sparkleLayer = root.querySelector('.poe-bingo-sparkle-layer');
@@ -239,8 +237,11 @@
         var item = deck[idx];
         deck.splice(idx, 1);
 
-        revealSource.textContent = item.source;
-        revealQuestion.textContent = item.text;
+        revealQuestion.innerHTML = '';
+        var sourceEl = document.createElement('strong');
+        sourceEl.textContent = item.source + ':';
+        revealQuestion.appendChild(sourceEl);
+        revealQuestion.appendChild(document.createTextNode(' ' + item.text));
         reveal.classList.add('is-visible');
         spawnSparkles();
         updateProgress();
