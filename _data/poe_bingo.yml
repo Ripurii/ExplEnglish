@@ -1,7 +1,7 @@
 # Question pools for the Edgar Allan Poe Bingo question-caller wheel
 # (lessons/edgar-allan-poe-bingo/bingo.html, via _includes/poe-bingo-wheel.html).
 #
-# "stories" -- one set per short story, 10 questions each. The teacher ticks
+# "stories" -- one set per short story, 20 questions each. The teacher ticks
 # the boxes for whichever stories the class has actually covered.
 # "life" -- one fixed set of 20 questions about Poe's own life, toggled the
 # same way as a story.
@@ -23,6 +23,16 @@ stories:
       - "Where does the narrator seat the police officers while they question him?"
       - "What sound does the narrator believe he hears while talking to the police?"
       - "Why does the narrator finally confess to the murder?"
+      - "What reason does the narrator give for NOT wanting to kill the old man for his money?"
+      - "How does the narrator describe the old man's eye in detail, besides calling it \"vulture-like\"?"
+      - "What object does the narrator use to let a single ray of light fall on the old man's eye each night?"
+      - "How long does it take the narrator to get his whole head through the door each night?"
+      - "What causes the old man to wake up on the eighth night?"
+      - "What single word does the old man cry out after waking?"
+      - "What does the narrator claim he understands about the groan the old man gives?"
+      - "What does the ray of light fall directly on when the narrator finally opens the lantern fully?"
+      - "In what room of the house does the narrator dismember the body?"
+      - "What specific parts does the narrator cut the body into?"
 
   - id: cask-of-amontillado
     label: "The Cask of Amontillado"
@@ -37,6 +47,16 @@ stories:
       - "What tool does the narrator use to seal Fortunato into the final niche?"
       - "How exactly does the narrator trap Fortunato in the wall?"
       - "How long ago did this murder take place, according to the narrator at the end of the story?"
+      - "What excuse does Montresor give his servants before leaving, to make sure none of them will be home?"
+      - "What does Montresor wear to disguise himself on the way to the vaults?"
+      - "What is Fortunato known for being proud of, which Montresor uses to manipulate him?"
+      - "What rival wine expert does Montresor mention to provoke Fortunato's pride?"
+      - "What image is on the Montresor family coat of arms?"
+      - "What wine does Montresor offer Fortunato to drink on their way through the vaults?"
+      - "What covers the walls of the Montresor family vaults, besides wine casks?"
+      - "What does Fortunato wear on his jester's cap that makes a sound as he walks?"
+      - "What does Montresor use to fasten Fortunato to the wall before bricking him in?"
+      - "What does Fortunato cry out once he realizes what is happening to him?"
 
   - id: fall-of-the-house-of-usher
     label: "The Fall of the House of Usher"
@@ -51,6 +71,16 @@ stories:
       - "How does Madeline reappear at the end of the story?"
       - "What happens to both Roderick and Madeline at the climax?"
       - "What ultimately happens to the house itself at the end of the story?"
+      - "On what kind of day does the narrator first arrive at the House of Usher?"
+      - "What prompted Roderick to write to the narrator in the first place?"
+      - "What is unusual about the Usher family line, according to the narrator?"
+      - "What body of water surrounds the house, and what does the narrator notice about it?"
+      - "What are Roderick's paintings like, and what is one example the narrator describes?"
+      - "What song does Roderick improvise and sing to his guitar?"
+      - "What odd belief does Roderick hold about the house itself?"
+      - "How many times does the narrator actually see Madeline before her apparent death?"
+      - "What does the narrator notice about Madeline's face that seems strange for someone who has just died?"
+      - "What was the vault where Madeline is entombed originally used for?"
 
   - id: masque-of-the-red-death
     label: "The Masque of the Red Death"
@@ -65,6 +95,16 @@ stories:
       - "What do the guests find when they finally seize the stranger's costume?"
       - "What happens to all the guests by the end of the story?"
       - "What stops at the very end of the story, symbolizing the end of time for everyone there?"
+      - "What physical symptoms does the Red Death cause in its victims?"
+      - "About how many guests does Prince Prospero bring with him into seclusion?"
+      - "What do Prospero's guests do to the gates of the abbey to seal themselves in?"
+      - "How is the layout of the seven rooms unusual, making it hard to see from one end to the other?"
+      - "What matches the stained-glass windows in each of the seven rooms?"
+      - "What color are the windows of the seventh, black room?"
+      - "Why do most guests avoid entering the black room during the party?"
+      - "What happens to the orchestra and dancers every time the ebony clock strikes the hour?"
+      - "Through how many rooms does Prospero chase the mysterious figure before he dies?"
+      - "Where exactly does Prince Prospero die?"
 
   - id: the-black-cat
     label: "The Black Cat"
@@ -79,6 +119,16 @@ stories:
       - "Who does the narrator actually kill when he swings the axe meant for the cat?"
       - "Where does the narrator hide his wife's body?"
       - "What ultimately reveals the location of the body to the police?"
+      - "What was the narrator known for as a child, according to his own description?"
+      - "What other pets did the narrator and his wife keep besides the cat?"
+      - "How is Pluto physically described when the narrator first introduces him?"
+      - "What does the narrator blame for his growing cruelty, personified as a kind of demon?"
+      - "How does Pluto behave toward the narrator after the eye-cutting incident?"
+      - "What does the narrator feel right after mutilating Pluto, before it fades away?"
+      - "What image does the narrator find on a surviving wall after the fire?"
+      - "How does the narrator try to rationally explain that image on the wall?"
+      - "Where does the narrator first find the second black cat?"
+      - "What does the second cat do that the narrator finds unsettling, besides resembling Pluto?"
 
   - id: pit-and-the-pendulum
     label: "The Pit and the Pendulum"
@@ -93,6 +143,16 @@ stories:
       - "What happens to the metal walls of the cell after the narrator escapes the blade?"
       - "Toward what does the shrinking room force the narrator?"
       - "Who ultimately rescues the narrator at the very end of the story?"
+      - "What happens to the narrator physically as his death sentence is pronounced by the judges?"
+      - "What does the narrator initially fear his cell might actually be, given the darkness and silence?"
+      - "How does the narrator measure the size and shape of his cell?"
+      - "What mistake almost sends the narrator into the pit while he is exploring the cell?"
+      - "How does the narrator believe he was made to fall asleep before waking up bound to the frame?"
+      - "About how quickly does the pendulum descend, and what sound does it make as it swings?"
+      - "What substance does the narrator use on the ropes to attract the rats?"
+      - "From where do the rats that help free the narrator come swarming?"
+      - "What happens to the painted figures on the walls as the walls heat up?"
+      - "Who or what physically catches the narrator at the very last second to save him from the pit?"
 
 life:
   label: "The Life of Edgar Allan Poe"

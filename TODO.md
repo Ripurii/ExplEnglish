@@ -28,7 +28,7 @@ matter, then update this file.
       are done; prompt list in `_data/would_you_rather.yml` can keep growing
       whenever there are more prompts to add.
 - [ ] Edgar Allan Poe Bingo — teacher page, lesson page, and the question-
-      caller wheel are done (6 stories x 10 questions + a 20-question Life
+      caller wheel are done (6 stories x 20 questions + a 20-question Life
       of Poe set in `_data/poe_bingo.yml`). Questions still need the
       teacher's proofreading pass. Also still needs the actual
       `bingo-cards.pdf` dropped into `assets/lessons/edgar-allan-poe-bingo/`
